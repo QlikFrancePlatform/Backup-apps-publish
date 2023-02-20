@@ -1,0 +1,183 @@
+
+SHEETS
+{"qInfo":{"qId":"b3e66d09-655c-43b4-a9ac-e29083004972","qType":"sheet"},"qMeta":{"title":"Rapport point de vente","description":"","_resourcetype":"app.object","_objecttype":"sheet","id":"b3e66d09-655c-43b4-a9ac-e29083004972","approved":false,"published":true,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.434Z","modifiedDate":"2023-01-09T15:23:27.859Z","publishTime":"2023-01-09T15:23:27.859Z","privileges":["read","publish"]},"qData":[]}
+{"qInfo":{"qId":"551d1eb6-f4b1-409d-bc5b-dc01aa6085c9","qType":"sheet"},"qMeta":{"title":"Valorisation de l'immobilier","description":"","_resourcetype":"app.object","_objecttype":"sheet","id":"551d1eb6-f4b1-409d-bc5b-dc01aa6085c9","approved":false,"published":true,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.440Z","modifiedDate":"2023-01-09T15:23:24.741Z","publishTime":"2023-01-09T15:23:24.741Z","privileges":["read","publish"]},"qData":[]}
+{"qInfo":{"qId":"56842e54-4d1c-42c0-b6b5-8e3504bb7118","qType":"sheet"},"qMeta":{"title":"Analyse des points de vente","description":"","_resourcetype":"app.object","_objecttype":"sheet","id":"56842e54-4d1c-42c0-b6b5-8e3504bb7118","approved":false,"published":true,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.443Z","modifiedDate":"2023-01-09T15:23:22.672Z","publishTime":"2023-01-09T15:23:22.672Z","privileges":["read","publish"]},"qData":[]}
+{"qInfo":{"qId":"74bc9eea-50fa-45ec-899b-229c3f1f0101","qType":"sheet"},"qMeta":{"title":"Pilotage des points de ventes","description":"","_resourcetype":"app.object","_objecttype":"sheet","id":"74bc9eea-50fa-45ec-899b-229c3f1f0101","approved":false,"published":true,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.448Z","modifiedDate":"2023-01-09T15:23:20.767Z","publishTime":"2023-01-09T15:23:20.767Z","privileges":["read","publish"]},"qData":[]}
+{"qInfo":{"qId":"b97e5280-a4c4-4c77-9d8f-1a1351cdc52f","qType":"sheet"},"qMeta":{"title":"Dashboard 360\u00b0","description":"","_resourcetype":"app.object","_objecttype":"sheet","id":"b97e5280-a4c4-4c77-9d8f-1a1351cdc52f","approved":false,"published":true,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.428Z","modifiedDate":"2023-01-09T15:23:17.592Z","publishTime":"2023-01-09T15:23:17.592Z","privileges":["read","publish"]},"qData":[]}
+{"qInfo":{"qId":"391fa37c-acfe-4baf-96d6-e57615b101a2","qType":"sheet"},"qMeta":{"title":"Ma nouvelle feuille","description":"","_resourcetype":"app.object","_objecttype":"sheet","id":"391fa37c-acfe-4baf-96d6-e57615b101a2","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.457Z","modifiedDate":"2022-09-17T21:04:02.457Z","privileges":["read","update","delete","publish"]},"qData":[]}
+
+OBJECTS ON SHEETS
+{"name":"gpPbpy","type":"table","col":0,"row":0,"colspan":36,"rowspan":18,"bounds":{"y":0,"x":0,"width":100,"height":100}}
+{"name":"ChCar","type":"kpi","col":20,"row":0,"colspan":8,"rowspan":2,"bounds":{"y":0,"x":55.55555555555556,"width":22.22222222222222,"height":11.11111111111111}}
+{"name":"TXKXfmt","type":"kpi","col":5,"row":0,"colspan":8,"rowspan":2,"bounds":{"y":0,"x":13.88888888888889,"width":22.22222222222222,"height":11.11111111111111}}
+{"name":"JRMPkp","type":"kpi","col":28,"row":0,"colspan":8,"rowspan":2,"bounds":{"y":0,"x":77.77777777777779,"width":22.22222222222222,"height":11.11111111111111}}
+{"name":"ZaUSYkR","type":"kpi","col":13,"row":0,"colspan":7,"rowspan":2,"bounds":{"y":0,"x":36.11111111111111,"width":19.444444444444446,"height":11.11111111111111}}
+{"name":"CkJQg","type":"map","col":5,"row":2,"colspan":15,"rowspan":15,"bounds":{"y":11.11111111111111,"x":13.88888888888889,"width":41.66666666666667,"height":83.33333333333334}}
+{"name":"URAHzhV","type":"filterpane","col":0,"row":0,"colspan":5,"rowspan":6,"bounds":{"y":0,"x":0,"width":13.88888888888889,"height":33.33333333333333}}
+{"name":"tLGyQ","type":"filterpane","col":0,"row":6,"colspan":5,"rowspan":6,"bounds":{"y":33.33333333333333,"x":0,"width":13.88888888888889,"height":33.33333333333333}}
+{"name":"LBeVpBg","type":"filterpane","col":0,"row":12,"colspan":5,"rowspan":6,"bounds":{"y":66.66666666666666,"x":0,"width":13.88888888888889,"height":33.33333333333333}}
+{"name":"pyTH","type":"container","col":20,"row":2,"colspan":16,"rowspan":16,"bounds":{"y":11.11111111111111,"x":55.55555555555556,"width":44.44444444444444,"height":88.88888888888889}}
+{"name":"Jwpaj","type":"kpi","col":4,"row":0,"colspan":8,"rowspan":2,"bounds":{"x":11.11111111111111,"y":0,"width":22.22222222222222,"height":11.11111111111111}}
+{"name":"AXbuB","type":"barchart","col":4,"row":2,"colspan":16,"rowspan":7,"bounds":{"y":11.11111111111111,"x":11.11111111111111,"width":44.44444444444444,"height":38.88888888888889}}
+{"name":"UPgWeu","type":"filterpane","col":0,"row":0,"colspan":4,"rowspan":6,"bounds":{"x":0,"y":0,"width":11.11111111111111,"height":33.33333333333333}}
+{"name":"sEdgLw","type":"filterpane","col":0,"row":6,"colspan":4,"rowspan":6,"bounds":{"x":0,"y":33.33333333333333,"width":11.11111111111111,"height":33.33333333333333}}
+{"name":"mWmDpj","type":"kpi","col":12,"row":0,"colspan":16,"rowspan":2,"bounds":{"y":0,"x":33.33333333333333,"width":44.44444444444444,"height":11.11111111111111}}
+{"name":"wJXJY","type":"kpi","col":28,"row":0,"colspan":8,"rowspan":2,"bounds":{"y":0,"x":77.77777777777779,"width":22.22222222222222,"height":11.11111111111111}}
+{"name":"RBBXbP","type":"table","col":4,"row":9,"colspan":32,"rowspan":9,"bounds":{"y":50,"x":11.11111111111111,"width":88.88888888888889,"height":50}}
+{"name":"EUGnCD","type":"piechart","col":20,"row":2,"colspan":16,"rowspan":7,"bounds":{"y":11.11111111111111,"x":55.55555555555556,"width":44.44444444444444,"height":38.88888888888889}}
+{"name":"FtDvxh","type":"filterpane","col":0,"row":12,"colspan":4,"rowspan":6,"bounds":{"y":66.66666666666666,"x":0,"width":11.11111111111111,"height":33.33333333333333}}
+{"name":"Xub","type":"map","col":4,"row":2,"colspan":16,"rowspan":16,"bounds":{"y":11.11111111111111,"x":11.11111111111111,"width":44.44444444444444,"height":88.88888888888889}}
+{"name":"PYvrW","type":"kpi","col":28,"row":0,"colspan":8,"rowspan":2,"bounds":{"x":77.77777777777779,"y":0,"width":22.22222222222222,"height":11.11111111111111}}
+{"name":"NLHQgPU","type":"kpi","col":12,"row":0,"colspan":16,"rowspan":2,"bounds":{"y":0,"x":33.33333333333333,"width":44.44444444444444,"height":11.11111111111111}}
+{"name":"PcUJZdU","type":"kpi","col":4,"row":0,"colspan":8,"rowspan":2,"bounds":{"y":0,"x":11.11111111111111,"width":22.22222222222222,"height":11.11111111111111}}
+{"name":"DbJm","type":"filterpane","col":0,"row":0,"colspan":4,"rowspan":6,"bounds":{"y":0,"x":0,"width":11.11111111111111,"height":33.33333333333333}}
+{"name":"TwzBPZk","type":"combochart","col":20,"row":12,"colspan":16,"rowspan":6,"bounds":{"y":66.66666666666666,"x":55.55555555555556,"width":44.44444444444444,"height":33.33333333333333}}
+{"name":"PdCQtv","type":"scatterplot","col":20,"row":2,"colspan":16,"rowspan":10,"bounds":{"y":11.11111111111111,"x":55.55555555555556,"width":44.44444444444444,"height":55.55555555555556}}
+{"name":"xUhkB","type":"filterpane","col":0,"row":6,"colspan":4,"rowspan":7,"bounds":{"y":33.33333333333333,"x":0,"width":11.11111111111111,"height":38.88888888888889}}
+{"name":"JBfygFJ","type":"filterpane","col":0,"row":13,"colspan":4,"rowspan":5,"bounds":{"y":72.22222222222221,"x":0,"width":11.11111111111111,"height":27.77777777777778}}
+{"name":"KXTCcG","type":"kpi","col":0,"row":0,"colspan":11,"rowspan":3,"bounds":{"y":0,"x":0,"width":30.555555555555557,"height":16.666666666666664}}
+{"name":"Bmyznt","type":"kpi","col":11,"row":0,"colspan":12,"rowspan":3,"bounds":{"y":0,"x":30.555555555555557,"width":33.33333333333333,"height":16.666666666666664}}
+{"name":"cbAwY","type":"kpi","col":23,"row":0,"colspan":5,"rowspan":3,"bounds":{"y":0,"x":63.888888888888886,"width":13.88888888888889,"height":16.666666666666664}}
+{"name":"nuAaV","type":"gauge","col":28,"row":0,"colspan":8,"rowspan":3,"bounds":{"y":0,"x":77.77777777777779,"width":22.22222222222222,"height":16.666666666666664}}
+{"name":"UpnQFy","type":"linechart","col":0,"row":3,"colspan":11,"rowspan":6,"bounds":{"y":16.666666666666664,"x":0,"width":30.555555555555557,"height":33.33333333333333}}
+{"name":"PGYT","type":"linechart","col":11,"row":3,"colspan":12,"rowspan":6,"bounds":{"y":16.666666666666664,"x":30.555555555555557,"width":33.33333333333333,"height":33.33333333333333}}
+{"name":"QeGpjt","type":"combochart","col":23,"row":3,"colspan":13,"rowspan":6,"bounds":{"y":16.666666666666664,"x":63.888888888888886,"width":36.11111111111111,"height":33.33333333333333}}
+{"name":"QWPNgF","type":"piechart","col":0,"row":9,"colspan":11,"rowspan":9,"bounds":{"y":50,"x":0,"width":30.555555555555557,"height":50}}
+{"name":"tusQqR","type":"barchart","col":11,"row":9,"colspan":12,"rowspan":9,"bounds":{"y":50,"x":30.555555555555557,"width":33.33333333333333,"height":50}}
+{"name":"evBrxPe","type":"barchart","col":23,"row":9,"colspan":13,"rowspan":9,"bounds":{"y":50,"x":63.888888888888886,"width":36.11111111111111,"height":50}}
+{"name":"Nvmuph","type":"barchart","col":12,"row":6,"colspan":12,"rowspan":6,"bounds":{"y":50,"x":50,"width":50,"height":50}}
+{"name":"zRVfnQ","type":"barchart","col":12,"row":0,"colspan":12,"rowspan":6,"bounds":{"y":0,"x":50,"width":50,"height":50}}
+{"name":"RYxZdmt","type":"barchart","col":0,"row":0,"colspan":12,"rowspan":6,"bounds":{"y":0,"x":0,"width":50,"height":50}}
+{"name":"znPNuB","type":"combochart","col":0,"row":6,"colspan":12,"rowspan":6,"bounds":{"y":50,"x":0,"width":50,"height":50}}
+
+DIMENSIONS
+{"qInfo":{"qId":"2544549e-7466-408e-b505-851b365a8782","qType":"dimension"},"qMeta":{"title":"Trimestre","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"dimension","id":"2544549e-7466-408e-b505-851b365a8782","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.469Z","modifiedDate":"2022-09-17T21:04:02.469Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"2e281341-f12c-45b9-b4aa-3031670bb84c","qType":"dimension"},"qMeta":{"title":"Produits","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"dimension","id":"2e281341-f12c-45b9-b4aa-3031670bb84c","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.470Z","modifiedDate":"2022-09-17T21:04:02.470Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"4d713347-88f2-46b9-b726-2a288e36b0aa","qType":"dimension"},"qMeta":{"title":"Date","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"dimension","id":"4d713347-88f2-46b9-b726-2a288e36b0aa","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.470Z","modifiedDate":"2022-09-17T21:04:02.470Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"6f2e356f-6195-45bf-af9c-f116dbe81ef7","qType":"dimension"},"qMeta":{"title":"Client","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"dimension","id":"6f2e356f-6195-45bf-af9c-f116dbe81ef7","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.471Z","modifiedDate":"2022-09-17T21:04:02.471Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"5c5fb6cc-3b48-4ba1-9481-4a06a73cfd24","qType":"dimension"},"qMeta":{"title":"Cat\u00e9gorie","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"dimension","id":"5c5fb6cc-3b48-4ba1-9481-4a06a73cfd24","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.471Z","modifiedDate":"2022-09-17T21:04:02.471Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"742cd80e-4a71-4b6e-a7e3-eb42701b6276","qType":"dimension"},"qMeta":{"title":"Bureau","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"dimension","id":"742cd80e-4a71-4b6e-a7e3-eb42701b6276","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.471Z","modifiedDate":"2022-09-17T21:04:02.471Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"949a8a37-e5fd-481d-b90f-f862ae398c41","qType":"dimension"},"qMeta":{"title":"Ann\u00e9e Ventes","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"dimension","id":"949a8a37-e5fd-481d-b90f-f862ae398c41","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.472Z","modifiedDate":"2022-09-17T21:04:02.472Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"jgYmT","qType":"dimension"},"qMeta":{"title":"Ann\u00e9e Immo","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"dimension","id":"jgYmT","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.472Z","modifiedDate":"2022-09-17T21:04:02.472Z","privileges":["read","update","delete","publish"]},"qData":[]}
+
+MEASURES
+{"qInfo":{"qId":"pKvgD","qType":"measure"},"qMeta":{"title":"% Marge","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"pKvgD","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.453Z","modifiedDate":"2022-09-17T21:04:02.453Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"pPUPax","qType":"measure"},"qMeta":{"title":"Valeur Moyenne","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"pPUPax","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.464Z","modifiedDate":"2022-09-17T21:04:02.464Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"MJNpsYe","qType":"measure"},"qMeta":{"title":"Surface Moyenne","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"MJNpsYe","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.464Z","modifiedDate":"2022-09-17T21:04:02.464Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"SmhbpL","qType":"measure"},"qMeta":{"title":"Prix M\u00b2  avg","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"SmhbpL","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.465Z","modifiedDate":"2022-09-17T21:04:02.465Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"rFEjY","qType":"measure"},"qMeta":{"title":"Prix M\u00b2","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"rFEjY","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.465Z","modifiedDate":"2022-09-17T21:04:02.465Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"ZtQUP","qType":"measure"},"qMeta":{"title":"Objectif","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"ZtQUP","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.465Z","modifiedDate":"2022-09-17T21:04:02.465Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"EnacaU","qType":"measure"},"qMeta":{"title":"Nombre de ventes","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"EnacaU","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.466Z","modifiedDate":"2022-09-17T21:04:02.466Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"DUrXwgV","qType":"measure"},"qMeta":{"title":"Niveau de vie","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"DUrXwgV","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.466Z","modifiedDate":"2022-09-17T21:04:02.466Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"Upgxjz","qType":"measure"},"qMeta":{"title":"Nb de transactions","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"Upgxjz","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.467Z","modifiedDate":"2022-09-17T21:04:02.467Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"myGwJPn","qType":"measure"},"qMeta":{"title":"Nb de points de vente","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"myGwJPn","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.467Z","modifiedDate":"2022-09-17T21:04:02.467Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"BxQcadE","qType":"measure"},"qMeta":{"title":"Nb Adresses","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"BxQcadE","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.467Z","modifiedDate":"2022-09-17T21:04:02.467Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"KEamp","qType":"measure"},"qMeta":{"title":"Marge","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"KEamp","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.468Z","modifiedDate":"2022-09-17T21:04:02.468Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"dJQgu","qType":"measure"},"qMeta":{"title":"Chiffre d'affaire","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"dJQgu","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.468Z","modifiedDate":"2022-09-17T21:04:02.468Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"nPERjw","qType":"measure"},"qMeta":{"title":"% YTD vs n-1","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"nPERjw","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.469Z","modifiedDate":"2022-09-17T21:04:02.469Z","privileges":["read","update","delete","publish"]},"qData":[]}
+{"qInfo":{"qId":"CDpKxYm","qType":"measure"},"qMeta":{"title":"% Objectif","description":"","tags":[],"_resourcetype":"app.object","_objecttype":"measure","id":"CDpKxYm","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2022-09-17T21:04:02.469Z","modifiedDate":"2022-09-17T21:04:02.469Z","privileges":["read","update","delete","publish"]},"qData":[]}
+
+VARIABLES
+{"qName":"DISABLE_AUTO_CHART","qDefinition":"1","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"fd07b90a-2199-4439-ab2f-dee6ac6e2b03","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"DISABLE_INSIGHTS","qDefinition":"1","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"a36a491d-560e-4609-b419-bd0e3e7e65fa","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+
+FIELDS
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":1,"qTags":["$key","$hidden","$system","$ascii","$text"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Table","qCardinal":1,"qTags":["$key","$hidden","$system","$ascii","$text"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Rows","qCardinal":1,"qTags":["$hidden","$system","$numeric","$integer"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Fields","qCardinal":1,"qTags":["$hidden","$system","$numeric","$integer"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$FieldNo","qCardinal":1,"qTags":["$hidden","$system","$numeric","$integer"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Info","qCardinal":1,"qTags":["$hidden","$system","$ascii","$text"],"qSrcTables":[]}
+{"qName":"NUM_BUREAU","qCardinal":1,"qTags":[],"qSrcTables":["Bureau"]}
+{"qName":"BUREAU","qCardinal":1,"qTags":[],"qSrcTables":["Bureau"]}
+{"qIsHidden":true,"qName":"%Association_Bureau_Commercial","qCardinal":1,"qTags":["$key","$hidden"],"qSrcTables":[]}
+{"qName":"NUM_CATEGORIE","qCardinal":1,"qTags":[],"qSrcTables":["Categorie"]}
+{"qName":"CATEGORIE","qCardinal":1,"qTags":[],"qSrcTables":["Categorie"]}
+{"qName":"DECRIPTION_CATEGORIE","qCardinal":1,"qTags":[],"qSrcTables":["Categorie"]}
+{"qIsHidden":true,"qName":"%Association_Categorie_produits","qCardinal":1,"qTags":["$key","$hidden"],"qSrcTables":[]}
+{"qName":"CLIENT","qCardinal":1,"qTags":[],"qSrcTables":["Clients"]}
+{"qName":"NUM_CLIENT","qCardinal":1,"qTags":[],"qSrcTables":["Clients"]}
+{"qName":"NUM_PAYS_CLIENT","qCardinal":1,"qTags":[],"qSrcTables":["Clients"]}
+{"qName":"PAYS_CLIENT","qCardinal":1,"qTags":[],"qSrcTables":["Clients"]}
+{"qName":"PAYS_CODE","qCardinal":1,"qTags":[],"qSrcTables":["Clients"]}
+{"qName":"VILLE_CLIENT","qCardinal":1,"qTags":[],"qSrcTables":["Clients"]}
+{"qName":"CONTACT_CLIENT","qCardinal":1,"qTags":[],"qSrcTables":["Clients"]}
+{"qName":"TELEPHONE_CLIENT","qCardinal":1,"qTags":[],"qSrcTables":["Clients"]}
+{"qIsHidden":true,"qName":"%Association_Clients_Commandes","qCardinal":1,"qTags":["$key","$hidden"],"qSrcTables":[]}
+{"qIsHidden":true,"qName":"%Association_Clients_GEOGRAPHY","qCardinal":1,"qTags":["$key","$hidden"],"qSrcTables":[]}
+{"qName":"DATE","qCardinal":1,"qTags":[],"qSrcTables":["Commandes"]}
+{"qName":"ANNEE","qCardinal":1,"qTags":[],"qSrcTables":["Commandes"]}
+{"qName":"Commandes.NUM_CLIENT","qCardinal":1,"qTags":[],"qSrcTables":["Commandes"]}
+{"qName":"NUM_COMMERCIAL","qCardinal":1,"qTags":[],"qSrcTables":["Commandes"]}
+{"qName":"POIDS","qCardinal":1,"qTags":[],"qSrcTables":["Commandes"]}
+{"qName":"NUM_COMMANDE","qCardinal":1,"qTags":[],"qSrcTables":["Commandes"]}
+{"qName":"NUM_TRANSPORTEUR","qCardinal":1,"qTags":[],"qSrcTables":["Commandes"]}
+{"qName":"MOIS_TEXT","qCardinal":1,"qTags":[],"qSrcTables":["Commandes"]}
+{"qName":"TRIMESTRE","qCardinal":1,"qTags":[],"qSrcTables":["Commandes"]}
+{"qName":"TNUM","qCardinal":1,"qTags":[],"qSrcTables":["Commandes"]}
+{"qName":"CLE_OBJECTIF","qCardinal":1,"qTags":[],"qSrcTables":["Commandes"]}
+{"qName":"ANNEE_MOIS","qCardinal":1,"qTags":[],"qSrcTables":["Commandes"]}
+{"qIsHidden":true,"qName":"%Association_Commandes_Details_commandes","qCardinal":1,"qTags":["$key","$hidden"],"qSrcTables":[]}
+{"qIsHidden":true,"qName":"%Association_Commercial_Commandes","qCardinal":1,"qTags":["$key","$hidden"],"qSrcTables":[]}
+{"qIsHidden":true,"qName":"%Association_Objectifs_Commandes","qCardinal":1,"qTags":["$key","$hidden"],"qSrcTables":[]}
+{"qName":"Commercial.NUM_COMMERCIAL","qCardinal":1,"qTags":[],"qSrcTables":["Commercial"]}
+{"qName":"COMMERCIAL","qCardinal":1,"qTags":[],"qSrcTables":["Commercial"]}
+{"qName":"DATE_EMBAUCHE","qCardinal":1,"qTags":[],"qSrcTables":["Commercial"]}
+{"qName":"Commercial.NUM_BUREAU","qCardinal":1,"qTags":[],"qSrcTables":["Commercial"]}
+{"qName":"NUM_MANAGER","qCardinal":1,"qTags":[],"qSrcTables":["Commercial"]}
+{"qName":"TITRE","qCardinal":1,"qTags":[],"qSrcTables":["Commercial"]}
+{"qName":"SALAIRE_ANNUEL","qCardinal":1,"qTags":[],"qSrcTables":["Commercial"]}
+{"qName":"Details_commandes.NUM_COMMANDE","qCardinal":1,"qTags":[],"qSrcTables":["Details_commandes"]}
+{"qName":"NUM_PRODUIT","qCardinal":1,"qTags":[],"qSrcTables":["Details_commandes"]}
+{"qName":"QUANTITE","qCardinal":1,"qTags":[],"qSrcTables":["Details_commandes"]}
+{"qName":"MONTANT","qCardinal":1,"qTags":[],"qSrcTables":["Details_commandes"]}
+{"qName":"REMISE","qCardinal":1,"qTags":[],"qSrcTables":["Details_commandes"]}
+{"qName":"COUT_INTERNE","qCardinal":1,"qTags":[],"qSrcTables":["Details_commandes"]}
+{"qName":"MARGE","qCardinal":1,"qTags":[],"qSrcTables":["Details_commandes"]}
+{"qIsHidden":true,"qName":"%Association_produits_Details_commandes","qCardinal":1,"qTags":["$key","$hidden"],"qSrcTables":[]}
+{"qName":"CODEINSEE","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"DEPARTEMENT_CODE","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"DEPARTEMENT","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"ARRONDISSEMENT_CODE","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"REGION_CODE","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"ZIP_CODEPOSTCODE","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"CITY","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"COUNTRY_NAME","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"ARRONDISSEMENT","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"STATEPROVINCE","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"STATEPROVINCE_OLD","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"LATITUDE","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"LONGITUDE","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"ARRONDISSEMENT_LATITUDE","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"ARRONDISSEMENT_LONGITUDE","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"COMMUNE_GEO_POINT","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"ARRONDISSEMENT_GEO_POINT","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"CITY_POLYGON","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qName":"ARRONDISSEMENT_POLYGON","qCardinal":1,"qTags":[],"qSrcTables":["GEOGRAPHY"]}
+{"qIsHidden":true,"qName":"%Association_magasins_GEOGRAPHY","qCardinal":1,"qTags":["$key","$hidden"],"qSrcTables":[]}
+{"qName":"Objectifs.CLE_OBJECTIF","qCardinal":1,"qTags":[],"qSrcTables":["Objectifs"]}
+{"qName":"OBJECTIF","qCardinal":1,"qTags":[],"qSrcTables":["Objectifs"]}
+{"qName":"mutation","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"date_mutation","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"valeur_fonciere","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"adresse_complete","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"code_postal","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"code_commune","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"nom_commune","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"code_departement","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"id_parcelle","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"lot1_numero","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"lot1_surface_carrez","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"nombre_lots","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"type_local","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"surface_reelle_bati","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"nombre_pieces_principales","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"surface_terrain","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"point_gps","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"nom_region","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"annee","qCardinal":1,"qTags":[],"qSrcTables":["magasins"]}
+{"qName":"produits.NUM_PRODUIT","qCardinal":1,"qTags":[],"qSrcTables":["produits"]}
+{"qName":"produits.NUM_CATEGORIE","qCardinal":1,"qTags":[],"qSrcTables":["produits"]}
+{"qName":"PRODUITS","qCardinal":1,"qTags":[],"qSrcTables":["produits"]}
+{"qName":"NUM_FOURNISSEUR","qCardinal":1,"qTags":[],"qSrcTables":["produits"]}
