@@ -1,0 +1,771 @@
+///$tab Main
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='$#,##0.00;($#,##0.00)';
+SET TimeFormat='h:mm:ss TT';
+SET DateFormat='M/D/YYYY';
+SET TimestampFormat='M/D/YYYY h:mm:ss[.fff] TT';
+SET FirstWeekDay=6;
+SET BrokenWeeks=1;
+SET ReferenceDay=0;
+SET FirstMonthOfYear=1;
+SET CollationLocale='en-US';
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+
+Let vSliderDate = num(today());
+
+/**
+Author: - Jon Tuite
+Created Date - 08/20/2016
+**/
+///$tab Locations
+LIB CONNECT TO 'ByteKeeper MySQL (bytekeeper_jon.tuite)';
+
+Locations:
+LOAD LocationID,
+    LocationName,
+    Address,
+    City as LocationCity,
+    State,
+    upper(State) as DeviceState,
+    [City] & ',' & State as Location, 
+    Zip,
+    GeoMakePoint([Latitude],[Longitude]) as GeoPoint;
+SQL SELECT *
+FROM ByteKeeper.Locations;
+
+// Load Distinct
+// 	[DeviceID],
+//  	//Country,
+//  	[Address], 
+//  	[City] as DeviceCity,
+//  	upper(State) as DeviceState,
+//     [City] & ',' & State as Location, 
+//  	Zip
+//   FROM [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/Bytekeeper Devices.xlsx]
+// (ooxml, embedded labels, table is Devices); 
+
+LocationLookup:
+Mapping 
+Load
+	[DeviceID],
+    [City] & ',' & State as Location;
+SQL SELECT lc.LocationID, dv.DeviceID, lc.City, lc.State
+FROM Locations lc LEFT JOIN Devices dv on dv.LocationID = lc.LocationID
+WHERE dv.DeviceID is not null;
+
+
+//  FROM [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/Bytekeeper Devices.xlsx]
+// (ooxml, embedded labels, table is Devices); 
+
+
+
+
+
+
+
+///$tab OpenWeatherMap City List
+WeatherCities:
+LOAD    
+    CityID,
+    City,
+    country,    
+    state,
+    [City] & ',' & state as WeatherLocation
+FROM [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/WeatherCitiesUS_Transformed.QVD]
+(qvd)
+WHERE Exists (Location, [City] & ',' & state)
+AND country = 'US';
+
+
+CityWeatherLookup:
+MAPPING
+Load distinct
+	WeatherLocation,
+    CityID
+RESIDENT WeatherCities;
+
+
+// LOAD
+//     CityID,
+//     City,
+//     Country,
+//     CityGeoPoint
+// FROM [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/WeatherCities.QVD]
+// (qvd)
+
+
+
+// SET vCities = '';
+
+// LET NumRows=NoOfRows('WeatherCities');
+// FOR i=1 to $(NumRows)  
+//  LET vCities= vCities & FieldValue('CityID',$(i)) & ',';  
+// NEXT;
+
+//  Let vCities =Left('$(vCities)',len('$(vCities)')-1);
+
+// Trace($(vCities) );
+
+
+///$tab Devices
+[Devices]:
+// Load *
+// //Only includes Actice devices
+// WHERE Active = 'Yes';
+// LOAD [DeviceID],
+// 	DeviceName,
+//     Owner,
+//     Active,
+//     [SIM Number],
+// 	[DeviceType],
+// 	[Version],    
+// 	[LocationName],
+//	GeoMakePoint([Latitude],[Longitude]) as GeoPoint,
+//     1 as DeviceCounter   
+//  FROM [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/Bytekeeper Devices.xlsx]
+// (ooxml, embedded labels, table is Devices);
+
+LIB CONNECT TO 'ByteKeeper MySQL (bytekeeper_jon.tuite)';
+
+LOAD DeviceID,
+    CustomerID,
+    LocationID,
+    DeviceName,
+    `SIM Number`,
+    DFU,
+    WeightMultiplier,
+    WeightAdder,
+    DeviceType,
+    DOB,
+    DOD,
+    num(InstallDate) as InstallDateNum,
+    Status,
+    1 as DeviceCounter   
+WHERE Status = 'Active';
+SQL SELECT *
+FROM ByteKeeper.Devices;
+
+
+
+
+///$tab DynamoDB - Bytekeeper
+LIB CONNECT TO 'ByteKeeper (bytekeeper_jon.tuite)';
+
+
+
+[ByteKeeper_Events]:
+Load *,
+	ConvertToLocalTime(timestamp(timestamp#(Published_at,'YYYY-MM-DDThh:mm:ssZ'),'hh:mm:ss'),'UTC-08:00') as EventTime_PST,
+    Hour(ConvertToLocalTime(timestamp(timestamp#(Published_at,'YYYY-MM-DDThh:mm:ssZ'),'hh'),'UTC-08:00')) as EventHour_PST,
+   ConvertToLocalTime(timestamp(timestamp#(Published_at,'YYYY-MM-DDThh:mm:ssZ'),'hh:mm:ss'),'UTC-05:00') as EventTime_EST,
+    Hour(ConvertToLocalTime(timestamp(timestamp#(Published_at,'YYYY-MM-DDThh:mm:ssZ'),'hh'),'UTC-05:00')) as EventHour_EST,
+   timestamp(timestamp#(Published_at,'YYYY-MM-DDThh:mm:ssZ'),'hh:mm:ss') as EventTimestamp,
+   timestamp(timestamp#(Published_at,'YYYY-MM-DDThh:mm:ssZ'),'YY-MM-DD hh:mm') as DateTime,
+    date(floor(num(ConvertToLocalTime(timestamp#(Published_at,'YYYY-MM-DDThh:mm:ssZ'),'UTC-08:00'))),'YYYY-MM-DD') as EventDate,
+    floor(num(ConvertToLocalTime(timestamp#(Published_at,'YYYY-MM-DDThh:mm:ssZ'),'UTC-08:00'))) as DateID
+ WHERE EXISTS(DeviceID) AND Temp < 250;
+SQL SELECT 
+	"DeviceID",    
+	"Published_at",
+	"Battery",
+	"Humidity",
+	"Temp",
+	"Weight" as Weight_OriginalValue
+FROM "CData"."ByteKeeper";
+
+///$tab Load Weather History
+Weather:
+Load 
+//     __KEY_list,
+    EventTime_PST,
+    DateID,
+    EventDate,
+    EventTime_EST,
+    EventTimestamp,
+    DateTime,
+    UniqueID,
+    Temp as Outside_Temp,
+    Temp_Min,
+    Temp_Max,
+    Pressure,
+    Sea_Level,
+    Grnd_Level,
+    Humidity as Outside_Humidity,
+    lon,
+    lat,
+    message,
+//     country,
+    sunrise,
+    sunset,
+//     id,
+    main,
+    "Weather Description",
+    WindSpeed,
+    WindDirection_Degrees,
+    Clouds,
+    Rain,
+//     dt,
+     CityID,
+//      WeatherCity,
+//     __KEY_root,
+//     City,
+//     "type",
+    description,   
+    "Wind Speed"
+//     deg
+FROM [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/WeatherHistory.QVD] (QVD) 
+Where exists (CityID);
+///$tab Customers
+LIB CONNECT TO 'ByteKeeper MySQL (bytekeeper_jon.tuite)';
+Customers:
+LOAD CustomerID,
+    FirstName,
+    LastName,
+    Email
+    //,Phone
+    ;
+SQL SELECT *
+FROM ByteKeeper.Customers;
+
+
+///$tab Mapping
+LIB CONNECT TO 'ByteKeeper MySQL (bytekeeper_jon.tuite)';
+
+LastData:
+Mapping
+Load 
+	DeviceID,
+    max(EventTime_PST) as LastPST
+RESIDENT ByteKeeper_Events
+GROUP BY DeviceID;
+
+WeightAdder:
+Mapping 
+Load 
+	DeviceID,
+    [WeightAdder];
+SQL SELECT DeviceID, WeightAdder
+FROM ByteKeeper.Devices;
+//  FROM [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/Bytekeeper Devices.xlsx]
+// (ooxml, embedded labels, table is Devices);
+
+
+WeightMultiplyer:
+Mapping 
+Load 
+	DeviceID,
+    [WeightMultiplier];
+SQL SELECT DeviceID, WeightMultiplier
+FROM ByteKeeper.Devices;
+
+// FROM [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/Bytekeeper Devices.xlsx]
+// (ooxml, embedded labels, table is Devices);
+///$tab Daily Averages Staging
+//Get Daily averages
+DailyAverages_Staging:
+Load 
+	DeviceID,
+    EventDate,
+    DateID,    
+    avg(Battery) as Battery,
+	avg(Humidity) as Humidity,
+	avg(Temp) as Temp,
+	avg(Weight_OriginalValue) as Weight_OriginalValue
+Resident ByteKeeper_Events
+GROUP BY DeviceID, DateID, EventDate
+ORDER BY DeviceID, DateID, EventDate;
+
+
+
+
+
+///$tab ByteKeeper
+NoConcatenate
+ByteKeeper:
+Load *,
+	'ByteKeeper' as FactType,
+    if(EventTime_PST = ApplyMap('LastData',DeviceID),1,0) as LastEventFlag,
+     (ApplyMap('WeightMultiplyer',DeviceID) * (Weight_OriginalValue +  ApplyMap('WeightAdder',DeviceID)))*2 as Weight,
+     ApplyMap('CityWeatherLookup', ApplyMap('LocationLookup',DeviceID)) as CityID
+RESIDENT ByteKeeper_Events;
+
+NoConcatenate
+temp:
+Load Distinct
+	DeviceID,
+    CityID,
+    DateID
+RESIDENT ByteKeeper;
+LEFT JOIN 
+Load *,	
+	'Weather' as FactType,
+    Hour(EventTime_PST) as EventHour_PST,
+    Hour(EventTime_EST) as EventHour_EST
+RESIDENT Weather;
+
+
+Concatenate (ByteKeeper)
+Load * resident temp;
+
+drop table temp;
+///$tab Add Weather Daily Averages
+DailyAverageWeather_Staging:
+Load	
+    DeviceID,
+    CityID,
+    DateID,
+    EventDate,
+    Avg(Outside_Temp) as Outside_Temp,
+    Avg(Outside_Humidity) as Outside_Humidity,
+    Avg(Rain) as Rain,
+    Avg(Clouds) as Clouds,
+    Avg(Pressure) as Pressure
+RESIDENT ByteKeeper
+GROUP BY DeviceID,CityID,DateID, EventDate
+ORDER BY DeviceID,CityID,DateID, EventDate;
+
+
+DailyAverages:
+Load *,
+	'Daily Averages' as FactType,
+	if(DeviceID = Previous(DeviceID), Battery - Previous(Battery),0) as Delta_Battery,
+    if(DeviceID = Previous(DeviceID), Humidity - Previous(Humidity),0) as Delta_Humidity,
+    if(DeviceID = Previous(DeviceID), Temp - Previous(Temp),0) as Delta_Temp,    
+    if(DeviceID = Previous(DeviceID), (ApplyMap('WeightMultiplyer',DeviceID) * (Weight_OriginalValue +  ApplyMap('WeightAdder',DeviceID))*2) 
+    	-  (ApplyMap('WeightMultiplyer',DeviceID) * (Previous(Weight_OriginalValue) +  ApplyMap('WeightAdder',DeviceID))*2) ,0) as Delta_Weight
+RESIDENT DailyAverages_Staging;
+Concatenate
+Load *,
+	'Daily Averages' as FactType,
+	if(DeviceID = Previous(DeviceID), Outside_Temp - Previous(Outside_Temp),0) as Delta_Outside_Temp,
+    if(DeviceID = Previous(DeviceID), Outside_Humidity - Previous(Outside_Humidity),0) as Delta_Outside_Humidity,
+    if(DeviceID = Previous(DeviceID), Rain - Previous(Rain),0) as Delta_Rain,
+    if(DeviceID = Previous(DeviceID), Clouds - Previous(Clouds),0) as Delta_Clouds,
+    if(DeviceID = Previous(DeviceID), Pressure - Previous(Pressure),0) as Delta_Pressure    
+RESIDENT DailyAverageWeather_Staging;
+ 
+
+Concatenate (ByteKeeper)
+Load * RESIDENT DailyAverages;
+
+//drop table ByteKeeper;
+Drop Table DailyAverages_Staging;
+Drop Table DailyAverageWeather_Staging;
+Drop Table DailyAverages;
+
+
+
+
+///$tab Calendar
+[autoCalendar]: 
+  DECLARE FIELD DEFINITION Tagged ('$date')
+FIELDS
+  Dual(Year($1), YearStart($1)) AS [Year] Tagged ('$axis', '$year'),
+  Dual('Q'&Num(Ceil(Num(Month($1))/3)),Num(Ceil(NUM(Month($1))/3),00)) AS [Quarter] Tagged ('$quarter', '$cyclic'),
+  Dual(Year($1)&'-Q'&Num(Ceil(Num(Month($1))/3)),QuarterStart($1)) AS [YearQuarter] Tagged ('$yearquarter', '$qualified'),
+  Dual('Q'&Num(Ceil(Num(Month($1))/3)),QuarterStart($1)) AS [_YearQuarter] Tagged ('$yearquarter', '$hidden', '$simplified'),
+  Month($1) AS [Month] Tagged ('$month', '$cyclic'),
+  Dual(Year($1)&'-'&Month($1), monthstart($1)) AS [YearMonth] Tagged ('$axis', '$yearmonth', '$qualified'),
+  Dual(Month($1), monthstart($1)) AS [_YearMonth] Tagged ('$axis', '$yearmonth', '$simplified', '$hidden'),
+  Dual('W'&Num(Week($1),00), Num(Week($1),00)) AS [Week] Tagged ('$weeknumber', '$cyclic'),
+  Date(Floor($1)) AS [Date] Tagged ('$axis', '$date', '$qualified'),
+  Date(Floor($1), 'D') AS [_Date] Tagged ('$axis', '$date', '$hidden', '$simplified');
+
+DERIVE FIELDS FROM FIELDS [DateID], [EventTime_PST],[EventDate], [EventTime_EST],[DateTime],[EventTimestamp]  USING [autoCalendar] ;
+
+/*
+ hour($1) as [Hour] Tagged ('$axis','$hour','$simplified),
+  minute($1) as [Minute] Tagged ('$axis','$minute','$simplified)*/
+///$tab KML
+KMLMap:
+LOAD
+    "US States 50 Scaled Down AK and HI.Name" as DeviceState,
+    "US States 50 Scaled Down AK and HI.Point" as StatePoint,
+    "US States 50 Scaled Down AK and HI.Area" as StateArea
+FROM [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/US States 50 Scaled Down AK and HI.kml]
+(kml, Table is [US States 50 Scaled Down AK and HI/test_map_50_skew_4]);
+
+
+///$tab Cleanup
+Drop Table ByteKeeper_Events;
+//Drop Table TempCal;
+//Drop Table WeatherLocations_Staging;
+//Drop fields %WeatherJoinKey,TempNearestWeatherCity;
+
+Drop table Weather;
+///$tab Exit
+Trace(ENDING!! );
+Exit Script;
+
+///$tab Update WeatherHistory
+Let v_Incremental_qvd = isNull(QvdCreateTime('lib://ByteKeeper Folder (bytekeeper_jon.tuite)/WeatherHistory.QVD'));
+
+If (v_Incremental_qvd = -1) THEN 
+
+	//do nothing	
+
+else
+
+	Concatenate (Weather)
+	Load * FROM [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/WeatherHistory.QVD] (QVD) WHERE not exists(UniqueID);
+end if
+
+store Weather into [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/WeatherHistory.QVD] (QVD);
+
+///$tab OpenWeatherMap
+LIB CONNECT TO 'OpenWeatherMap (jon-home-pc_jonathan tuite)';
+
+RestConnectorMasterTable:
+SQL SELECT 
+	"cnt",
+	"__KEY_root",
+	(SELECT 
+		"dt",
+		"id" AS "id_u1",
+		"name",
+		"__KEY_list",
+		"__FK_list",
+		(SELECT 
+			"lon",
+			"lat",
+			"__FK_coord"
+		FROM "coord" FK "__FK_coord"),
+		(SELECT 
+			"type",
+			"id",
+			"message",
+			"country",
+			"sunrise",
+			"sunset",
+			"__FK_sys"
+		FROM "sys" FK "__FK_sys"),
+		(SELECT 
+			"id" AS "id_u0",
+			"main",
+			"description",
+			"icon",
+			"__FK_weather"
+		FROM "weather" FK "__FK_weather"),
+		(SELECT 
+			"temp",
+			"humidity",
+			"pressure",
+			"temp_min",
+			"temp_max",
+			"__FK_main"
+		FROM "main" FK "__FK_main"),
+		(SELECT 
+			"speed",
+			"deg",
+			"__FK_wind"
+		FROM "wind" FK "__FK_wind"),
+		(SELECT 
+			"1h",
+			"__FK_rain"
+		FROM "rain" FK "__FK_rain"),
+		(SELECT 
+			"all",
+			"__FK_clouds"
+		FROM "clouds" FK "__FK_clouds")
+	FROM "list" PK "__KEY_list" FK "__FK_list")
+FROM JSON (wrap on) "root" PK "__KEY_root"
+ WITH CONNECTION (
+ QUERY "id" "$(vCities)"
+ );
+
+// [coord]:
+// LOAD	[lon] AS [lon],
+// 	[lat] AS [lat],
+// 	[__FK_coord] AS [__KEY_list]
+// RESIDENT RestConnectorMasterTable
+// WHERE NOT IsNull([__FK_coord]);
+
+
+[Weather]:
+LOAD	
+	now() as EventTime_PST,
+    num(today()) as DateID,
+    ConvertToLocalTime(now(),'UTC-05:00') as EventTime_EST,
+    now() as EventTimestamp,
+    timestamp(now(),'YY-MM-DD hh:mm') as DateTime, 
+    now() & id as UniqueID,
+    [type] AS [type],
+	[id] AS [id],
+	[message] AS [message],
+	[country] AS [country],
+	[sunrise] AS [sunrise],
+	[sunset] AS [sunset],
+	[__FK_sys] AS [__KEY_list]
+RESIDENT RestConnectorMasterTable
+WHERE NOT IsNull([__FK_sys]);
+
+
+LEFT JOIN
+LOAD	
+	[id_u0] AS [id_u0],
+	[main] AS [main],
+	[description] AS [description],
+	[icon] AS [icon],
+	[__FK_weather] AS [__KEY_list]
+RESIDENT RestConnectorMasterTable
+WHERE NOT IsNull([__FK_weather]);
+
+
+LEFT JOIN
+LOAD	[temp] AS [Outside Temp],
+	[humidity] AS [Outside Humidity],
+	[pressure] AS [Outside Pressure],
+	[temp_min] AS [Outside Temp (min)],
+	[temp_max] AS [Outside Temp (max)],
+	[__FK_main] AS [__KEY_list]
+RESIDENT RestConnectorMasterTable
+WHERE NOT IsNull([__FK_main]);
+
+
+LEFT JOIN
+LOAD	[speed] AS [Wind Speed],
+	[deg] AS [deg],
+	[__FK_wind] AS [__KEY_list]
+RESIDENT RestConnectorMasterTable
+WHERE NOT IsNull([__FK_wind]);
+
+LEFT JOIN
+LOAD	[dt] AS [dt],
+	[id_u1] AS [id_u1],
+	[name] AS [City],
+	[__KEY_list] AS [__KEY_list],
+	[__FK_list] AS [__KEY_root]
+RESIDENT RestConnectorMasterTable
+WHERE NOT IsNull([__FK_list]);
+
+
+LEFT JOIN
+LOAD	[cnt] AS [cnt],
+	[__KEY_root] AS [__KEY_root]
+RESIDENT RestConnectorMasterTable
+WHERE NOT IsNull([__KEY_root]);
+
+LEFT JOIN 
+LOAD	[1h] AS [Rain_1h],	
+	[__FK_rain] AS [__KEY_list]
+RESIDENT RestConnectorMasterTable
+WHERE NOT IsNull([__FK_rain]);
+
+
+LEFT JOIN
+LOAD	[all] AS [Clouds],
+	[__FK_clouds] AS [__KEY_list]
+RESIDENT RestConnectorMasterTable
+WHERE NOT IsNull([__FK_clouds]);
+
+
+DROP TABLE RestConnectorMasterTable;
+
+Drop fields  [__KEY_list],[__KEY_root],cnt,[id_u0],icon,message,country,id_u1;
+///$tab Old Calendar
+// //************************  MinMax ********************//
+// MinMax:
+// Load
+//      Min(DateID) as MinDate,
+//      Max(DateID) as MaxDate
+// Resident ByteKeeper_Events;
+
+
+// Let vMinDate = num(Peek('MinDate',0,'MinMax'));
+// Let vMaxDate = num(Peek('MaxDate',0,'MinMax'));
+// Let vToday = $(vMaxDate);
+
+
+// //************************ Temp Calendar ********************//
+
+// TempCal:
+// LOAD
+//      date($(vMinDate) + rowno() - 1) as TempDate
+// AutoGenerate
+//      $(vMaxDate) - $(vMinDate) + 1;
+     
+// Drop table MinMax;
+
+// //************************ Master Calendar ********************//
+// MasterCalendar:
+// LOAD
+// TempDate as DateID,
+// Date(TempDate,'MM/DD/YYYY') as "Calendar Date",
+// Week(TempDate) as Week,
+// Year(TempDate) as Year,
+// Month(TempDate) as Month,
+// Day(TempDate) as Day,
+// Weekday(TempDate) as WeekDay,
+// 'Q' & ceil(month(TempDate) /3) as Quarter,
+// Date(monthstart(TempDate), 'MMM-YYYY') As MonthYear,
+// Week(TempDate)&'-'&Year(TempDate) as WeekYear,
+// InYearToDate(TempDate, $(vToday),0) * -1 As CurYTDFlag,
+// InYearToDate(TempDate, $(vToday),-1) * -1 As LastYTDFlag
+// Resident TempCal
+// Order BY TempDate asc;
+///$tab Load Weather
+WeatherLocations_Staging:
+LOAD
+    _dim_8wnk as %WeatherJoinKey,
+    Country,
+    "Nearest city" as TempNearestWeatherCity,
+    "Weather station",
+   // "ICAO airport code",
+   // "ISO 3166",
+    geomakepoint(Latitude,Longitude) as WeatherStationGeoPoint,
+    "Numeric time zone"
+    //"Olson time zone",
+   // "WMO station identifier"
+FROM [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/Locations.QVD]
+(qvd)
+WHERE exists(NearestWeatherCity, "Nearest city");
+
+LEFT JOIN
+LOAD
+    _dim_8wnk as %WeatherJoinKey,
+    num("Date") as WeatherDate,
+    "Average of the 24 hourly dew point observations in degrees Fahrenheit",
+    "Average of the 24 hourly temperature observations in degrees Fahrenheit",
+    "Maximum daily temperature in degrees Fahrenheit",
+    "Minimum daily temperature in degrees Fahrenheit"
+FROM [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/Weather.QVD]
+(qvd)
+WHERE exists(%WeatherJoinKey,_dim_8wnk)
+AND exists(DateID,num("Date"));
+
+NoConcatenate
+WeatherLocations:
+Load *,
+	TempNearestWeatherCity & '|' & WeatherDate as %WeatherJoin
+RESIDENT WeatherLocations_Staging;
+
+
+//Store WeatherLocations into [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/WeatherLocations_Transformed.QVD];
+
+///$tab Locations
+// [Locations]:
+// SQL SELECT
+//     _dim_8wnk,
+//     "Country",
+//     "Nearest city",
+//     "Weather station",
+//     "ICAO airport code",
+//     "ISO 3166",
+//     "Latitude",
+//     "Longitude",
+//     "Numeric time zone",
+//     "Olson time zone",
+//     "WMO station identifier"
+// FROM dimension:535q!8wnk;
+
+
+// Store Locations into [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/Locations.QVD] (QVD);
+///$tab Update Weather
+LIB CONNECT TO [DM (jon-home-pc_jonathan tuite)];
+
+//Let v_Incremental_qvd = isNull(QvdCreateTime('lib://ByteKeeper Folder (bytekeeper_jon.tuite)/WeatherHistory.QVD'));
+
+//If (v_Incremental_qvd = -1) THEN
+
+//Trace(Beginning Full Load for weather );
+
+// Weather:
+// LOAD 
+// 	[_dim_8wnk] AS [_dim_8wnk],
+// 	[Date] AS [Date],
+//     [_dim_8wnk] & '|' Date as UniqueKey,
+// 	[MEASURE=7] AS [Average of the 24 hourly dew point observations in degrees Fahrenheit],
+// 	[MEASURE=y] AS [Average of the 24 hourly temperature observations in degrees Fahrenheit],
+// 	[MEASURE=t] AS [Daily total precipitation (rainfall and/or melted amount of snow) in inches],
+// 	[MEASURE=k] AS [Maximum daily temperature in degrees Fahrenheit],
+// 	[MEASURE=a] AS [Maximum of the 24 hourly feels like temperature values in degrees Fahrenheit],
+// 	[MEASURE=1] AS [Maximum of the 24 hourly wind speed observations  in miles per hour],
+// 	[MEASURE=1c] AS [Minimum daily temperature in degrees Fahrenheit],
+// 	[MEASURE=1d] AS [Minimum of the 24 hourly feels like temperature values in degrees Fahrenheit];
+// SQL SELECT
+//     "_dim_8wnk",
+//     "Date",
+//     "MEASURE=7",
+//     "MEASURE=y",
+//     "MEASURE=t",
+//     "MEASURE=k",
+//     "MEASURE=a",
+//     "MEASURE=1",
+//     "MEASURE=1c",
+//     "MEASURE=1d"
+// FROM fact:535q
+// WHERE '8wnk' = '2ua.2qw.2ub.2a5.2ww.2zv.417.2r2.2qx.2u8.2zx.2zu.35k.2zz.2uc.2al.22f.2zy.2rj.2u7.3ar.2zt.2lg.35e.35d.334.2r4.2hi.32n.37k.3io.2ni.471.3f8.2bs.2yi.2s8.3a7.3ba.39r.3o3.3p9.2hf.39q.3vj.3gd.3tq.3cm.3fx.3jk.39o.46a.35r.3dp.2w2.26x.2dc.25e.3ab.3k3.2qn.449.2ny.2uw.43l.3xa.22o.30a.2y8.27q.281.3o4.43c.30h.3y1.2kn.21g.2ja.22n.2lu.2kp.3h4.2vz.30b.23d.46g.23f.2lc.328.2jh.3do.3e0.2ga.2dh.26i.244.2a3.3yk.286.3ym.2mo.2ao.44w.383.3yn.44r.282.44t.44u.28b.26l.43t.3xu.29g.331.3yv.24b.3qf.29i.3ej.3ye.3a1.2b0.21n.3xp.2ij.2o4.3lg.3ll.327.3tc.3xe.3p6.2yt.2lq.495.2bn.43m.47v.2ok.3jj.2h2.3n6.2sb.3zh.3vt.41w.3jm.3ev.260.3no.3k6.3ze.3ka.2ml.2mj.3yf.3m2.3lx.3z5.3nn.2sa.39n.39b.393.43i.3il.37i.242.3i4.3pb.48h.445.2ey.3lf.358.3h2.35a.27a.2pw.2ot.3mv.293.441.2mr.27o.2j2.438.44i.44k.2nv.36i.47e.2zj.3zk.3zm.29e.2qc.24v.25j.27c.3ax.2jj.3yj.3n5.25l.31w.31y.3la.3s0.3rb.2xi.43z.40l.23w.3n9.2md.291.2qp.3mu.3ow.36d.35p.3yl.25k.3rf.3r9.23v.3h1.22s.23i.2s3.44p.3tj.2wk.2iy.2e0.2ci.3y9.3k2.3bi.2sk.2ft.40v.3ls.439.3lo.3h0.3vr.3vh.2v6.2gl.3vl.437.40x.3iu.38a.3uh.3zp.2oe.277.22r.279.3yh.40o.40m.345.3hh.29y.25i.44j.3zl.3n2.40u.3x0.21t.276.21r.2ut.2ff.2l7.2no.2up.389.3yc.3vm.29v.3sp.3zo.40i.3bd.443.2ev.2gr.2a1.3y8.2w9.2fh.2di.35x.2fc.3jt.3mg.2ji.3hy.2fk.43y.29w.2yj.39g.3yg.40n.3hv.2pm.3cv.3ft.3mh.3s4.3fu.2mc.2jg.45h.2f0.359.2ex.3y5.40t.2ya.3hw.3mw.3yp.2r5.44n.36y.26m.2wj.468.3n3.2j1.34z.2e6.42f.3wz.3hr.3bl.2zm.3yo.31c.2my.3bv.3bf.3bg.36c.3hj.3mb.2q7.440.2r9.287.3ji.35h.2n9.3hz.3ox.3oe.23g.44q.44l.29x.2zl.3em.2d0.3yi.292.3o2.35j.2bz.3es.36z.2s4.3aw.21w.461.267.494.42d.39c.44o.2m6.3ul.2zi.2fm.29l.47h.40q.2yq.2yw.46s.2dz.45d.3sh.2dv.3ma.47d.464.27x.3xl.367.3gz.2i3.40r.2ur.2ck.43k.3ww.21u.44v.28l.3ua.2dj.24t.280.3gy.2d6.3ja.346.2re.2r7.3zn.3xk.3ia.2cg.2jm.47g.3hm.3u8.24l.442.2si.36b.36e.2sr.29k.3q3.3uf.2fg.22v.355.3n1.278.3bk.3bj.44s.28m.3mf.37g.470.35i.21p.35f.3u5.21s.3uj.2wr.2zs.3ti.2l8.2gp.40s.46u.45m.3y7.2ox.3zr.21z.21v.294.37p.2mt.44d.2r6.3j4.27p.3d0.34j.3lm.2jk.27u.2fr.2jl.2yl.27s.22j.2jf.2f6.3r7.2j5.3hq.2i2.3cn.2b3.2e4.3x6.2f2.2kk.2ws.46y.3jd.2l6.21y.3a6.2uv.32z.32a.3dx.3u4.335.3m5.3gu.33a.2bg.3cu.2bh.3xt.38i.3ot.3iw.297.240.258.3e8.45e.3tz.376.3ch.3sb.458.2qb.38c.40d.3dt.32y.3ha.368.2f3.2sg.26n.402.444.3d1.3j8.2ap.3it.22g.3w2.3co.3is.3w3.2mm.2lv.3ko.3o7.3wc.3s9.35s.35o.301.3rv.21o.3xq.3g2.2o0.2o1.3wi.2da.366.36r.40p.2u4.2ku.2l1.33l.3tk.2v7.2ue.2xf.2wt.3ds.2v4.3sj.2u6.2jx.32l.2p8.3un.3js.3nf.3dj.3k4.3ex.3nr.251.3o6.3my.33c.2a0.29t.2dy.46t.40h.3pe.2n4.3qu.2va.40k.2cc.3qr.34v.2r1.2bc.2g7.33u.2bl.2s5.261.33t.2hc.2hd.22e.2mx.2z1.33v.3bx.3cb.2sn.2bm.2bk.2sq.25y.241.2za.2bi.48a.2ha.25x.25z.2bj.462.3i1.3el.2w0.465.3nc.28c.2e7.2vs.3i6.3ne.3ug.3i2.2p4.2et.3i5.47i.2qo.39l.2fw.24u.23b.2on.332.3jh.2q6.3t0.22z.28e.2kh.46x.3je.2qr.2wl.3z4.3ep.2e9.2ec.2ed.2eu.2q4.2g2.2pc.3t1.37n.3t3.2jp.2jq.2e8.2os.3kc.455.3eo.2es.2vp.3ui.3nb.24r.2xe.2p9.3jf.3ei.2g1.2w4.344.2jw.3sa.3ek.3ud.2ab.457.2jr.2vt.2kg.3nd.2q2.22i.2je.3sx.3um.3u3.3le.2qq.2jt.45w.46z.2g0.24w.2pd.337.38j.45b.3eh.33z.3g1.3wr.3km.37m.2vq.2oj.2pb.3lu.23t.3ry.3q8.3kn.459.3rw.2sd.2js.2jo.2jv.3l5.295.225.44c.39i.3c2.3c1.3dq.3hp.2wm.2v8.319.2sc.2f4.2f1.3rx.3xz.3v0.420.3lt.2n3.3od.3e7.2k7.44b.239.44a.2v9.329.364.3b9.316.3mz.23z.30i.238.3gl.23u.324.303.3n0.3hs.298.45r.372.23q.388.2ss.30r.2pi.3xs.2k4.2df.421.2d9.222.30t.2jz.30q.27g.2vf.2vg.2d8.2pg.2pe.2k0.2vb.221.2dd.224.2jy.223.30u.2de.25v.3m0.2gm.2t6.2fy.3c9.2mw.2mu.2ud.2x8.2u9.2uo.3vw.2w1.2vy.228.3y2.2ia.2w3.27i.2ii.227.2y0.2mk.3xw.2y7.3eq.34q.34n.48j.2ie.3er.2yk.3vx.3aj.3ku.2tq.47y.3fz.33o.33r.2ym.2y6.3kg.33n.2na.34l.3ak.3jx.2nd.30v.3rr.2ds.2gv.3lz.3wv.2ui.2d7.3qb.351.3q9.2cu.2aq.2uh.3pj.33h.3pk.3v1.3pl.2fa.2fb.2fd.2km.33f.3ng.28f.33e.2xl.3go.450.3xr.3t2.3sv.3y3.3sz.30w.44z.369.25n.47k.30p.3xo.3dy.30o.36h.43x.3kz.2gq.3bn.3xm.230.453.37a.3ly.3yu.3m1.36l.3bo.30s.451.22y.21x.2ve.36j.43u.3lv.3rt.452.2gi.3bm.36f.3xn.38v.3bp.3na.36g.3su.317.3yt.3yr.28h.44y.2iw.3yw.2m2.3xv.409.2xt.3dv.2xr.3du.2kw.46c.3rq.2s6.2rx.2ty.2fz.2j0.3gh.29o.42x.264.477.2u0.2jc.3op.27z.2r8.3j2.22h.2hw.2tv.2ch.32b.32f.2xo.2rb.2s2.38f.2a8.21q.2h0.2j7.21f.32h.2wx.2a7.2fx.35n.2x3.3dw.3l0.3ov.2aj.2ra.456.3w9.3q7.2rm.38e.2dt.2ak.435.3oa.3gk.3yq.2id.2hv.2rz.2k3.2an.2fe.2ks.3o9.2xp.3v2.47a.47c.425.2r0.3sf.3dn.32j.2wz.41u.2x0.2yx.2ob.2xm.2pj.2i9.45o.2pn.2rw.45j.257.21m.29p.478.2hs.256.3dm.47b.45p.2pf.2rq.3kw.2z2.29q.3hb.3ce.3se.3cf.3mo.22d.2zc.360.3sm.3ub.2gh.25a.259.2ne.2ge.2lk.2y9.2om.3d4.3de.3di.3pf.31a.2nk.3zu.467.3o5.22t.41y.2ug.2dm.3kt.3kv.3g0.3bu.2eg.2rf.2rh.3bw.43e.2ri.43d.3r3.3xb.34e.43j.2lt.2rg.3xc.3ge.36k.38b.3dk.3lj.3ig.36w.2y2.363.2wc.3u2.3hk.3tw.2mp.3jw.3ah.2ol.3br.2lj.2qh.2ei.3f1.2qi.255.2qj.2qk.3f0.2ai.2te.26d.2nx.2gt.39y.24m.2b8.2b7.39s.3y4.2mi.2mf.47w.31r.2cq.3rh.3x9.43g.2dg.350.2oq.2j9.3li.3wj.43h.26v.3lp.3q5.3ws.275.48r.3vi.2b6.41v.48o.2nm.47m.3vf.3pp.2nn.3vz.47q.2t8.35q.41k.3kk.48q.2ta.25p.2gu.47n.25q.2i1.3ju.26q.48s.3f7.3vy.3ok.35m.2hn.2fs.2gx.2cl.30l.39u.3qj.39t.3l4.3am.24n.2hx.26o.3zs.3zv.3ph.38p.2w5.3cz.3ic.3lb.3so.3m7.39w.2du.2ov.371.31e.3xj.3xf.43r.2o8.234.43s.3xi.2ez.2f8.28j.415.3c8.3h5.3xh.23e.31g.2ko.374.3c0.31f.296.3c5.3c3.29b.3c6.2kr.3c4.2f9.29a.2l9.2lb.3wn.310.229.42p.44g.3ro.30n.30m.2jn.36a.236.2j4.2qt.30z.2v0.2v5.28k.3mp.27m.3s5.2h5.2wf.2i0.3y6.42s.2if.2ju.2el.3ts.3hg.3aa.2xd.3wp.2b5.2vw.30x.3e5.26s.29f.3tx.3h6.3kd.362.3oc.3eu.2ld.466.22c.3e6.436.2ej.396.44f.29d.413.2p7.2tu.27t.3p4.3cw.2ki.29c.2by.3ih.45g.3o0.31p.31l.31n.31m.2c3.3in.2gb.3o1.475.3im.3f4.3xg.48n.3za.2bx.3ii.387.48l.3ik.31o.3ez.2j6.2hy.3r5.309.3gr.2u5.3sd.2eh.2ek.2k5.2cs.3g3.2tw.2k1.233.32i.365.2vd.273.3m3.3gt.2zh.232.2mb.48g.3gq.3al.3m4.2u2.2u1.2vh.235.2wu.3mx.3sn.3z9.3sq.2f5.37j.320.3yz.2l5.392.3cq.3ys.31z.3yx.3ya.2io.38z.3ho.391.2tj.3hx.3sr.2lw.3ss.2wq.2l4.37l.2lx.3bs.2b9.3oh.2wh.3yy.302.326.2wi.390.39p.263.262.2he.434.3jv.3pn.34k.2nc.2gd.2z6.2br.48c.3pd.2eb.2tb.42g.30k.2hh.2bo.2cf.34y.3uu.3px.2yp.39v.2yr.34w.3q1.2am.3vk.304.3bc.23y.23s.3n8.28r.23r.28t.28s.3be.3cc.401.3zx.3zz.400.22b.2wp.3cs.3ru.2wo.3qa.3si.28u.28o.3hu.22w.3ht.3n7.23x.2qs.3cp.2r3.2qz.308.2kq.3n4.40a.3on.46p.2y1.422.423.3st.33s.46d.2uk.41o.33y.33q.2ce.3l8.3g4.2d3.2d2.3q2.2oa.2iu.2qe.2ir.3ut.2yc.3mi.2d4.2mz.2h8.2h7.3h7.2p0.284.2oy.3s7.22p.39x.28a.40j.30e.3mm.3ml.3rz.22x.2hb.373.3mk.30c.22u.30g.3xx.2v2.405.41c.2co.2gw.3u0.3fv.469.416.3f2.26a.26b.268.269.37r.2qg.2gc.31v.33g.3fq.252.3e1.3iz.3tv.3p8.3p3.3p2.3uy.3iy.33d.3td.3tf.2ae.32g.2fi.3wk.3qw.3jb.29j.2xq.29m.3th.3pg.3ur.3pc.3us.3uq.253.2a6.254.24d.2mh.2la.3nu.3ns.35b.2hg.3u1.47p.2rn.40y.300.38l.3bb.42r.410.397.42z.247.2m9.3of.3oi.3oj.47f.2rp.2xk.24j.2rk.2le.27y.2x2.2ux.41a.419.41d.3tu.41b.2li.307.41m.2lh.394.2zk.3bh.47z.3p7.3kj.3h8.2ag.3ou.3os.2ma.2m7.382.338.336.3sl.2iv.3nq.3eb.3wq.41l.24p.2ms.47o.2er.2h9.3up.46w.46v.24q.2me.2fl.46r.3uk.2xs.2x1.38o.2xj.3q0.2g3.2wy.2rc.3jc.32k.32c.33b.250.2a9.32e.38d.38h.38g.411.2bp.3ty.24h.2a4.3i3.3cy.3cx.3z8.3zd.2p6.2lf.38m.3dz.24s.2nh.3f3.2nz.2ih.2tp.2i4.26g.237.3wh.3mc.2gn.41f.342.2gj.2nf.46b.3qx.3ct.45v.2rd.34d.48x.2cv.35g.3gv.2hz.2sx.2th.2xv.39k.3ae.32q.483.3pi.37b.3e9.3jn.3ea.3av.2tn.3or.25h.2at.3kb.3cr.2cw.318.3cj.3pz.3kq.3k5.3pr.325.2xw.27k.27h.226.2p5.45q.29n.46k.3om.3rc.3f9.3j7.3wt.3z0.404.2oc.3p1.28n.3w8.3w4.46f.2mg.2nt.2d1.2wg.311.48t.42u.3m6.33w.40f.2n1.3an.38q.2vn.474.3vg.3t7.274.3u7.3h9.41r.3oy.306.418.2pv.2nw.482.2fj.2se.3vq.2kz.25g.3zj.3qi.3y0.2k9.3en.3g8.3dr.3gp.3pu.3a8.27f.3ue.3u6.3jr.2sz.2td.26t.48y.3qe.2a2.2z8.2nq.2cm.447.3nj.2nl.42j.30j.2be.37d.2oh.2zr.2sy.433.3wu.39d.3to.2qm.48v.2ou.44e.2mn.2jd.3et.3vp.3md.2vl.3qt.2ik.3i9.2ul.3we.2hp.289.41j.2o3.2xa.491.2zb.24x.3ad.28x.3k1.2k2.347.32d.492.2ng.33i.2fp.44x.47x.2j8.42a.2ad.3p0.45i.339.2s1.2gk.2ep.3ai.3af.2t4.3v8.3x2.48z.37s.35w.3ol.41g.32u.3vc.26y.3qn.3if.37c.2im.24z.2vu.3w0.25c.3a3.3og.2p2.2vr.38r.3lq.3b8.2cn.2yv.2t0.3va.2c2.28i.3e4.2sh.28q.2nu.2y4.2lp.2sw.2tt.23p.46e.47s.2st.490.3hf.3uz.3rj.37y.3qo.2c0.36t.3zt.330.3w1.3wo.3ip.2cp.321.2gf.432.2ry.3oq.3kx.348.47t.41e.3v9.2bw.40e.476.398.3ri.36o.45y.2su.2vi.3rl.3fy.243.485.43w.3qk.493.2yb.3zi.481.315.46i.2kx.3hn.2so.290.3ix.46o.3tp.3iv.3dg.3fm.3b5.354.3v4.3qp.39f.3dd.3xy.270.406.22m.2n6.2ay.3wm.3ps.45k.2yg.3t9.2lm.2af.3te.25u.3sw.24e.3ny.2b1.2og.34o.26h.25o.37e.3v3.3i0.2t3.3j3.2go.3rm.2ba.2w7.25w.32s.3zb.265.3ux.44h.2wv.3fh.2fv.2jb.2uz.2bt.2b4.431.2iz.2bv.3l1.3gx.3fe.3rp.2uy.2hu.26f.42w.3cg.3w5.23n.3tn.3lh.3re.24f.37x.427.2l2.39j.2aa.2c1.2eo.48u.3l7.3nm.3hi.3qh.2g5.3s1.3ky.2x4.3fi.2od.45c.3rd.3ks.3wa.2tm.2ly.428.266.26u.3ff.3t8.2e1.28d.2tg.41t.31b.384.2in.39a.487.3pt.36p.28y.2e3.3i7.2kt.3ve.3ij.3dc.3wd.2vm.21j.2yh.38x.30d.3m8.48m.3bt.2kb.34h.2xg.38w.2ka.3d2.2y3.46l.2v3.3zy.3b1.2rl.2sp.489.47j.2xn.2vo.2pk.3wy.2zf.2us.35t.3zc.48i.3he.3t4.2wa.3kh.3ob.29r.33k.43n.44m.2vx.3kp.3vn.2mq.2pa.34f.3a0.3lr.2t5.2it.3tm.3nw.37w.361.2oi.3ee.480.43a.3cl.2i5.2az.2vk.2u3.24g.3b6.3u9.23o.3hc.3b7.3a4.3b4.2av.2as.386.2vc.3tt.2ht.488.3e2.43f.2z3.3pv.2sf.3vu.3sg.2o5.424.2em.3tl.3qm.32t.34p.2gs.2ns.3uw.39h.2ee.2pt.42l.2ph.2kl.299.2qf.3l9.3j6.3lc.3zw.2oz.2xb.3t6.2ll.2zd.3nt.3qg.3ra.2qy.288.2ow.3nx.3t5.2ig.3qz.3gn.2tc.2d5.42e.2pp.2n0.31s.3hl.472.23a.3s3.2yy.33p.3h3.46j.3ef.2rs.37u.2hl.272.46n.2sv.31u.2nr.3yb.36q.41i.2pz.3x5.2bd.2sj.2ky.3by.2xx.24o.28g.33x.2q5.3q4.45u.3db.497.357.356.463.3ey.3j1.3zg.379.2ts.2kc.3v5.2h3.2fq.47u.41n.2ar.3ew.3x1.2or.2bf.2zp.3r2.31j.3hd.3qv.2uj.479.24k.2ip.352.46q.245.2ye.48d.42m.3tr.3dh.35c.2i6.446.36v.3np.3kr.2ql.48f.3fk.2lz.2m0.2gz.3ag.2hm.2p1.3jp.3gi.43b.3qq.448.3fg.3s2.3v7.47r.3kl.36u.2ah.2m8.2s0.3ir.2bu.430.27j.305.2xu.3fc.46m.473.3lw.2py.38k.2aw.3fb.35u.3z6.3z2.2tf.3w7.2qd.2np.35v.3vd.2zg.34x.3jy.38y.2k8.2ke.2ln.2dw.2lr.2rt.3fj.2dr.2tk.2kv.34i.2uq.429.3x8.34b.48b.2hj.381.2cj.2h6.42v.2yd.2g8.26z.3l6.48e.2n2.3jq.3uo.2ic.43v.31t.2w6.34u.2k6.2fo.3j0.23j.377.3df.2fu.3qy.3ck.460.31h.42o.40c.2au.2g9.3jg.2dq.2yu.395.3da.484.3nv.42k.25f.3me.22k.3fs.2to.23c.496.2nj.25d.2en.3r6.3ib.3zf.3vb.27d.41q.38n.403.45a.3fp.2g6.3e3.31d.34c.37z.3q6.25s.2dx.23k.2e5.2mv.2cb.2gy.3uv.42c.37t.34r.2g4.2rv.3g9.3b3.42b.2tr.42q.2ps.3k0.2ib.24i.45n.3jo.38s.2wn.23m.2ti.36m.2ct.2dp.31q.43p.37v.36n.2l3.3x7.2is.2dn.2dl.3ni.3nk.3nh.3tg.28z.2yo.3jz.3sc.3jl.3x4.3m9.23l.2w8.2zq.2il.2zo.2ea.42h.26c.3xd.3pw.3bz.2do.2c5.41z.2s7.2um.28p.39z.3c7.2t1.349.3aq.3oo.3g6.3gm.2pu.45f.3ie.3fo.2wd.3oz.47l.3vs.3a2.2xy.45z.32v.454.3p5.3mq.407.3d5.2s9.3nl.38t.2cx.3s8.3ca.3f5.3z7.2op.21h.2hq.2c6.3g5.2tz.3l2.26p.2oo.3l3.2ho.3fw.2uu.2o9.32m.3a5.25m.3ld.40g.2xz.2xh.3mj.2x7.27n.2o7.2o6.353.2o2.220.34t.29s.231.26r.3as.3fl.2n7.343.40w.2kj.3x3.2of.2kf.312.3az.46h.3wx.2c4.248.2bb.2pq.2h1.3wf.3sk.2yf.3g7.2m1.3d3.26k.24y.2b2.2pl.333.2ac.313.3fd.2px.3ao.36x.2ix.2zn.2c8.2bq.3zq.2x9.45l.43o.2f7.2vv.3bq.32o.3f6.2m5.3cd.2n8.2m3.22a.2hk.35z.3gg.24a.249.3id.3d8.3d9.3d7.375.3d6.41s.25b.34s.2n5.27r.2z0.2wb.3pa.378.3ki.426.45t.2ru.2ew.2q8.3mn.29u.42i.2q0.34a.30y.33m.2ls.3gw.3gb.3gc.27l.3ln.29z.45s.37f.323.3ap.3wg.2ze.38u.32w.2lo.27b.283.2y5.3b2.23h.22q.3a9.370.2c7.28v.3wb.26e.2yn.39e.3r0.43q.2z9.35l.2po.2z4.32p.2q3.2zw.2p3.2pr.3mt.3ms.21i.2kd.25t.35y.2q1.3qc.2ef.3ga.22l.2i7.2qa.3k8.3eg.21k.41x.2x6.3rn.3z1.28w.2rr.2we.3fr.31x.385.37q.3ta.3ac.2eq.3iq.3i8.3uc.3pm.40z.27e.41h.341.3vv.2cy.25r.2z7.2xc.24c.29h.3ci.340.3rs.3yd.2nb.3qd.3dl.3ed.3r1.48p.2ca.2tx.3z3.2vj.2sl.30f.40b.3ay.3r4.3r8.3sy.3b0.2e2.3wl.2un.3w6.2yz.3rg.285.3j9.31k.41p.34m.2hr.34g.2v1.3vo.3fn.2q9.3gj.2c9.48w.2db.3kf.3py.3j5.42y.399.3gs.2t9.314.42t.31i.27v.3rk.3fa.2uf.3o8.2tl.48k.3ql.2ax.3k9.3tb.26w.26j.37o.2m4.2iq.33j.3gf.380.32r.246.3pq.2x5.3k7.3ke.3lk.2cz.2z5.2h4.42n.2j3.36s.2gg.486.37h.2cr.45x.2i8.3mr.3qs.2sm.3ec.32x.2cd.3nz.271.2ro.408.39m.414.412.3s6.2l0.2fn.2qv.2t2.27w.2t7.2qu.21l.3po.322.2ys.3at.3v6.3au.2dk'
+//   AND '8wnl' = '7.y.t.k.a.1.1c.1d'
+// ELSE
+
+Trace(Beginning Incremental Load for weather );
+
+Weather:
+LOAD 
+	[_dim_8wnk] AS [_dim_8wnk],
+	[Date] AS [Date],
+    [_dim_8wnk] & '|' & Date as UniqueKey,
+	[MEASURE=7] AS [Average of the 24 hourly dew point observations in degrees Fahrenheit],
+	[MEASURE=y] AS [Average of the 24 hourly temperature observations in degrees Fahrenheit],
+	[MEASURE=t] AS [Daily total precipitation (rainfall and/or melted amount of snow) in inches],
+	[MEASURE=k] AS [Maximum daily temperature in degrees Fahrenheit],
+	[MEASURE=a] AS [Maximum of the 24 hourly feels like temperature values in degrees Fahrenheit],
+	[MEASURE=1] AS [Maximum of the 24 hourly wind speed observations  in miles per hour],
+	[MEASURE=1c] AS [Minimum daily temperature in degrees Fahrenheit],
+	[MEASURE=1d] AS [Minimum of the 24 hourly feels like temperature values in degrees Fahrenheit];
+SQL SELECT
+    "_dim_8wnk",
+    "Date",
+    "MEASURE=7",
+    "MEASURE=y",
+    "MEASURE=t",
+    "MEASURE=k",
+    "MEASURE=a",
+    "MEASURE=1",
+    "MEASURE=1c",
+    "MEASURE=1d"
+FROM fact:535q
+WHERE '8wnk' = '2ua.2qw.2ub.2a5.2ww.2zv.417.2r2.2qx.2u8.2zx.2zu.35k.2zz.2uc.2al.22f.2zy.2rj.2u7.3ar.2zt.2lg.35e.35d.334.2r4.2hi.32n.37k.3io.2ni.471.3f8.2bs.2yi.2s8.3a7.3ba.39r.3o3.3p9.2hf.39q.3vj.3gd.3tq.3cm.3fx.3jk.39o.46a.35r.3dp.2w2.26x.2dc.25e.3ab.3k3.2qn.449.2ny.2uw.43l.3xa.22o.30a.2y8.27q.281.3o4.43c.30h.3y1.2kn.21g.2ja.22n.2lu.2kp.3h4.2vz.30b.23d.46g.23f.2lc.328.2jh.3do.3e0.2ga.2dh.26i.244.2a3.3yk.286.3ym.2mo.2ao.44w.383.3yn.44r.282.44t.44u.28b.26l.43t.3xu.29g.331.3yv.24b.3qf.29i.3ej.3ye.3a1.2b0.21n.3xp.2ij.2o4.3lg.3ll.327.3tc.3xe.3p6.2yt.2lq.495.2bn.43m.47v.2ok.3jj.2h2.3n6.2sb.3zh.3vt.41w.3jm.3ev.260.3no.3k6.3ze.3ka.2ml.2mj.3yf.3m2.3lx.3z5.3nn.2sa.39n.39b.393.43i.3il.37i.242.3i4.3pb.48h.445.2ey.3lf.358.3h2.35a.27a.2pw.2ot.3mv.293.441.2mr.27o.2j2.438.44i.44k.2nv.36i.47e.2zj.3zk.3zm.29e.2qc.24v.25j.27c.3ax.2jj.3yj.3n5.25l.31w.31y.3la.3s0.3rb.2xi.43z.40l.23w.3n9.2md.291.2qp.3mu.3ow.36d.35p.3yl.25k.3rf.3r9.23v.3h1.22s.23i.2s3.44p.3tj.2wk.2iy.2e0.2ci.3y9.3k2.3bi.2sk.2ft.40v.3ls.439.3lo.3h0.3vr.3vh.2v6.2gl.3vl.437.40x.3iu.38a.3uh.3zp.2oe.277.22r.279.3yh.40o.40m.345.3hh.29y.25i.44j.3zl.3n2.40u.3x0.21t.276.21r.2ut.2ff.2l7.2no.2up.389.3yc.3vm.29v.3sp.3zo.40i.3bd.443.2ev.2gr.2a1.3y8.2w9.2fh.2di.35x.2fc.3jt.3mg.2ji.3hy.2fk.43y.29w.2yj.39g.3yg.40n.3hv.2pm.3cv.3ft.3mh.3s4.3fu.2mc.2jg.45h.2f0.359.2ex.3y5.40t.2ya.3hw.3mw.3yp.2r5.44n.36y.26m.2wj.468.3n3.2j1.34z.2e6.42f.3wz.3hr.3bl.2zm.3yo.31c.2my.3bv.3bf.3bg.36c.3hj.3mb.2q7.440.2r9.287.3ji.35h.2n9.3hz.3ox.3oe.23g.44q.44l.29x.2zl.3em.2d0.3yi.292.3o2.35j.2bz.3es.36z.2s4.3aw.21w.461.267.494.42d.39c.44o.2m6.3ul.2zi.2fm.29l.47h.40q.2yq.2yw.46s.2dz.45d.3sh.2dv.3ma.47d.464.27x.3xl.367.3gz.2i3.40r.2ur.2ck.43k.3ww.21u.44v.28l.3ua.2dj.24t.280.3gy.2d6.3ja.346.2re.2r7.3zn.3xk.3ia.2cg.2jm.47g.3hm.3u8.24l.442.2si.36b.36e.2sr.29k.3q3.3uf.2fg.22v.355.3n1.278.3bk.3bj.44s.28m.3mf.37g.470.35i.21p.35f.3u5.21s.3uj.2wr.2zs.3ti.2l8.2gp.40s.46u.45m.3y7.2ox.3zr.21z.21v.294.37p.2mt.44d.2r6.3j4.27p.3d0.34j.3lm.2jk.27u.2fr.2jl.2yl.27s.22j.2jf.2f6.3r7.2j5.3hq.2i2.3cn.2b3.2e4.3x6.2f2.2kk.2ws.46y.3jd.2l6.21y.3a6.2uv.32z.32a.3dx.3u4.335.3m5.3gu.33a.2bg.3cu.2bh.3xt.38i.3ot.3iw.297.240.258.3e8.45e.3tz.376.3ch.3sb.458.2qb.38c.40d.3dt.32y.3ha.368.2f3.2sg.26n.402.444.3d1.3j8.2ap.3it.22g.3w2.3co.3is.3w3.2mm.2lv.3ko.3o7.3wc.3s9.35s.35o.301.3rv.21o.3xq.3g2.2o0.2o1.3wi.2da.366.36r.40p.2u4.2ku.2l1.33l.3tk.2v7.2ue.2xf.2wt.3ds.2v4.3sj.2u6.2jx.32l.2p8.3un.3js.3nf.3dj.3k4.3ex.3nr.251.3o6.3my.33c.2a0.29t.2dy.46t.40h.3pe.2n4.3qu.2va.40k.2cc.3qr.34v.2r1.2bc.2g7.33u.2bl.2s5.261.33t.2hc.2hd.22e.2mx.2z1.33v.3bx.3cb.2sn.2bm.2bk.2sq.25y.241.2za.2bi.48a.2ha.25x.25z.2bj.462.3i1.3el.2w0.465.3nc.28c.2e7.2vs.3i6.3ne.3ug.3i2.2p4.2et.3i5.47i.2qo.39l.2fw.24u.23b.2on.332.3jh.2q6.3t0.22z.28e.2kh.46x.3je.2qr.2wl.3z4.3ep.2e9.2ec.2ed.2eu.2q4.2g2.2pc.3t1.37n.3t3.2jp.2jq.2e8.2os.3kc.455.3eo.2es.2vp.3ui.3nb.24r.2xe.2p9.3jf.3ei.2g1.2w4.344.2jw.3sa.3ek.3ud.2ab.457.2jr.2vt.2kg.3nd.2q2.22i.2je.3sx.3um.3u3.3le.2qq.2jt.45w.46z.2g0.24w.2pd.337.38j.45b.3eh.33z.3g1.3wr.3km.37m.2vq.2oj.2pb.3lu.23t.3ry.3q8.3kn.459.3rw.2sd.2js.2jo.2jv.3l5.295.225.44c.39i.3c2.3c1.3dq.3hp.2wm.2v8.319.2sc.2f4.2f1.3rx.3xz.3v0.420.3lt.2n3.3od.3e7.2k7.44b.239.44a.2v9.329.364.3b9.316.3mz.23z.30i.238.3gl.23u.324.303.3n0.3hs.298.45r.372.23q.388.2ss.30r.2pi.3xs.2k4.2df.421.2d9.222.30t.2jz.30q.27g.2vf.2vg.2d8.2pg.2pe.2k0.2vb.221.2dd.224.2jy.223.30u.2de.25v.3m0.2gm.2t6.2fy.3c9.2mw.2mu.2ud.2x8.2u9.2uo.3vw.2w1.2vy.228.3y2.2ia.2w3.27i.2ii.227.2y0.2mk.3xw.2y7.3eq.34q.34n.48j.2ie.3er.2yk.3vx.3aj.3ku.2tq.47y.3fz.33o.33r.2ym.2y6.3kg.33n.2na.34l.3ak.3jx.2nd.30v.3rr.2ds.2gv.3lz.3wv.2ui.2d7.3qb.351.3q9.2cu.2aq.2uh.3pj.33h.3pk.3v1.3pl.2fa.2fb.2fd.2km.33f.3ng.28f.33e.2xl.3go.450.3xr.3t2.3sv.3y3.3sz.30w.44z.369.25n.47k.30p.3xo.3dy.30o.36h.43x.3kz.2gq.3bn.3xm.230.453.37a.3ly.3yu.3m1.36l.3bo.30s.451.22y.21x.2ve.36j.43u.3lv.3rt.452.2gi.3bm.36f.3xn.38v.3bp.3na.36g.3su.317.3yt.3yr.28h.44y.2iw.3yw.2m2.3xv.409.2xt.3dv.2xr.3du.2kw.46c.3rq.2s6.2rx.2ty.2fz.2j0.3gh.29o.42x.264.477.2u0.2jc.3op.27z.2r8.3j2.22h.2hw.2tv.2ch.32b.32f.2xo.2rb.2s2.38f.2a8.21q.2h0.2j7.21f.32h.2wx.2a7.2fx.35n.2x3.3dw.3l0.3ov.2aj.2ra.456.3w9.3q7.2rm.38e.2dt.2ak.435.3oa.3gk.3yq.2id.2hv.2rz.2k3.2an.2fe.2ks.3o9.2xp.3v2.47a.47c.425.2r0.3sf.3dn.32j.2wz.41u.2x0.2yx.2ob.2xm.2pj.2i9.45o.2pn.2rw.45j.257.21m.29p.478.2hs.256.3dm.47b.45p.2pf.2rq.3kw.2z2.29q.3hb.3ce.3se.3cf.3mo.22d.2zc.360.3sm.3ub.2gh.25a.259.2ne.2ge.2lk.2y9.2om.3d4.3de.3di.3pf.31a.2nk.3zu.467.3o5.22t.41y.2ug.2dm.3kt.3kv.3g0.3bu.2eg.2rf.2rh.3bw.43e.2ri.43d.3r3.3xb.34e.43j.2lt.2rg.3xc.3ge.36k.38b.3dk.3lj.3ig.36w.2y2.363.2wc.3u2.3hk.3tw.2mp.3jw.3ah.2ol.3br.2lj.2qh.2ei.3f1.2qi.255.2qj.2qk.3f0.2ai.2te.26d.2nx.2gt.39y.24m.2b8.2b7.39s.3y4.2mi.2mf.47w.31r.2cq.3rh.3x9.43g.2dg.350.2oq.2j9.3li.3wj.43h.26v.3lp.3q5.3ws.275.48r.3vi.2b6.41v.48o.2nm.47m.3vf.3pp.2nn.3vz.47q.2t8.35q.41k.3kk.48q.2ta.25p.2gu.47n.25q.2i1.3ju.26q.48s.3f7.3vy.3ok.35m.2hn.2fs.2gx.2cl.30l.39u.3qj.39t.3l4.3am.24n.2hx.26o.3zs.3zv.3ph.38p.2w5.3cz.3ic.3lb.3so.3m7.39w.2du.2ov.371.31e.3xj.3xf.43r.2o8.234.43s.3xi.2ez.2f8.28j.415.3c8.3h5.3xh.23e.31g.2ko.374.3c0.31f.296.3c5.3c3.29b.3c6.2kr.3c4.2f9.29a.2l9.2lb.3wn.310.229.42p.44g.3ro.30n.30m.2jn.36a.236.2j4.2qt.30z.2v0.2v5.28k.3mp.27m.3s5.2h5.2wf.2i0.3y6.42s.2if.2ju.2el.3ts.3hg.3aa.2xd.3wp.2b5.2vw.30x.3e5.26s.29f.3tx.3h6.3kd.362.3oc.3eu.2ld.466.22c.3e6.436.2ej.396.44f.29d.413.2p7.2tu.27t.3p4.3cw.2ki.29c.2by.3ih.45g.3o0.31p.31l.31n.31m.2c3.3in.2gb.3o1.475.3im.3f4.3xg.48n.3za.2bx.3ii.387.48l.3ik.31o.3ez.2j6.2hy.3r5.309.3gr.2u5.3sd.2eh.2ek.2k5.2cs.3g3.2tw.2k1.233.32i.365.2vd.273.3m3.3gt.2zh.232.2mb.48g.3gq.3al.3m4.2u2.2u1.2vh.235.2wu.3mx.3sn.3z9.3sq.2f5.37j.320.3yz.2l5.392.3cq.3ys.31z.3yx.3ya.2io.38z.3ho.391.2tj.3hx.3sr.2lw.3ss.2wq.2l4.37l.2lx.3bs.2b9.3oh.2wh.3yy.302.326.2wi.390.39p.263.262.2he.434.3jv.3pn.34k.2nc.2gd.2z6.2br.48c.3pd.2eb.2tb.42g.30k.2hh.2bo.2cf.34y.3uu.3px.2yp.39v.2yr.34w.3q1.2am.3vk.304.3bc.23y.23s.3n8.28r.23r.28t.28s.3be.3cc.401.3zx.3zz.400.22b.2wp.3cs.3ru.2wo.3qa.3si.28u.28o.3hu.22w.3ht.3n7.23x.2qs.3cp.2r3.2qz.308.2kq.3n4.40a.3on.46p.2y1.422.423.3st.33s.46d.2uk.41o.33y.33q.2ce.3l8.3g4.2d3.2d2.3q2.2oa.2iu.2qe.2ir.3ut.2yc.3mi.2d4.2mz.2h8.2h7.3h7.2p0.284.2oy.3s7.22p.39x.28a.40j.30e.3mm.3ml.3rz.22x.2hb.373.3mk.30c.22u.30g.3xx.2v2.405.41c.2co.2gw.3u0.3fv.469.416.3f2.26a.26b.268.269.37r.2qg.2gc.31v.33g.3fq.252.3e1.3iz.3tv.3p8.3p3.3p2.3uy.3iy.33d.3td.3tf.2ae.32g.2fi.3wk.3qw.3jb.29j.2xq.29m.3th.3pg.3ur.3pc.3us.3uq.253.2a6.254.24d.2mh.2la.3nu.3ns.35b.2hg.3u1.47p.2rn.40y.300.38l.3bb.42r.410.397.42z.247.2m9.3of.3oi.3oj.47f.2rp.2xk.24j.2rk.2le.27y.2x2.2ux.41a.419.41d.3tu.41b.2li.307.41m.2lh.394.2zk.3bh.47z.3p7.3kj.3h8.2ag.3ou.3os.2ma.2m7.382.338.336.3sl.2iv.3nq.3eb.3wq.41l.24p.2ms.47o.2er.2h9.3up.46w.46v.24q.2me.2fl.46r.3uk.2xs.2x1.38o.2xj.3q0.2g3.2wy.2rc.3jc.32k.32c.33b.250.2a9.32e.38d.38h.38g.411.2bp.3ty.24h.2a4.3i3.3cy.3cx.3z8.3zd.2p6.2lf.38m.3dz.24s.2nh.3f3.2nz.2ih.2tp.2i4.26g.237.3wh.3mc.2gn.41f.342.2gj.2nf.46b.3qx.3ct.45v.2rd.34d.48x.2cv.35g.3gv.2hz.2sx.2th.2xv.39k.3ae.32q.483.3pi.37b.3e9.3jn.3ea.3av.2tn.3or.25h.2at.3kb.3cr.2cw.318.3cj.3pz.3kq.3k5.3pr.325.2xw.27k.27h.226.2p5.45q.29n.46k.3om.3rc.3f9.3j7.3wt.3z0.404.2oc.3p1.28n.3w8.3w4.46f.2mg.2nt.2d1.2wg.311.48t.42u.3m6.33w.40f.2n1.3an.38q.2vn.474.3vg.3t7.274.3u7.3h9.41r.3oy.306.418.2pv.2nw.482.2fj.2se.3vq.2kz.25g.3zj.3qi.3y0.2k9.3en.3g8.3dr.3gp.3pu.3a8.27f.3ue.3u6.3jr.2sz.2td.26t.48y.3qe.2a2.2z8.2nq.2cm.447.3nj.2nl.42j.30j.2be.37d.2oh.2zr.2sy.433.3wu.39d.3to.2qm.48v.2ou.44e.2mn.2jd.3et.3vp.3md.2vl.3qt.2ik.3i9.2ul.3we.2hp.289.41j.2o3.2xa.491.2zb.24x.3ad.28x.3k1.2k2.347.32d.492.2ng.33i.2fp.44x.47x.2j8.42a.2ad.3p0.45i.339.2s1.2gk.2ep.3ai.3af.2t4.3v8.3x2.48z.37s.35w.3ol.41g.32u.3vc.26y.3qn.3if.37c.2im.24z.2vu.3w0.25c.3a3.3og.2p2.2vr.38r.3lq.3b8.2cn.2yv.2t0.3va.2c2.28i.3e4.2sh.28q.2nu.2y4.2lp.2sw.2tt.23p.46e.47s.2st.490.3hf.3uz.3rj.37y.3qo.2c0.36t.3zt.330.3w1.3wo.3ip.2cp.321.2gf.432.2ry.3oq.3kx.348.47t.41e.3v9.2bw.40e.476.398.3ri.36o.45y.2su.2vi.3rl.3fy.243.485.43w.3qk.493.2yb.3zi.481.315.46i.2kx.3hn.2so.290.3ix.46o.3tp.3iv.3dg.3fm.3b5.354.3v4.3qp.39f.3dd.3xy.270.406.22m.2n6.2ay.3wm.3ps.45k.2yg.3t9.2lm.2af.3te.25u.3sw.24e.3ny.2b1.2og.34o.26h.25o.37e.3v3.3i0.2t3.3j3.2go.3rm.2ba.2w7.25w.32s.3zb.265.3ux.44h.2wv.3fh.2fv.2jb.2uz.2bt.2b4.431.2iz.2bv.3l1.3gx.3fe.3rp.2uy.2hu.26f.42w.3cg.3w5.23n.3tn.3lh.3re.24f.37x.427.2l2.39j.2aa.2c1.2eo.48u.3l7.3nm.3hi.3qh.2g5.3s1.3ky.2x4.3fi.2od.45c.3rd.3ks.3wa.2tm.2ly.428.266.26u.3ff.3t8.2e1.28d.2tg.41t.31b.384.2in.39a.487.3pt.36p.28y.2e3.3i7.2kt.3ve.3ij.3dc.3wd.2vm.21j.2yh.38x.30d.3m8.48m.3bt.2kb.34h.2xg.38w.2ka.3d2.2y3.46l.2v3.3zy.3b1.2rl.2sp.489.47j.2xn.2vo.2pk.3wy.2zf.2us.35t.3zc.48i.3he.3t4.2wa.3kh.3ob.29r.33k.43n.44m.2vx.3kp.3vn.2mq.2pa.34f.3a0.3lr.2t5.2it.3tm.3nw.37w.361.2oi.3ee.480.43a.3cl.2i5.2az.2vk.2u3.24g.3b6.3u9.23o.3hc.3b7.3a4.3b4.2av.2as.386.2vc.3tt.2ht.488.3e2.43f.2z3.3pv.2sf.3vu.3sg.2o5.424.2em.3tl.3qm.32t.34p.2gs.2ns.3uw.39h.2ee.2pt.42l.2ph.2kl.299.2qf.3l9.3j6.3lc.3zw.2oz.2xb.3t6.2ll.2zd.3nt.3qg.3ra.2qy.288.2ow.3nx.3t5.2ig.3qz.3gn.2tc.2d5.42e.2pp.2n0.31s.3hl.472.23a.3s3.2yy.33p.3h3.46j.3ef.2rs.37u.2hl.272.46n.2sv.31u.2nr.3yb.36q.41i.2pz.3x5.2bd.2sj.2ky.3by.2xx.24o.28g.33x.2q5.3q4.45u.3db.497.357.356.463.3ey.3j1.3zg.379.2ts.2kc.3v5.2h3.2fq.47u.41n.2ar.3ew.3x1.2or.2bf.2zp.3r2.31j.3hd.3qv.2uj.479.24k.2ip.352.46q.245.2ye.48d.42m.3tr.3dh.35c.2i6.446.36v.3np.3kr.2ql.48f.3fk.2lz.2m0.2gz.3ag.2hm.2p1.3jp.3gi.43b.3qq.448.3fg.3s2.3v7.47r.3kl.36u.2ah.2m8.2s0.3ir.2bu.430.27j.305.2xu.3fc.46m.473.3lw.2py.38k.2aw.3fb.35u.3z6.3z2.2tf.3w7.2qd.2np.35v.3vd.2zg.34x.3jy.38y.2k8.2ke.2ln.2dw.2lr.2rt.3fj.2dr.2tk.2kv.34i.2uq.429.3x8.34b.48b.2hj.381.2cj.2h6.42v.2yd.2g8.26z.3l6.48e.2n2.3jq.3uo.2ic.43v.31t.2w6.34u.2k6.2fo.3j0.23j.377.3df.2fu.3qy.3ck.460.31h.42o.40c.2au.2g9.3jg.2dq.2yu.395.3da.484.3nv.42k.25f.3me.22k.3fs.2to.23c.496.2nj.25d.2en.3r6.3ib.3zf.3vb.27d.41q.38n.403.45a.3fp.2g6.3e3.31d.34c.37z.3q6.25s.2dx.23k.2e5.2mv.2cb.2gy.3uv.42c.37t.34r.2g4.2rv.3g9.3b3.42b.2tr.42q.2ps.3k0.2ib.24i.45n.3jo.38s.2wn.23m.2ti.36m.2ct.2dp.31q.43p.37v.36n.2l3.3x7.2is.2dn.2dl.3ni.3nk.3nh.3tg.28z.2yo.3jz.3sc.3jl.3x4.3m9.23l.2w8.2zq.2il.2zo.2ea.42h.26c.3xd.3pw.3bz.2do.2c5.41z.2s7.2um.28p.39z.3c7.2t1.349.3aq.3oo.3g6.3gm.2pu.45f.3ie.3fo.2wd.3oz.47l.3vs.3a2.2xy.45z.32v.454.3p5.3mq.407.3d5.2s9.3nl.38t.2cx.3s8.3ca.3f5.3z7.2op.21h.2hq.2c6.3g5.2tz.3l2.26p.2oo.3l3.2ho.3fw.2uu.2o9.32m.3a5.25m.3ld.40g.2xz.2xh.3mj.2x7.27n.2o7.2o6.353.2o2.220.34t.29s.231.26r.3as.3fl.2n7.343.40w.2kj.3x3.2of.2kf.312.3az.46h.3wx.2c4.248.2bb.2pq.2h1.3wf.3sk.2yf.3g7.2m1.3d3.26k.24y.2b2.2pl.333.2ac.313.3fd.2px.3ao.36x.2ix.2zn.2c8.2bq.3zq.2x9.45l.43o.2f7.2vv.3bq.32o.3f6.2m5.3cd.2n8.2m3.22a.2hk.35z.3gg.24a.249.3id.3d8.3d9.3d7.375.3d6.41s.25b.34s.2n5.27r.2z0.2wb.3pa.378.3ki.426.45t.2ru.2ew.2q8.3mn.29u.42i.2q0.34a.30y.33m.2ls.3gw.3gb.3gc.27l.3ln.29z.45s.37f.323.3ap.3wg.2ze.38u.32w.2lo.27b.283.2y5.3b2.23h.22q.3a9.370.2c7.28v.3wb.26e.2yn.39e.3r0.43q.2z9.35l.2po.2z4.32p.2q3.2zw.2p3.2pr.3mt.3ms.21i.2kd.25t.35y.2q1.3qc.2ef.3ga.22l.2i7.2qa.3k8.3eg.21k.41x.2x6.3rn.3z1.28w.2rr.2we.3fr.31x.385.37q.3ta.3ac.2eq.3iq.3i8.3uc.3pm.40z.27e.41h.341.3vv.2cy.25r.2z7.2xc.24c.29h.3ci.340.3rs.3yd.2nb.3qd.3dl.3ed.3r1.48p.2ca.2tx.3z3.2vj.2sl.30f.40b.3ay.3r4.3r8.3sy.3b0.2e2.3wl.2un.3w6.2yz.3rg.285.3j9.31k.41p.34m.2hr.34g.2v1.3vo.3fn.2q9.3gj.2c9.48w.2db.3kf.3py.3j5.42y.399.3gs.2t9.314.42t.31i.27v.3rk.3fa.2uf.3o8.2tl.48k.3ql.2ax.3k9.3tb.26w.26j.37o.2m4.2iq.33j.3gf.380.32r.246.3pq.2x5.3k7.3ke.3lk.2cz.2z5.2h4.42n.2j3.36s.2gg.486.37h.2cr.45x.2i8.3mr.3qs.2sm.3ec.32x.2cd.3nz.271.2ro.408.39m.414.412.3s6.2l0.2fn.2qv.2t2.27w.2t7.2qu.21l.3po.322.2ys.3at.3v6.3au.2dk'
+  AND '8wnl' = '7.y.t.k.a.1.1c.1d'
+  AND TIME = MOST RECENT;
+  
+Concatenate
+
+Load * FROM [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/WeatherHistory.QVD]
+(qvd)
+WHERE NOT EXISTS (UniqueKey);
+
+
+
+Store Weather into [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/WeatherHistory.QVD] (QVD);
+
+Drop Table Weather;
+
+//END IF
+
+
+///$tab Section
+Weather:
+LOAD
+    *
+FROM [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/Weather.QVD]
+(qvd);
+
+Store Weather into [lib://ByteKeeper Folder (bytekeeper_jon.tuite)/WeatherHistory.QVD] (QVD);
+LOAD
+    _dim_8wnk,
+    UniqueKey,
+    "Date",
+    "Average of the 24 hourly dew point observations in degrees Fahrenheit",
+    "Average of the 24 hourly temperature observations in degrees Fahrenheit",
+    "Maximum daily temperature in degrees Fahrenheit",
+    "Minimum daily temperature in degrees Fahrenheit"
+FROM [lib://QVDs (jon-home-pc_jonathan tuite)/WeatherHistory.QVD]
+(qvd);
+
