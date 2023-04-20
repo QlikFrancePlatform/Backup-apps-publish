@@ -1,0 +1,424 @@
+///$tab Main
+SET ThousandSep='.';
+SET DecimalSep=',';
+SET MoneyThousandSep='.';
+SET MoneyDecimalSep=',';
+SET MoneyFormat='€ #.##0,00;-€ #.##0,00';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET FirstWeekDay=0;
+SET BrokenWeeks=0;
+SET ReferenceDay=4;
+SET FirstMonthOfYear=1;
+SET CollationLocale='it-IT';
+SET CreateSearchIndexOnReload=1;
+SET MonthNames='gen;feb;mar;apr;mag;giu;lug;ago;set;ott;nov;dic';
+SET LongMonthNames='gennaio;febbraio;marzo;aprile;maggio;giugno;luglio;agosto;settembre;ottobre;novembre;dicembre';
+SET DayNames='lun;mar;mer;gio;ven;sab;dom';
+SET LongDayNames='lunedì;martedì;mercoledì;giovedì;venerdì;sabato;domenica';
+
+///$tab Auto-generated section
+__cityAliasesBase:
+LOAD
+	Alias AS [__City],
+	geoKey AS [__geoKey],
+	CountryCode AS [__CityCountryCode]
+FROM [lib://__GEO_TABLES/cityAliases.qvd]
+(qvd);
+
+__cityGeoBase:
+LOAD
+	geoKey AS [__geoKey],
+	geoPoint AS [__GeoPoint]
+FROM [lib://__GEO_TABLES/cityGeo.qvd]
+(qvd);
+
+__countryGeoBase:
+LOAD
+	ISO3Code AS [__ISO3Code],
+	ISO2Code AS [__ISO2Code],
+	Polygon AS [__Polygon]
+FROM [lib://__GEO_TABLES/countryGeo.qvd]
+(qvd);
+
+__countryAliasesBase:
+LOAD
+	Alias AS [__Country],
+	ISO3Code AS [__ISO3Code]
+FROM [lib://__GEO_TABLES/countryAliases.qvd]
+(qvd);
+
+__cityName2Key:
+MAPPING LOAD
+	__City,
+	__geoKey
+RESIDENT __cityAliasesBase;
+
+__cityKey2GeoPoint:
+MAPPING LOAD
+	__geoKey,
+	__GeoPoint
+RESIDENT __cityGeoBase;
+
+__countryCodeIsoTwo2Polygon:
+MAPPING LOAD
+	__ISO2Code,
+	__Polygon
+RESIDENT __countryGeoBase;
+
+__countryCodeAndCityName2Key:
+MAPPING LOAD
+	__CityCountryCode & __City,
+	__geoKey
+RESIDENT __cityAliasesBase;
+
+__countryCodeIsoTwo2IsoThree:
+MAPPING LOAD
+	__ISO2Code,
+	__ISO3Code
+RESIDENT __countryGeoBase;
+
+__countryName2IsoThree:
+MAPPING LOAD
+	__Country,
+	__ISO3Code
+RESIDENT __countryAliasesBase;
+
+__countryCodeIsoThree2Polygon:
+MAPPING LOAD
+	__ISO3Code,
+	__Polygon
+RESIDENT __countryGeoBase;
+
+[Customer]:
+LOAD 
+	[DAT_ORIGINE_VOLO] as DAT_ORIGINE,
+	[COD_SCALO_OPERATIVO] as COD_OPERATIVO,
+	[COD_NATURA_VOLO] as COD_NATURA,
+// 	[COD_VETTORE],
+	[COD_NUMERO_VOLO] as COD_NUMERO,
+// 	[COD_ITEM_VETTORE],
+	[COD_ITEM_SCALO] AS [COD_ITEM],
+// 	Timestamp([DAT_OPERATIVA_VOLO] ,'DDMMYYYY') AS [DAT_OPERATIVA_VOLO],
+	Timestamp([DAT_SCHEDULATA_VOLO] ,'DD/MM/YYYY hh:mm:ss') AS [DATE_Detection],
+// 	Timestamp(Timestamp#([DAT_INIZ_RIC_BAG], 'MM/DD/YYYY hh:mm:ss') ) AS [DAT_INIZ_RIC_BAG],
+// 	Timestamp(Timestamp#([DAT_FINE_RIC_BAG], 'MM/DD/YYYY hh:mm:ss') ) AS [DAT_FINE_RIC_BAG],
+// 	[QUA_MIN_INIZ_RIC_BAG],
+// 	[QUA_MIN_FINE_RIC_BAG],
+	[QUA_PAX_TOT],
+// 	[DAT_STIMATA_VOLO],
+// 	[NOM_PIAZZOLA],
+// // 	[COD_FLAG_SANITARIO],
+// 	[COD_GATE],
+// // 	Timestamp(Timestamp#([DAT_ATTUALE], 'MM/DD/YYYY hh:mm:ss') ) AS [DAT_ATTUALE],
+// 	[COD_AREA_GATE],
+// 	[COD_SCALO],
+// 	[DAT_OPERATIVA_VOLO_DMY],
+// 	[ORA_OPERATIVA_VOLO],
+// 	[ORARIO_IMBARCO],
+// 	Timestamp(Timestamp#([DAT_NOW_BOARDING], 'MM/DD/YYYY hh:mm:ss') ) AS [DAT_NOW_BOARDING],
+// 	Timestamp(Timestamp#([DATA_FINE_RIC_BAGAGLIO_EFF], 'MM/DD/YYYY hh:mm:ss') ) AS [DATA_FINE_RIC_BAGAGLIO_EFF],
+	APPLYMAP('__cityKey2GeoPoint', APPLYMAP('__cityName2Key', LOWER([COD_SCALO])), '-') AS [Voli.COD_SCALO_GeoInfo],
+	APPLYMAP('__cityKey2GeoPoint', APPLYMAP('__cityName2Key', LOWER([COD_SCALO_1])), '-') AS [Voli.COD_SCALO_1_GeoInfo],
+	[COD_VETTORE]&[COD_NUMERO_VOLO]&[DAT_SCHEDULATA_VOLO] AS [Voli.Voli_PaxTrack_Rel],
+	[COD_VETTORE]&[COD_NUMERO_VOLO]&[DAT_OPERATIVA_VOLO_DMY] AS [Voli.ShopAelia_Voli_Rel],
+// 	right(000&[COD_NUMERO_VOLO],5) AS [COD_NUMERO_VOLO_EDITED],
+	[COD_VETTORE]&(right(000&[COD_NUMERO_VOLO],5))&[DAT_OPERATIVA_VOLO_DMY] AS [Voli.ShopAelia_Voli_Rel_1],
+	[Rel_VOLO_KEY],
+	[COD_VETTORE]&[COD_NUMERO_VOLO]&[DAT_SCHEDULATA_VOLO] AS [Voli.COD_VETTORE-COD_NUMERO_VOLO-DAT_SCHEDULATA_VOLO-AIRLINEIATACODE-FLIGHTNUMBER-FLIGHT_SCHEDULED_DATETIME],
+	[Rel_Voli_Pax]
+ FROM [lib://QVDs/Voli.qvd]
+(qvd);
+
+[Customer Track]:
+LOAD 
+// 	[FLIGHTNUMBER],
+// 	[DATEOFFLIGHT],
+// 	[TOCITYAIRPORT],
+	[PROCDATE],
+	[PROCTIME],
+	[PROCREADLOC] AS [PaxTrack.PROCREADLOC],
+	[PROCSENTLOC],
+// 	[FROMCITYAIRPORT],
+// 	[PAXSTATUS],
+	[DESCRIPTION],
+// 	[PRINTBOARDINGPASSSOURCE],
+// 	[PRINTBOARDINGPASSSOURCE_DATE],
+// 	[RECEPTIONDATETIME],
+	Timestamp([PROCESSDATETIME] ,'DD/MM/YYYY hh:mm:ss') AS [PROCESSDATETIME],
+// 	Timestamp([FLIGHT_SCHEDULED_DATETIME] ,'DD/MM/YYYY hh:mm:ss') AS [FLIGHT_SCHEDULED_DATETIME],
+// 	APPLYMAP('__cityKey2GeoPoint', APPLYMAP('__cityName2Key', LOWER([TOCITYAIRPORT])), '-') AS [PaxTrack.TOCITYAIRPORT_GeoInfo],
+// 	APPLYMAP('__cityKey2GeoPoint', APPLYMAP('__cityName2Key', LOWER([INBOUNDORIGINE])), '-') AS [PaxTrack.INBOUNDORIGINE_GeoInfo],
+// 	APPLYMAP('__cityKey2GeoPoint', APPLYMAP('__cityName2Key', LOWER([OUTBOUNDDEST])), '-') AS [PaxTrack.OUTBOUNDDEST_GeoInfo],
+// 	APPLYMAP('__cityKey2GeoPoint', APPLYMAP('__cityName2Key', LOWER([FINALDEST])), '-') AS [PaxTrack.FINALDEST_GeoInfo],
+// 	[AIRLINEIATACODE]&[FLIGHTNUMBER]&[FLIGHT_SCHEDULED_DATETIME] AS [PaxTrack.Voli_PaxTrack_Rel],
+// 	[PROCREADLOC]&[PROCSCANIDENT] AS [PaxTrack_Varchi_Rel],
+// 	[AIRLINEIATACODE]&[FLIGHTNUMBER]&[FLIGHT_SCHEDULED_DATETIME] AS [PaxTrack.COD_VETTORE-COD_NUMERO_VOLO-DAT_SCHEDULATA_VOLO-AIRLINEIATACODE-FLIGHTNUMBER-FLIGHT_SCHEDULED_DATETIME],
+	[Rel_Voli_Pax]
+ FROM [lib://QVDs/PaxTrack.qvd]
+(qvd);
+
+[Shop]:
+LOAD 
+// 	[TIPO_INVIO_DATI],
+	[ID_ATTIVITA] AS [COD_LOCALE-ID_ATTIVITA],
+	[SCONTRINO],
+	[DATA_SCONTRINO],
+	[CATEGORIA],
+	[DESC_ARTICOLO],
+	[QUANTITA],
+// 	[ALIQUOTA],
+// 	[IVA_DOGANALE],
+	[PREZZO_NETTO_IVA],
+	[NAZIONALITA],
+// 	[TIPO_OPERAZIONE],
+// 	[NUM_VOLO],
+// 	[DATA_VOLO],
+	[DESTINAZIONE],
+// 	[CHECK_VOLO],
+	[CODICE_VETTORE],
+	[COD_ITEM_SCALO],
+	APPLYMAP( '__countryCodeIsoTwo2Polygon', UPPER([NAZIONALITA]), '-') AS [ShopAelia.NAZIONALITA_GeoInfo],
+	APPLYMAP('__cityKey2GeoPoint', APPLYMAP('__countryCodeAndCityName2Key',APPLYMAP('__countryCodeIsoTwo2IsoThree', UPPER([NAZIONALITA])) & LOWER([DESTINAZIONE])), '-') AS [ShopAelia.DESTINAZIONE_GeoInfo],
+// 	date([DATA_VOLO], 'DD/MM/YYYY') AS [DATA_VOLO_EDITED],
+	[CODICE_VETTORE]&[NUM_VOLO]&[DATA_VOLO] AS [ShopAelia.ShopAelia_Voli_Rel],
+	[CODICE_VETTORE]&[NUM_VOLO]&[DATA_VOLO] AS [ShopAelia.ShopAelia_Voli_Rel_1],
+	[DATA_SCONTRINO_2] AS [DATA_SCONTRINO_2-Timestamp_PassFlow_30Min_2],
+	[Rel_VOLO_KEY]
+ FROM [lib://QVDs/ShopAelia.qvd]
+(qvd);
+
+[Transfer_Nation]:
+LOAD 
+	[COD_ITEM_SCALO] as COD_ITEM,
+	[DAT_INIZIO_VALID_SCA],
+	[DAT_FINE_VALID_SCA],
+	[DAT_INIZIO_VALID_NAZ],
+	[DAT_FINE_VALID_NAZ],
+	[COD_SCALO] as Cod, //AS [Scalo.COD_SCALO],
+	[COD_NAZIONE],
+	if(DES_NAZIONE<>'BRAZIL', DES_NAZIONE) as Nationality, //as [DES_NAZIONE],
+// 	[DAT_INIZIO_VALID_ITEM],
+// 	[DAT_FINE_VALID_ITEM],
+	APPLYMAP('__cityKey2GeoPoint', APPLYMAP('__countryCodeAndCityName2Key',APPLYMAP('__countryCodeIsoTwo2IsoThree', UPPER([COD_NAZIONE])) & LOWER([NOM_CITTA])), '-') AS [Scalo.NOM_CITTA_GeoInfo],
+	APPLYMAP( '__countryCodeIsoTwo2Polygon', UPPER([COD_NAZIONE]), '-') AS [Scalo.COD_NAZIONE_GeoInfo],
+	APPLYMAP( '__countryCodeIsoThree2Polygon', APPLYMAP('__countryName2IsoThree', LOWER([DES_NAZIONE])), '-') AS [Scalo.DES_NAZIONE_GeoInfo]
+ FROM [lib://QVDs/Scalo.qvd]
+(qvd);
+
+[Activity]:
+LOAD 
+	[ID_ATTIVITA] AS [Attivita.ID_ATTIVITA],
+	[COD_LOCALE] AS [COD_LOCALE-ID_ATTIVITA],
+	[DESCRIZIONE],
+	APPLYMAP( '__countryCodeIsoTwo2Polygon', UPPER([FLAG_DL]), '-') AS [Attivita.FLAG_DL_GeoInfo]
+ FROM [lib://QVDs/Attivita.qvd]
+(qvd);
+
+[Retail Area]:
+LOAD [COD_AREA],
+	[AREA],
+// 	[COD_APT],
+// 	[DES_LATO],
+	[DES_AREA]
+// 	[DES_FLUSSO_PAX]
+ FROM [lib://QVDs/Aree_Commerciali.qvd]
+(qvd);
+
+[Check Point]:
+LOAD 
+// 	[TERMINAL],
+	[PROCREADLOC] AS [Varchi.PROCREADLOC],
+	[CODSCANIDENT],
+// 	[T1_EST_OVEST],
+	[PROCREADLOC]&[CODSCANIDENT] AS [PaxTrack_Varchi_Rel]
+ FROM [lib://QVDs/Varchi.qvd]
+(qvd);
+
+[Passenger_Flow]:
+LOAD 
+	[ID_Sorgente],
+	[MAC Address],
+	[Timestamp_PassFlow],
+	[ID_Area],
+	[Key] AS [Passenger_Flow.Key],
+	Timestamp([Timestamp_PassFlow_30Min] ,'DD/MM/YYYY hh:mm:ss') AS [Timestamp_PassFlow_30Min],
+	[LAT_ag],
+	[LON_ag],
+	[TIME],
+	Date(Date#([DATE], 'YYYY-DD-MM') ) AS [DATE],
+	[POINT],
+	[YEAR],
+	[MONTH],
+	[DAY],
+	[HOUR],
+	[MINUTE],
+	[seg],
+	[X1],
+	[Y1],
+	[X],
+	[Y],
+	[DeltaTimePassFlow],
+	[Timestamp_PassFlow_30Min_2] AS [DATA_SCONTRINO_2-Timestamp_PassFlow_30Min_2],
+	[ClassX_LAT],
+	[ClassY_LON],
+	[TimeStampFlow_Peek],
+	[Tempo Attraversamento Area],
+	[ID_Mappa_PassFlow],
+	[MAP],
+	[Description Map],
+	[ID_AREA],
+	[Area Name],
+// 	[Volo],
+	APPLYMAP( '__countryCodeIsoTwo2Polygon', UPPER([Volo]), '-') AS [Passenger_Flow.Volo_GeoInfo],
+	//[position_id] AS [Passenger_Flow.position_id],
+    [position_id] AS Position_id,
+	[Lat],
+	[Lon],
+	[plan_coord],
+	[p_id] AS [PassFlow_p_id],
+	[mac_color],
+	[TempoStazionamentoPunto],
+	[MAC Address]&[Percorso]&[Desc_Fase] AS [Passenger_Flow.MAC Address-Percorso-Desc_Fase-Tab_Prima_Fase..MAC Address-Tab_Prima_Fase..Percorso-Tab_Prima_Fase..Desc_Fase],
+	[MAC Address]&[Percorso]&[Desc_Fase] AS [Passenger_Flow.MAC Address-Percorso-Desc_Fase-Tab_Prima_Fase..MAC Address-Tab_Prima_Fase..Percorso-Tab_Prima_Fase..Desc_Fase_1],
+	[Lat_1],
+	[Lon_1],
+	[MAC Address]&[MAP]&[ID_Area] AS [Tab_Prima_Fase.MAC Address-Tab_Prima_Fase.Percorso-Tab_Prima_Fase.Desc_Fase-Passenger_Flow.MAC Address-MAP-ID_Area]
+ FROM [lib://QVDs/Passenger_Flow.qvd]
+(qvd);
+
+// [Test_Regressione]:
+// LOAD [Mese],
+// 	[ID_Mese],
+// 	[Fatturato]
+//  FROM [lib://QVDs/Regressione_Test.xlsx]
+// (ooxml, embedded labels, table is Sheet1);
+
+[Passenger_Flow_Prev]:
+LOAD 
+	[p_id] AS [PassFlow_p_id],
+	[fromLat],
+	[fromLon],
+	[fromMac]
+ FROM [lib://QVDs/Passenger_Flow_Prev.qvd]
+(qvd);
+
+[HH3W3GridTable]:
+LOAD 
+	[p_id] AS [PassFlow_p_id],
+	[HH3W3],
+	[CenterPoint]
+ FROM [lib://QVDs/HH3W3GridTable.qvd]
+(qvd);
+
+[ClusterAssociations]:
+LOAD 
+	[p_id] AS [PassFlow_p_id],
+	[Clusters_ClusterID]
+ FROM [lib://QVDs/ClusterAssociations.qvd]
+(qvd);
+
+[p_clust]:
+LOAD 
+	[fromClusterID],
+	[p_id] AS [PassFlow_p_id],
+	[fromClusterCenter]
+ FROM [lib://QVDs/p_clust.qvd]
+(qvd);
+
+[to_clust]:
+LOAD 
+	[toClusterID],
+	[p_id] AS [PassFlow_p_id],
+	[toClusterCenter]
+ FROM [lib://QVDs/to_clust.qvd]
+(qvd);
+
+[Clusters]:
+LOAD [Clusters_ClusterID],
+	[Clusters_ClusterCenter],
+	[Clusters_PointCount]
+ FROM [lib://QVDs/Clusters.qvd]
+(qvd);
+
+[Tab_Prima_Fase]:
+LOAD 
+	[MAC Address] AS [Tab_Prima_Fase.MAC Address],
+	[Percorso] AS [Tab_Prima_Fase.Percorso],
+	[Desc_Fase] AS [Tab_Prima_Fase.Desc_Fase],
+	[Prima_Fase],
+	[Tempo_Prima_Fase],
+	[Tempo Attraversamento Fase],
+	[MAC Address]&[Percorso]&[Desc_Fase] AS [Tab_Prima_Fase.MAC Address-Tab_Prima_Fase.Percorso-Tab_Prima_Fase.Desc_Fase-Passenger_Flow.MAC Address-MAP-ID_Area],
+	[Tempo_Prima_Fase_End],
+	[Tempo_Prima_Fase_Start]
+ FROM [lib://QVDs/Tab_Prima_Fase.qvd]
+(qvd);
+
+TAG FIELD [COD_SCALO] WITH '$geoname', '$relates_Voli.COD_SCALO_GeoInfo' ;
+TAG FIELD [Voli.COD_SCALO_GeoInfo] WITH '$geopoint', '$hidden', '$relates_COD_SCALO' ;
+TAG FIELD [COD_SCALO_1] WITH '$geoname', '$relates_Voli.COD_SCALO_1_GeoInfo' ;
+TAG FIELD [Voli.COD_SCALO_1_GeoInfo] WITH '$geopoint', '$hidden', '$relates_COD_SCALO_1' ;
+TAG FIELD [TOCITYAIRPORT] WITH '$geoname', '$relates_PaxTrack.TOCITYAIRPORT_GeoInfo' ;
+TAG FIELD [PaxTrack.TOCITYAIRPORT_GeoInfo] WITH '$geopoint', '$hidden', '$relates_TOCITYAIRPORT' ;
+TAG FIELD [INBOUNDORIGINE] WITH '$geoname', '$relates_PaxTrack.INBOUNDORIGINE_GeoInfo' ;
+TAG FIELD [PaxTrack.INBOUNDORIGINE_GeoInfo] WITH '$geopoint', '$hidden', '$relates_INBOUNDORIGINE' ;
+TAG FIELD [OUTBOUNDDEST] WITH '$geoname', '$relates_PaxTrack.OUTBOUNDDEST_GeoInfo' ;
+TAG FIELD [PaxTrack.OUTBOUNDDEST_GeoInfo] WITH '$geopoint', '$hidden', '$relates_OUTBOUNDDEST' ;
+TAG FIELD [FINALDEST] WITH '$geoname', '$relates_PaxTrack.FINALDEST_GeoInfo' ;
+TAG FIELD [PaxTrack.FINALDEST_GeoInfo] WITH '$geopoint', '$hidden', '$relates_FINALDEST' ;
+TAG FIELD [NAZIONALITA] WITH '$geoname', '$relates_ShopAelia.NAZIONALITA_GeoInfo' ;
+TAG FIELD [ShopAelia.NAZIONALITA_GeoInfo] WITH '$geopolygon', '$hidden', '$relates_NAZIONALITA' ;
+TAG FIELD [DESTINAZIONE] WITH '$geoname', '$relates_ShopAelia.DESTINAZIONE_GeoInfo' ;
+TAG FIELD [ShopAelia.DESTINAZIONE_GeoInfo] WITH '$geopoint', '$hidden', '$relates_DESTINAZIONE' ;
+TAG FIELD [NOM_CITTA] WITH '$geoname', '$relates_Scalo.NOM_CITTA_GeoInfo' ;
+TAG FIELD [Scalo.NOM_CITTA_GeoInfo] WITH '$geopoint', '$hidden', '$relates_NOM_CITTA' ;
+TAG FIELD [COD_NAZIONE] WITH '$geoname', '$relates_Scalo.COD_NAZIONE_GeoInfo' ;
+TAG FIELD [Scalo.COD_NAZIONE_GeoInfo] WITH '$geopolygon', '$hidden', '$relates_COD_NAZIONE' ;
+TAG FIELD [DES_NAZIONE] WITH '$geoname', '$relates_Scalo.DES_NAZIONE_GeoInfo' ;
+TAG FIELD [Scalo.DES_NAZIONE_GeoInfo] WITH '$geopolygon', '$hidden', '$relates_DES_NAZIONE' ;
+TAG FIELD [FLAG_DL] WITH '$geoname', '$relates_Attivita.FLAG_DL_GeoInfo' ;
+TAG FIELD [Attivita.FLAG_DL_GeoInfo] WITH '$geopolygon', '$hidden', '$relates_FLAG_DL' ;
+TAG FIELD [Volo] WITH '$geoname', '$relates_Passenger_Flow.Volo_GeoInfo' ;
+TAG FIELD [Passenger_Flow.Volo_GeoInfo] WITH '$geopolygon', '$hidden', '$relates_Volo' ;
+
+DROP TABLES __cityAliasesBase, __cityGeoBase, __countryGeoBase, __countryAliasesBase;
+[autoCalendar]: 
+  DECLARE FIELD DEFINITION Tagged ('$date')
+FIELDS
+  Dual(Year($1), YearStart($1)) AS [Year] Tagged ('$axis', '$year'),
+  Dual('Q'&Num(Ceil(Num(Month($1))/3)),Num(Ceil(NUM(Month($1))/3),00)) AS [Quarter] Tagged ('$quarter', '$cyclic'),
+  Dual(Year($1)&'-Q'&Num(Ceil(Num(Month($1))/3)),QuarterStart($1)) AS [YearQuarter] Tagged ('$yearquarter', '$qualified'),
+  Dual('Q'&Num(Ceil(Num(Month($1))/3)),QuarterStart($1)) AS [_YearQuarter] Tagged ('$yearquarter', '$hidden', '$simplified'),
+  Month($1) AS [Month] Tagged ('$month', '$cyclic'),
+  Dual(Year($1)&'-'&Month($1), monthstart($1)) AS [YearMonth] Tagged ('$axis', '$yearmonth', '$qualified'),
+  Dual(Month($1), monthstart($1)) AS [_YearMonth] Tagged ('$axis', '$yearmonth', '$simplified', '$hidden'),
+  Dual('W'&Num(Week($1),00), Num(Week($1),00)) AS [Week] Tagged ('$weeknumber', '$cyclic'),
+  Date(Floor($1)) AS [Date] Tagged ('$axis', '$date', '$qualified'),
+  Date(Floor($1), 'D') AS [_Date] Tagged ('$axis', '$date', '$hidden', '$simplified');
+
+DERIVE FIELDS FROM FIELDS [DAT_ORIGINE_VOLO], [DAT_OPERATIVA_VOLO], [DAT_SCHEDULATA_VOLO], [DAT_STIMATA_VOLO], [DAT_CREAZ_LINK], [DAT_ATTUALE], [DAT_OPERATIVA_VOLO_DMY], [DATAORA_ATA_D_MVT], [ARDT_CDM], [ASAT_CDM], [ATOT_CDM], [CTOT_CDM], [EOBT_CDM], [ETOT_CDM], [TOBT_CDM], [DAT_NOW_BOARDING], [PRINTBOARDINGPASSSOURCE_DATE], [PROCESSDATETIME], [FLIGHT_SCHEDULED_DATETIME], [DATA_SCONTRINO_2-Timestamp_PassFlow_30Min_2], [Timestamp_PassFlow_30Min], [DATE], [Tempo_Prima_Fase], [Tempo_Prima_Fase_End], [Tempo_Prima_Fase_Start] USING [autoCalendar] ;
+///$tab BackgroundMap
+[draw_circle]:
+LOAD
+    draw_circle_Geometry,
+    "fileName" as draw_circle_fileName,
+    layerName as draw_circle_layerName,
+    entityType as draw_circle_entityType,
+    entityId as draw_circle_entityId,
+    _autoIndex_ as draw_circle_autoIndex_
+FROM [lib://QVDs/draw_circle.qvd]
+(qvd);
+
+[draw_rectangular]:
+LOAD
+    draw_rectangular_Geometry,
+    "fileName" as draw_rectangular_fileName,
+    layerName as draw_rectangular_layerName,
+    entityType as draw_rectangular_entityType,
+    entityId as draw_rectangular_entityId,
+    _autoIndex_ as draw_rectangular_autoIndex_
+FROM [lib://QVDs/draw_rectangular.qvd]
+(qvd);
+
