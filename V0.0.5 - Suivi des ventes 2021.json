@@ -226,7 +226,7 @@ VARIABLES
 {"qName":"vUnit","qDefinition":"Kilometers","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"436134f2-9435-49d2-a839-4c100a673951","qType":"variable"},"qData":[]}
 
 FIELDS
-{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":135,"qTags":["$text","$key","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":133,"qTags":["$text","$key","$hidden","$system"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Table","qCardinal":24,"qTags":["$text","$key","$hidden","$system"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Rows","qCardinal":16,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Fields","qCardinal":13,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
@@ -245,18 +245,18 @@ FIELDS
 {"qName":"Contact Client","qCardinal":443,"qTags":["$text"],"qSrcTables":["Clients"]}
 {"qName":"T\u00e9l\u00e9phone Client","qCardinal":441,"qTags":["$text","$ascii"],"qSrcTables":["Clients"]}
 {"qName":"timestamp_commandes","qCardinal":1,"qTags":["$numeric","$timestamp"],"qSrcTables":["Commandes"]}
-{"qName":"Date","qCardinal":586,"qTags":["$numeric","$timestamp","$integer","$date"],"qSrcTables":["Commandes"]}
+{"qName":"Date","qCardinal":584,"qTags":["$numeric","$timestamp","$integer","$date"],"qSrcTables":["Commandes"]}
 {"qName":"Ann\u00e9e","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Commandes"]}
 {"qName":"N\u00b0 Commercial","qCardinal":9,"qTags":["$numeric","$integer","$key"],"qSrcTables":["Commandes","Commerciaux"]}
-{"qName":"Poids","qCardinal":794,"qTags":[],"qSrcTables":["Commandes"]}
-{"qName":"N\u00b0 Commande","qCardinal":941,"qTags":["$numeric","$integer","$key"],"qSrcTables":["Commandes","D\u00e9tails_Commandes"]}
+{"qName":"Poids","qCardinal":784,"qTags":[],"qSrcTables":["Commandes"]}
+{"qName":"N\u00b0 Commande","qCardinal":930,"qTags":["$numeric","$integer","$key"],"qSrcTables":["Commandes","D\u00e9tails_Commandes"]}
 {"qName":"N\u00b0 Transporteur","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Commandes"]}
-{"qName":"Mois","qCardinal":13,"qTags":["$numeric","$integer"],"qSrcTables":["Commandes"]}
+{"qName":"Mois","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Commandes"]}
 {"qName":"Trimestre","qCardinal":4,"qTags":["$text","$ascii"],"qSrcTables":["Commandes"]}
 {"qName":"TNum","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Commandes"]}
-{"qName":"Cl\u00e9 Objectif","qCardinal":292,"qTags":["$text","$ascii","$key"],"qSrcTables":["Commandes","Objectifs"]}
+{"qName":"Cl\u00e9 Objectif","qCardinal":287,"qTags":["$text","$ascii","$key"],"qSrcTables":["Commandes","Objectifs"]}
 {"qName":"Ann\u00e9e-Mois","qCardinal":48,"qTags":["$text","$ascii"],"qSrcTables":["Commandes"]}
-{"qName":"Nouvelle Commande","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Commandes"]}
+{"qName":"Nouvelle Commande","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Commandes"]}
 {"qName":"timestamp_commerciaux","qCardinal":1,"qTags":["$numeric","$timestamp"],"qSrcTables":["Commerciaux"]}
 {"qName":"Commercial","qCardinal":9,"qTags":["$text"],"qSrcTables":["Commerciaux"]}
 {"qName":"Date d'Embauche","qCardinal":8,"qTags":["$numeric","$timestamp","$integer","$date"],"qSrcTables":["Commerciaux"]}
@@ -267,11 +267,11 @@ FIELDS
 {"qName":"timestamp_details_commandes","qCardinal":2,"qTags":["$numeric","$timestamp"],"qSrcTables":["D\u00e9tails_Commandes"]}
 {"qName":"id","qCardinal":2173,"qTags":["$numeric","$integer"],"qSrcTables":["D\u00e9tails_Commandes"]}
 {"qName":"N\u00b0 Produit","qCardinal":78,"qTags":["$numeric","$integer","$key"],"qSrcTables":["D\u00e9tails_Commandes","Produits","STOCKS","Backorder_Prediction","Backorder_Prediction_Influence_Normalized"]}
-{"qName":"Quantit\u00e9","qCardinal":61,"qTags":["$numeric","$integer"],"qSrcTables":["D\u00e9tails_Commandes"]}
-{"qName":"Montant","qCardinal":2132,"qTags":["$numeric"],"qSrcTables":["D\u00e9tails_Commandes"]}
-{"qName":"Remise","qCardinal":840,"qTags":["$numeric"],"qSrcTables":["D\u00e9tails_Commandes"]}
-{"qName":"Co\u00fbt Interne","qCardinal":2152,"qTags":["$numeric"],"qSrcTables":["D\u00e9tails_Commandes"]}
-{"qName":"Marge","qCardinal":2161,"qTags":["$numeric"],"qSrcTables":["D\u00e9tails_Commandes"]}
+{"qName":"Quantit\u00e9","qCardinal":57,"qTags":["$numeric","$integer"],"qSrcTables":["D\u00e9tails_Commandes"]}
+{"qName":"Montant","qCardinal":2121,"qTags":["$numeric"],"qSrcTables":["D\u00e9tails_Commandes"]}
+{"qName":"Remise","qCardinal":830,"qTags":["$numeric"],"qSrcTables":["D\u00e9tails_Commandes"]}
+{"qName":"Co\u00fbt Interne","qCardinal":2141,"qTags":["$numeric"],"qSrcTables":["D\u00e9tails_Commandes"]}
+{"qName":"Marge","qCardinal":2150,"qTags":["$numeric"],"qSrcTables":["D\u00e9tails_Commandes"]}
 {"qName":"timestamp_objectifs","qCardinal":1,"qTags":["$numeric","$timestamp"],"qSrcTables":["Objectifs"]}
 {"qName":"Objectif","qCardinal":158,"qTags":["$numeric"],"qSrcTables":["Objectifs"]}
 {"qName":"timestamp_produits","qCardinal":1,"qTags":["$numeric","$timestamp"],"qSrcTables":["Produits"]}
@@ -365,5 +365,3 @@ FIELDS
 {"qName":"Influence Score","qCardinal":488,"qTags":["$numeric"],"qSrcTables":["Backorder_Prediction_Influence_Normalized"]}
 {"qName":"Influenceur","qCardinal":10,"qTags":["$text"],"qSrcTables":["Backorder_Prediction_Influence_Normalized"]}
 {"qName":"Influenceur_Id","qCardinal":10,"qTags":["$numeric","$integer"],"qSrcTables":["Backorder_Prediction_Influence_Normalized"]}
-{"qName":"Pays Livraison","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Commandes"]}
-{"qName":"Ville Livraison","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Commandes"]}
