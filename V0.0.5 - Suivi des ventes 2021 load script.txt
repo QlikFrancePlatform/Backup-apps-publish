@@ -649,7 +649,7 @@ FROM [lib://France Team:DataFiles/stocks.qvd]
 ///$tab Adresse Client
 [AdresseClient]:
 load * Inline [
-Client,	Adresse_Client, Ville
+Client,	Adresse_Client, City
 Ayn Cesaric,51 Av. des Gobelins,Paris
 Novelia Rowles,5 Bd Saint-Michel,Paris
 Emilio Wardroper,43 Rue de Seine,Paris
@@ -662,14 +662,14 @@ Noble McGillecole, 7 Rue des Flots Bleus, Marseille
 
 [Adresse_Propre]:
 Load *,
-	Adresse_Client & ',' &  Ville AS Adresse_search
+	Adresse_Client & ',' &  City AS Adresse_search
 Resident [AdresseClient];
 
 drop Table [AdresseClient];
 
-[AddressPointLookup]:
+[AddressPointLookupClient]:
 Load * Extension GeoOperations.ScriptEval('
-    SELECT _autoIndex_, Address, AddressPoint, CountryIso2, Adm1, City, PostalCode, Street, HouseNumber, Match, dataset.Adresse_Client FROM
+    SELECT _autoIndex_, Address, AddressPoint, CountryIso2, Adm1, City, PostalCode, Street, HouseNumber, Match, dataset.Client FROM
     AddressPointLookup(streetField="Adresse_search", matchThreshold="0.9")
     DATASOURCE dataset INTABLE crs="auto"
 ', Adresse_Propre);
@@ -1017,59 +1017,40 @@ id_magasins, Nom, Adresse, code_postal, ville, point_magasins_lat, point_magasin
 60, Lisboa Príncipe Real, Rua Dom João V 2D, 1250-090, Lisboa , 38.721901187297874, -9.15571902447388
 61, Lisboa Campo Pequeno, Av. da República 56, 1050-196, Lisboa, 38.7425221873334, -9.146330561713897
 62, Barcelona, C/ del Perú 72, 08018, Barcelona, 41.40949285301891, 2.195833415991623
-63,
-64,
-65,
-66,
-67,
-68,
-69,
-70,
-71,
-72,
-73,
-74,
-75,
-76,
-77,
-78,
-79,
-80,
-81,
-82,
-83,
-84,
-85,
-86,
-87,
-88,
-89,
-90,
-91,
-92,
-93,
-94,
-95,
-96,
-97,
-98,
-99,
-100,
+63, Bilbao, Xalbador Kalea, 48002, Bilbao, 43.24954151390827, -2.944723964509283
+64, La corogne, Rda. de Outeiro, 15007, A Coruña, 43.35867658020183, -8.41975356731721
+65, Seville, Calle Jardines De La Alhambra, 41807, Sevilla, 37.38450286187595, -6.11676383223677
+66, Valencia Congresso, Av. de les Corts Valencianes, 46015, Valencia, 39.49148855996853, -0.40099035525241283
+67, Valencia Central, Av. de les Corts Valencianes, 46015, Valencia, 39.474865613501606, -0.37913759160675087
+68, Saint Marin Le Befane, Via Caduti di Nassiriya, 47924, Italie, 44.04316119317174, 12.586035269817742
+69, Bologne Bassi, Via Ugo Bassi, 40121, Italie, 44.49652024329278, 11.338450405332622
+70, Gênes Martino, Via S. Martino, 16131, Italie, 44.406420228810454, 8.97344903057355
+71, Milan Porta Genova, Via Andrea Solari, 20144, Italie, 45.45520872271185, 9.161985885479012
+72, Milan Lambrate, Via Riccardo Pitteri, 20134, Italie, 45.478676343217245, 9.247295708254635
+73, Milan Montalbino, Via Valassina, 20159, Italie, 45.49977780284859, 9.188618940884725
+74, Milan Quarto Oggiaro, Via Filippo Palizzi, 20157, Italie, 45.50813518246447, 9.138242019573749
 ];
 
 [Geo_Magasins]:
-load id_magasins, Nom , Adresse, code_postal, ville as "Ville Client",
-GeoMakePoint(point_magasins_lat, point_magasins_lon) as Point_Magasins
+load id_magasins, Nom , Adresse, code_postal, ville as City,
+GeoMakePoint(point_magasins_lat, point_magasins_lon) as Point_Magasins,
+Adresse & ',' &  ville AS Adresse_search
 resident Magasins;
 
 drop table Magasins;
+
+[AddressPointLookupMagasins]:
+Load * Extension GeoOperations.ScriptEval('
+    SELECT _autoIndex_, Address, AddressPoint, CountryIso2, Adm1, City, PostalCode, Street, HouseNumber, Match, dataset.Nom FROM
+    AddressPointLookup(streetField="Adresse_search", matchThreshold="0.9")
+    DATASOURCE dataset INTABLE crs="auto"
+', Geo_Magasins);
 
 [TravelAreas]:
 Load * Extension GeoOperations.ScriptEval('
 	SELECT id_magasins, TravelArea as TA.TravelArea, Cost, CostUnit, Status from 
     TravelAreas(costValue="30", costUnit="Minutes")
 ', Geo_Magasins);
-
 
 ///$tab Backorder Prediction (AutoML)
 // ----------------------------------------------------------------------------------------------
