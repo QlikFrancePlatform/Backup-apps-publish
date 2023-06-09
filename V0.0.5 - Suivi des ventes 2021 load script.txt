@@ -1248,8 +1248,6 @@ TAG FIELD [K_Influenceur] WITH '$hidden';
 //   AddressPointLookup(cityField="Commune_plateforme", postalCodeField="Code_Postal_Plateforme")
 // ', Plateform);
 
-///$tab Exit
-exit Script;
 ///$tab Commandes
 Concatenate(Commandes)
 
@@ -1287,6 +1285,8 @@ Load * Inline [
 12122,12,200,44.26,7.38,32.53,11.73
 ];
 
+///$tab Exit
+exit Script;
 ///$tab Commentaire
 LIB CONNECT TO 'France Team:PostgreSQL_Azure_Commentaire';
 
