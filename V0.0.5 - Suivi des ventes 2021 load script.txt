@@ -667,12 +667,14 @@ Resident [AdresseClient];
 
 drop Table [AdresseClient];
 
-[AddressPointLookupClient]:
-Load * Extension GeoOperations.ScriptEval('
-    SELECT _autoIndex_, Address, AddressPoint, CountryIso2, Adm1, City, PostalCode, Street, HouseNumber, Match, dataset.Client FROM
-    AddressPointLookup(streetField="Adresse_search", matchThreshold="0.9")
-    DATASOURCE dataset INTABLE crs="auto"
-', Adresse_Propre);
+// Deletz beacause GeoCodding is down 06/28/2023
+
+// [AddressPointLookupClient]:
+// Load * Extension GeoOperations.ScriptEval('
+//     SELECT _autoIndex_, Address, AddressPoint, CountryIso2, Adm1, City, PostalCode, Street, HouseNumber, Match, dataset.Client FROM
+//     AddressPointLookup(streetField="Adresse_search", matchThreshold="0.9")
+//     DATASOURCE dataset INTABLE crs="auto"
+// ', Adresse_Propre);
 
 
 
@@ -761,72 +763,6 @@ N° Produit,Pays Stock,Nb Unites
 77,Italy,4692
 78,Italy,2746
 ];
-///$tab Geo des Stocks
-[Geo]:
-load * Inline [
-Pays Stock,Entrepôt, Latitude, Longitude, order, responsable, idResponsable
-Allemagne, Berlin,52.5200, 13.4049,1, Tom Ripley, 00309000002ydlyAAA
-Belgique, Bruxelles, 50.8503, 4.3517,2, Edna Frank, 00309000002ydm0AAA
-UK, London,51.5073,-0.1277,3, Jake Llorrac, 00309000002ydm3AAA
-Italy, Turin, 45.0703, 7.6868,4, Arthur Song, 00309000002ydlwAAA
-France, Paris, 48.8566, 2.3522,5, Jane Grey, 00309000002ydlvAAA];
-
-[Geo_Stocks]:
-load [Pays Stock] ,Entrepôt, order, responsable, idResponsable,
-GeoMakePoint(Latitude, Longitude) as Point
-resident Geo;
-
-drop table Geo;
-
-
-Trajets:
-load * inline [
-Entrepôt,Arrivee
-Bruxelles, Paris
-Berlin, Paris
-London, Paris
-Paris, Paris
-Turin, Paris
-];
-
-
-mapping_table:
-mapping Load
-Entrepôt, Point resident Geo_Stocks;
-
-Table_Trajets:
-Load Entrepôt, applymap('mapping_table', Entrepôt) as Point_Depart, Arrivee, applymap('mapping_table',Arrivee) as Point_Arrivee, Entrepôt & '-' & Arrivee As destination
-resident Trajets;
-
-Drop table Trajets;
-
-
-MyRoutes:
-LOAD
-    Entrepôt,
-    Distance,
-    LowResLine,
-    durée,
-    transport
-FROM [lib://France Team:DataFiles/trajets.qvd]
-(qvd);
-
-
-// Load Entrepôt, Distance, LowResLine , interval( Duration/24/60/60, 'hh:mm') as  durée, 'Camion' as transport Extension
-// GeoOperations.ScriptEval('Routes(destField="Point_Arrivee", transportation="truck")', Table_Trajets);
-
-// Load Entrepôt, Distance, LowResLine , interval( Duration/24/60/60, 'hh:mm') as  durée, 'Camionette' as transport Extension
-// GeoOperations.ScriptEval('Routes(destField="Point_Arrivee", transportation="car")', Table_Trajets);
-
-// Store MyRoutes into [lib://France Team:DataFiles/trajets.qvd] (qvd);
-
-
-
-untag field [Entrepôt] 	with $geopoint;
-untag field [Point]		with $geopoint;
-
-untag Table [Geo_Stocks] With $geoname;
-
 ///$tab Transport Live
 [Chauffeurs]:
 Load * Inline "
@@ -1039,18 +975,95 @@ resident Magasins;
 
 drop table Magasins;
 
-[AddressPointLookupMagasins]:
-Load * Extension GeoOperations.ScriptEval('
-    SELECT _autoIndex_, Address, AddressPoint, CountryIso2, Adm1, City, PostalCode, Street, HouseNumber, Match, dataset.Nom FROM
-    AddressPointLookup(streetField="Adresse_search", matchThreshold="0.9")
-    DATASOURCE dataset INTABLE crs="auto"
-', Geo_Magasins);
+// Deletz beacause GeoCodding is down 06/28/2023
 
-[TravelAreas]:
-Load * Extension GeoOperations.ScriptEval('
-	SELECT id_magasins, TravelArea as TA.TravelArea, Cost, CostUnit, Status from 
-    TravelAreas(costValue="30", costUnit="Minutes")
-', Geo_Magasins);
+// [AddressPointLookupMagasins]:
+// Load * Extension GeoOperations.ScriptEval('
+//     SELECT _autoIndex_, Address, AddressPoint, CountryIso2, Adm1, City, PostalCode, Street, HouseNumber, Match, dataset.Nom FROM
+//     AddressPointLookup(streetField="Adresse_search", matchThreshold="0.9")
+//     DATASOURCE dataset INTABLE crs="auto"
+// ', Geo_Magasins);
+
+// [TravelAreas]:
+// Load * Extension GeoOperations.ScriptEval('
+// 	SELECT id_magasins, TravelArea as TA.TravelArea, Cost, CostUnit, Status from 
+//     TravelAreas(costValue="30", costUnit="Minutes")
+// ', Geo_Magasins);
+
+///$tab Geo des Stocks
+[Geo]:
+load * Inline [
+Pays Stock,Entrepôt, Latitude, Longitude, order, responsable, idResponsable
+Allemagne, Berlin,52.5200, 13.4049,1, Tom Ripley, 00309000002ydlyAAA
+Belgique, Bruxelles, 50.8503, 4.3517,2, Edna Frank, 00309000002ydm0AAA
+UK, London,51.5073,-0.1277,3, Jake Llorrac, 00309000002ydm3AAA
+Italy, Turin, 45.0703, 7.6868,4, Arthur Song, 00309000002ydlwAAA
+France, Paris, 48.8566, 2.3522,5, Jane Grey, 00309000002ydlvAAA];
+
+[Geo_Stocks]:
+load [Pays Stock] ,Entrepôt, order, responsable, idResponsable,
+GeoMakePoint(Latitude, Longitude) as Point
+resident Geo;
+
+drop table Geo;
+
+
+Trajets:
+load * inline [
+Entrepôt,Arrivee
+Bruxelles, Paris
+Berlin, Paris
+London, Paris
+Paris, Paris
+Turin, Paris
+];
+
+
+mapping_table:
+mapping Load
+Entrepôt, Point resident Geo_Stocks;
+
+Table_Trajets:
+Load Entrepôt, applymap('mapping_table', Entrepôt) as Point_Depart, Arrivee, applymap('mapping_table',Arrivee) as Point_Arrivee, Entrepôt & '-' & Arrivee As destination
+resident Trajets;
+
+Drop table Trajets;
+
+
+MyRoutes:
+LOAD
+    Entrepôt,
+    Distance,
+    LowResLine,
+    durée,
+    transport
+FROM [lib://France Team:DataFiles/trajets.qvd]
+(qvd);
+
+
+// Load Entrepôt, Distance, LowResLine , interval( Duration/24/60/60, 'hh:mm') as  durée, 'Camion' as transport Extension
+// GeoOperations.ScriptEval('Routes(destField="Point_Arrivee", transportation="truck")', Table_Trajets);
+
+// Load Entrepôt, Distance, LowResLine , interval( Duration/24/60/60, 'hh:mm') as  durée, 'Camionette' as transport Extension
+// GeoOperations.ScriptEval('Routes(destField="Point_Arrivee", transportation="car")', Table_Trajets);
+
+// Store MyRoutes into [lib://France Team:DataFiles/trajets.qvd] (qvd);
+
+
+
+untag field [Entrepôt] 	with $geopoint;
+untag field [Point]		with $geopoint;
+
+untag Table [Geo_Stocks] With $geoname;
+
+///$tab AddressPointLookup
+// AddressPointLookup
+
+// [AddressPointLookup]:
+// Load * Extension GeoOperations.ScriptEval('
+//   Select id, Address, AddressPoint From
+//   AddressPointLookup(cityField="Commune_plateforme", postalCodeField="Code_Postal_Plateforme")
+// ', Plateform);
 
 ///$tab Backorder Prediction (AutoML)
 // ----------------------------------------------------------------------------------------------
@@ -1239,15 +1252,8 @@ DROP TABLE [_Temp_backoder_Prediction_Influence_Normalized];
 TAG FIELD [K_Influenceur] WITH '$hidden';
 
 
-///$tab AddressPointLookup
-// AddressPointLookup
-
-// [AddressPointLookup]:
-// Load * Extension GeoOperations.ScriptEval('
-//   Select id, Address, AddressPoint From
-//   AddressPointLookup(cityField="Commune_plateforme", postalCodeField="Code_Postal_Plateforme")
-// ', Plateform);
-
+///$tab Exit
+exit Script;
 ///$tab Commandes
 Concatenate(Commandes)
 
@@ -1285,24 +1291,6 @@ Load * Inline [
 12122,12,200,44.26,7.38,32.53,11.73
 ];
 
-///$tab Exit
-exit Script;
-///$tab Commentaire
-LIB CONNECT TO 'France Team:PostgreSQL_Azure_Commentaire';
-
-LOAD id As id_comment, 
-	comment, 
-	date,
-    num_commercial 	As "N° Commercial";
-
-[comment]:
-SELECT "id",
-	"comment",
-	"date",
-    num_commercial
-FROM "public"."comment";
-
-
 ///$tab Backorder Prediction (AutoML) - Learn
 // -------------------------------------------------------------------------------------------
 // Dataset for prediction - 
@@ -1332,6 +1320,22 @@ FROM [lib://France Team:QMI_Yoann_S3/backorder/backorder_predict_source.csv]
 // Store dataset to predict on AWS S3 - Dataset is available for prediction in Qlik AutoML service
 Store Backorder_Predict into [lib://France Team:QMI_Yoann_S3/backorder_predict.csv] (txt, delimiter is ',');
 drop table Backorder_Predict;
+///$tab Commentaire
+LIB CONNECT TO 'France Team:PostgreSQL_Azure_Commentaire';
+
+LOAD id As id_comment, 
+	comment, 
+	date,
+    num_commercial 	As "N° Commercial";
+
+[comment]:
+SELECT "id",
+	"comment",
+	"date",
+    num_commercial
+FROM "public"."comment";
+
+
 ///$tab ADD T4
 // Concatenate
 
