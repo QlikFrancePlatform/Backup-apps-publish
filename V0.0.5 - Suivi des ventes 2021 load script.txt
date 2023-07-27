@@ -19,9 +19,395 @@ SET LongMonthNames='janvier;février;mars;avril;mai;juin;juillet;août;septembre
 SET LongDayNames='lundi;mardi;mercredi;jeudi;vendredi;samedi;dimanche';
 SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
 
+///$tab Commentaires
+// Commentaires_Commandes:
+// Load * Inline [
+// N° Commande, Commentaire
+// 10248,🟢 Commande valide
+// 10250,🟢 Commande valide
+// 10252,🟢 Commande valide
+// 10253,🟢 Commande valide
+// 10255,🟢 Commande valide
+// 10258,🟢 Commande valide
+// 10261,🟢 Commande valide
+// 10263,🟢 Commande valide
+// 10266,🟢 Commande valide
+// 10270,🟢 Commande valide
+// 10274,🟢 Commande valide
+// 10277,🟢 Commande valide
+// 10283,🟢 Commande valide
+// 10290,🟢 Commande valide
+// 10293,🟢 Commande valide
+// 10294,🟢 Commande valide
+// 10295,🟢 Commande valide
+// 10297,🟢 Commande valide
+// 10303,🟢 Commande valide
+// 10305,🟢 Commande valide
+// 10306,🟢 Commande valide
+// 10311,🟢 Commande valide
+// 10318,🟢 Commande valide
+// 10321,🟢 Commande valide
+// 10322,🟢 Commande valide
+// 10332,🟢 Commande valide
+// 10333,🟢 Commande valide
+// 10341,🟢 Commande valide
+// 10342,🟢 Commande valide
+// 10345,🟢 Commande valide
+// 10348,🟢 Commande valide
+// 10352,🟢 Commande valide
+// 10353,🟢 Commande valide
+// 10354,🟢 Commande valide
+// 10355,🟢 Commande valide
+// 10358,🟢 Commande valide
+// 10361,🟢 Commande valide
+// 10372,🟢 Commande valide
+// 10373,🟢 Commande valide
+// 10380,🟢 Commande valide
+// 10383,🟢 Commande valide
+// 10385,🟢 Commande valide
+// 10396,🟢 Commande valide
+// 10397,🟢 Commande valide
+// 10411,🟢 Commande valide
+// 10458,🟢 Commande valide
+// 10463,🟢 Commande valide
+// 10477,🟢 Commande valide
+// 10484,🟢 Commande valide
+// 10507,🟢 Commande valide
+// 10513,🟢 Commande valide
+// 10527,🟢 Commande valide
+// 10529,🟢 Commande valide
+// 10531,🟢 Commande valide
+// 10532,🟢 Commande valide
+// 10536,🟢 Commande valide
+// 10538,🟢 Commande valide
+// 10548,🟢 Commande valide
+// 10549,🟢 Commande valide
+// 10554,🟢 Commande valide
+// 10557,🟢 Commande valide
+// 10796,🟢 Commande valide
+// 10797,🟢 Commande valide
+// 10798,🟢 Commande valide
+// 10799,🟢 Commande valide
+// 10800,🟢 Commande valide
+// 10801,🟢 Commande valide
+// 10802,🟢 Commande valide
+// 10803,🟢 Commande valide
+// 10806,🟢 Commande valide
+// 10807,🟢 Commande valide
+// 10808,🟢 Commande valide
+// 10809,🟢 Commande valide
+// 10810,🟢 Commande valide
+// 10811,🟢 Commande valide
+// 10812,🟢 Commande valide
+// 10813,🟢 Commande valide
+// 10816,🟢 Commande valide
+// 10817,🟢 Commande valide
+// 10818,🟢 Commande valide
+// 10819,🟢 Commande valide
+// 10820,🟢 Commande valide
+// 10821,🟢 Commande valide
+// 10822,🟢 Commande valide
+// 10825,🟢 Commande valide
+// 10826,🟢 Commande valide
+// 10827,🟢 Commande valide
+// 10830,🟢 Commande valide
+// 10831,🟢 Commande valide
+// 10833,🟢 Commande valide
+// 10834,🟢 Commande valide
+// 10836,🟢 Commande valide
+// 10838,🟢 Commande valide
+// 10839,🟢 Commande valide
+// 10840,🟢 Commande valide
+// 10842,🟢 Commande valide
+// 10844,🟢 Commande valide
+// 10845,🟢 Commande valide
+// 10847,🟢 Commande valide
+// 10848,🟢 Commande valide
+// 10851,🟢 Commande valide
+// 10855,🟢 Commande valide
+// 10857,🟢 Commande valide
+// 10861,🟢 Commande valide
+// 10863,🟢 Commande valide
+// 10864,🟢 Commande valide
+// 10865,🟢 Commande valide
+// 10867,🟢 Commande valide
+// 10869,🟢 Commande valide
+// 10870,🟢 Commande valide
+// 10871,🟢 Commande valide
+// 10872,🟢 Commande valide
+// 10873,🟢 Commande valide
+// 10875,🟢 Commande valide
+// 10876,🟢 Commande valide
+// 10877,🟢 Commande valide
+// 10878,🟢 Commande valide
+// 10881,🟢 Commande valide
+// 10882,🟢 Commande valide
+// 10883,🟢 Commande valide
+// 10884,🟢 Commande valide
+// 10885,🟢 Commande valide
+// 10886,🟢 Commande valide
+// 10887,🟢 Commande valide
+// 10889,🟢 Commande valide
+// 10890,🟢 Commande valide
+// 10891,🟢 Commande valide
+// 10894,🟢 Commande valide
+// 10895,🟢 Commande valide
+// 10897,🟢 Commande valide
+// 10899,🟢 Commande valide
+// 10901,🟢 Commande valide
+// 10903,🟢 Commande valide
+// 10905,🟢 Commande valide
+// 10906,🟢 Commande valide
+// 10908,🟢 Commande valide
+// 10909,🟢 Commande valide
+// 10910,🟢 Commande valide
+// 10911,🟢 Commande valide
+// 10912,🟢 Commande valide
+// 10914,🟢 Commande valide
+// 10916,🟢 Commande valide
+// 10918,🟢 Commande valide
+// 10920,🟢 Commande valide
+// 10921,🟢 Commande valide
+// 10922,🟢 Commande valide
+// 10923,🟢 Commande valide
+// 10926,🟢 Commande valide
+// 10927,🟢 Commande valide
+// 10929,🟢 Commande valide
+// 10930,🟢 Commande valide
+// 10932,🟢 Commande valide
+// 10934,🟢 Commande valide
+// 10935,🟢 Commande valide
+// 10937,🟢 Commande valide
+// 10938,🟢 Commande valide
+// 10940,🟢 Commande valide
+// 10941,🟢 Commande valide
+// 10942,🟢 Commande valide
+// 10945,🟢 Commande valide
+// 10946,🟢 Commande valide
+// 10947,🟢 Commande valide
+// 10949,🟢 Commande valide
+// 10950,🟢 Commande valide
+// 10954,🟢 Commande valide
+// 10956,🟢 Commande valide
+// 10957,🟢 Commande valide
+// 10958,🟢 Commande valide
+// 10960,🟢 Commande valide
+// 10962,🟢 Commande valide
+// 10964,🟢 Commande valide
+// 10965,🟢 Commande valide
+// 10967,🟢 Commande valide
+// 10968,🟢 Commande valide
+// 10969,🟢 Commande valide
+// 10971,🟢 Commande valide
+// 10975,🟢 Commande valide
+// 10978,🟢 Commande valide
+// 10979,🟢 Commande valide
+// 10980,🟢 Commande valide
+// 10981,🟢 Commande valide
+// 10983,🟢 Commande valide
+// 10984,🟢 Commande valide
+// 10985,🟢 Commande valide
+// 10987,🟢 Commande valide
+// 10992,🟢 Commande valide
+// 10994,🟢 Commande valide
+// 10997,🟢 Commande valide
+// 10999,🟢 Commande valide
+// 11000,🟢 Commande valide
+// 11001,🟢 Commande valide
+// 11003,🟢 Commande valide
+// 11004,🟢 Commande valide
+// 11005,🟢 Commande valide
+// 11006,🟢 Commande valide
+// 11007,🟢 Commande valide
+// 11008,🟢 Commande valide
+// 11009,🟢 Commande valide
+// 11010,🟢 Commande valide
+// 11011,🟢 Commande valide
+// 11012,🟢 Commande valide
+// 11013,🟢 Commande valide
+// 11014,🟢 Commande valide
+// 11015,🟢 Commande valide
+// 11016,🟢 Commande valide
+// 11017,🟢 Commande valide
+// 11018,🟢 Commande valide
+// 11019,🟢 Commande valide
+// 11021,🟢 Commande valide
+// 11022,🟢 Commande valide
+// 11023,🟢 Commande valide
+// 11024,🟢 Commande valide
+// 11025,🟢 Commande valide
+// 11026,🟢 Commande valide
+// 11027,🟢 Commande valide
+// 11028,🟢 Commande valide
+// 11029,🟢 Commande valide
+// 11030,🟢 Commande valide
+// 11031,🟢 Commande valide
+// 11032,🟢 Commande valide
+// 11033,🟢 Commande valide
+// 11034,🟢 Commande valide
+// 11035,🟢 Commande valide
+// 11036,🟢 Commande valide
+// 11037,🟢 Commande valide
+// 11038,🟢 Commande valide
+// 11039,🟢 Commande valide
+// 11040,🟢 Commande valide
+// 11041,🟢 Commande valide
+// 11042,🟢 Commande valide
+// 11043,🟢 Commande valide
+// 11044,🟢 Commande valide
+// 11045,🟢 Commande valide
+// 11046,🟢 Commande valide
+// 11047,🟢 Commande valide
+// 11048,🟢 Commande valide
+// 11049,🟢 Commande valide
+// 11050,🟢 Commande valide
+// 11051,🟢 Commande valide
+// 11052,🟢 Commande valide
+// 11053,🟢 Commande valide
+// 11054,🟢 Commande valide
+// 11055,🟢 Commande valide
+// 11057,🟢 Commande valide
+// 11058,🟢 Commande valide
+// 11059,🟢 Commande valide
+// 11060,🟢 Commande valide
+// 11061,🟢 Commande valide
+// 11062,🟢 Commande valide
+// 11063,🟢 Commande valide
+// 11064,🟢 Commande valide
+// 11065,🟢 Commande valide
+// 11066,🟢 Commande valide
+// 11067,🟢 Commande valide
+// 11068,🟢 Commande valide
+// 11069,🟢 Commande valide
+// 11070,🟢 Commande valide
+// 11071,🟢 Commande valide
+// 11072,🟢 Commande valide
+// 11073,🟢 Commande valide
+// 11074,🟢 Commande valide
+// 11075,🟢 Commande valide
+// 11076,🟢 Commande valide
+// 11077,🟢 Commande valide
+// 11079,🟢 Commande valide
+// 11080,🟢 Commande valide
+// 11081,🟢 Commande valide
+// 11084,🟢 Commande valide
+// 11085,🟢 Commande valide
+// 12120,🟢 Commande valide
+// 12121,🟢 Commande valide
+// 12122,🟢 Commande valide
+// 12123,🟢 Commande valide
+// 12124,🟢 Commande valide
+// 12125,🟢 Commande valide
+// 12126,🟢 Commande valide
+// 12127,🟢 Commande valide
+// 12128,🟢 Commande valide
+// 12129,🟢 Commande valide
+// 12130,🟢 Commande valide
+// 20267,🟢 Commande valide
+// 20360,🟢 Commande valide
+// 20363,🟢 Commande valide
+// 20367,🟢 Commande valide
+// 20386,🟢 Commande valide
+// 20387,🟢 Commande valide
+// 20417,🟢 Commande valide
+// 20420,🟢 Commande valide
+// 20426,🟢 Commande valide
+// 20428,🟢 Commande valide
+// 20490,🟢 Commande valide
+// 20804,🟢 Commande valide
+// 20805,🟢 Commande valide
+// 20814,🟢 Commande valide
+// 20815,🟢 Commande valide
+// 20823,🟢 Commande valide
+// 20824,🟢 Commande valide
+// 20828,🟢 Commande valide
+// 20829,🟢 Commande valide
+// 20832,🟢 Commande valide
+// 20835,🟢 Commande valide
+// 20837,🟢 Commande valide
+// 20841,🟢 Commande valide
+// 20843,🟢 Commande valide
+// 20846,🟢 Commande valide
+// 20849,🟢 Commande valide
+// 20850,🟢 Commande valide
+// 20852,🟢 Commande valide
+// 20853,🟢 Commande valide
+// 20854,🟢 Commande valide
+// 20856,🟢 Commande valide
+// 20858,🟢 Commande valide
+// 20859,🟢 Commande valide
+// 20860,🟢 Commande valide
+// 20862,🟢 Commande valide
+// 20866,🟢 Commande valide
+// 20868,🟢 Commande valide
+// 20874,🟢 Commande valide
+// 20879,🟢 Commande valide
+// 20880,🟢 Commande valide
+// 20888,🟢 Commande valide
+// 20892,🟢 Commande valide
+// 20893,🟢 Commande valide
+// 20896,🟢 Commande valide
+// 20898,🟢 Commande valide
+// 20900,🟢 Commande valide
+// 20902,🟢 Commande valide
+// 20904,🟢 Commande valide
+// 20907,🟢 Commande valide
+// 20913,🟢 Commande valide
+// 20915,🟢 Commande valide
+// 20917,🟢 Commande valide
+// 20919,🟢 Commande valide
+// 20924,🟢 Commande valide
+// 20925,🟢 Commande valide
+// 20928,🟢 Commande valide
+// 20931,🟢 Commande valide
+// 20933,🟢 Commande valide
+// 20936,🟢 Commande valide
+// 20939,🟢 Commande valide
+// 20943,🟢 Commande valide
+// 20944,🟢 Commande valide
+// 20948,🟢 Commande valide
+// 20951,🟢 Commande valide
+// 20952,🟢 Commande valide
+// 20953,🟢 Commande valide
+// 20955,🟢 Commande valide
+// 20959,🟢 Commande valide
+// 20961,🟢 Commande valide
+// 20963,🟢 Commande valide
+// 20966,🟢 Commande valide
+// 20970,🟢 Commande valide
+// 20972,🟢 Commande valide
+// 20973,🟢 Commande valide
+// 20974,🟢 Commande valide
+// 20976,🟢 Commande valide
+// 20977,🟢 Commande valide
+// 20982,🟢 Commande valide
+// 20986,🟢 Commande valide
+// 20988,🟢 Commande valide
+// 20989,🟢 Commande valide
+// 20990,🟢 Commande valide
+// 20991,🟢 Commande valide
+// 20993,🟢 Commande valide
+// 20995,🟢 Commande valide
+// 20996,🟢 Commande valide
+// 20998,🟢 Commande valide
+// 21002,🟢 Commande valide
+// 21020,🟢 Commande valide
+// 21056,🟢 Commande valide
+// 21078,🟢 Commande valide
+// 21082,🟢 Commande valide
+// ];
+
+// Store Commentaires_Commandes into [lib://Ventes - Dev:DataFiles/Commentaires_Commandes.qvd](qvd);
+
+Commentaires_Commandes:
+REPLACE LOAD
+    "N° Commande",
+    Commentaire
+FROM [lib://Ventes - Dev:DataFiles/Commentaires_Commandes.qvd]
+(qvd);
 ///$tab AplyMap client
 MapClient:
-mapping load * inline [
+mapping replace load * inline [
 Client,Client2
 """La Moda d'il Futuri""",Brendan Ashling
 Agimba,Osgood Bodesson
@@ -42,7 +428,7 @@ Babbleblab,Tillie Clemon
 Babbleset,Ross Dallimare
 Belgique Black Jeans,Lethia Westrip
 Big Foot Shoes,Ayn Cesaric
-Blognation,Barnaby de Savery
+Blognation,Barnaby de Saverys
 Blognation,Karoly Tootin
 Blogpad,Man Jimeno
 Blogspan,Job Barkworth
@@ -1210,6 +1596,7 @@ LOAD
 FROM [lib://France Team:DataFiles/backorder_predict_PREDICTED.csv]
 (txt, codepage is 28591, embedded labels, delimiter is ',', msq);
 
+Store Backorder_Prediction into [lib://France Team:DataFiles/backorder_predict_PREDICTED.qvd];
 
 // Generate a table with the Key influencer score for explainability (scatter plot target)
 NoConcatenate
@@ -1227,7 +1614,6 @@ LOAD
 	[K_Retard_Approvisionnement_Produit_influence] AS [K_Retard Appro.],
 	[K_Performance_Production_6M_influence] AS [K_Performance Fournisseur]
 RESIDENT Backorder_Prediction;
-
 
 // -------------------------------------------------------------------------------------
 // Generate a table with Normalized K_influenceur for dataviz purpose (Create a dimension for influencer)
@@ -1252,6 +1638,8 @@ DROP TABLE [_Temp_backoder_Prediction_Influence_Normalized];
 TAG FIELD [K_Influenceur] WITH '$hidden';
 
 
+///$tab Exit
+exit Script;
 ///$tab Commandes
 Concatenate(Commandes)
 
@@ -1289,8 +1677,6 @@ Load * Inline [
 12122,12,200,44.26,7.38,32.53,11.73
 ];
 
-///$tab Exit
-exit Script;
 ///$tab Backorder Prediction (AutoML) - Learn
 // -------------------------------------------------------------------------------------------
 // Dataset for prediction - 
@@ -1320,7 +1706,7 @@ FROM [lib://France Team:QMI_Yoann_S3/backorder/backorder_predict_source.csv]
 // Store dataset to predict on AWS S3 - Dataset is available for prediction in Qlik AutoML service
 Store Backorder_Predict into [lib://France Team:QMI_Yoann_S3/backorder_predict.csv] (txt, delimiter is ',');
 drop table Backorder_Predict;
-///$tab Commentaire
+///$tab Commentaire BDD
 LIB CONNECT TO 'France Team:PostgreSQL_Azure_Commentaire';
 
 LOAD id As id_comment, 
@@ -1755,7 +2141,7 @@ FROM "public"."comment";
 // ];
 
 
-///$tab QCS.Common.Script.Section.AutoGenerated
+///$tab Section générée automatiquement
 ///$autogenerated
 Set dataManagerTables = '','mutations';
 //This block renames script tables from non generated section which conflict with the names of managed tables
