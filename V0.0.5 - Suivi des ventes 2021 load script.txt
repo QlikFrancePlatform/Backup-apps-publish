@@ -1638,8 +1638,6 @@ DROP TABLE [_Temp_backoder_Prediction_Influence_Normalized];
 TAG FIELD [K_Influenceur] WITH '$hidden';
 
 
-///$tab Exit
-exit Script;
 ///$tab Commandes
 Concatenate(Commandes)
 
@@ -1677,6 +1675,8 @@ Load * Inline [
 12122,12,200,44.26,7.38,32.53,11.73
 ];
 
+///$tab Exit
+exit Script;
 ///$tab Backorder Prediction (AutoML) - Learn
 // -------------------------------------------------------------------------------------------
 // Dataset for prediction - 
