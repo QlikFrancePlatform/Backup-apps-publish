@@ -165,70 +165,8 @@ FROM 'lib://DataFiles/SalesRepAllSuperiors.qvd'
 (qvd);
 
 
-///$tab Exit
-Exit script;
 ///$tab New Policies
 Concatenate(Policies)
-
-// LOAD
-//     %PolicyID, //AGTW19293077
-//     PolicyCounter, // 1
-//     "Policy Number", //AGTW19293077
-//     %ProductID,
-//     %BudgetJoin,
-//     %BudgetDetailJoin,
-//     %CustomerID,
-//     %BrokerID,
-//     %ReasonCode,
-//     Channel,
-//     "Policy Status",
-//     "Subscription Year Start Date",
-//     "Policy Enrolment Date",
-//     "Policy Cancellation Date",
-//     "Policy Cancellation Month Year",
-//     "Policy Cancellation Year",
-//     "Policy Cancellation Month",
-//     "Policy Cancellation Day",
-//     "Policy Cancellation Quarter",
-//     "Policy Renewal Date",
-//     "Days Before Renewal",
-//     "Weeks Before Renewal",
-//     "Working Days Before Renewal",
-//     num("Renewal Date Year"),
-//     "Renewal Date Month",
-//     "Renewal Date Day",
-//     "Subscription Payment Method",
-//     "Subscription Payment Interval",
-//     "Premium (£)",
-//     Currency,
-//     "No. of Free Months",
-//     "Policy Created Date",
-//     "Policy Created Month Year",
-//     "Policy Created Month",
-//     "Policy Created Year",
-//     "Policy Created Day",
-//     "Length Of Membership",
-//     "Policy Renewed?",
-//     "Cancellation Status",
-//     "Total Claims Paid (£)",
-//     Product,
-//     "Product Region",
-//     "Product Currency",
-//     "Line of Business",
-//     Broker,
-//     "YTD FLAG",
-//     "Policy Created Week",
-//     "Sales Rep Number",
-//     "Is Not Taken Up?"
-// FROM [lib://Assurance - Dev:OneDrive - VEG@qlik.com/Performance-Assureur-Ajout.csv]
-// (txt, utf8, embedded labels, delimiter is ';', msq);
-
-
-// load * inline [
-//     %PolicyID,Type,Claims_Flag,Premium_Flag,Kind,Amount,%InvoiceID,"Posting Date","Invoice Count","Posting Year",CurrentYearFlag,LastYearFlag,"Posting Month","Posting Day","Posting Month Year",ClaimsPolicyID
-//     AGTW19294460,Income,0,1,INV,76.087387,INV3345687898,17/04/2012,Apr-2012,2012,0,1,Avr,17,Apr-2012,-,
-// ];
-
 
 LOAD
     %PolicyID,
@@ -312,3 +250,5 @@ Load * Inline [
 	%PrimeID, Nouvelle_Prime
     1,oui
 ];
+///$tab Exit
+Exit script;
