@@ -1,0 +1,314 @@
+///$tab Main
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='$#,##0.00;($#,##0.00)';
+SET TimeFormat='h:mm:ss TT';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY h:mm:ss[.fff] TT';
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+SET FirstWeekDay=6;
+SET BrokenWeeks=1;
+SET ReferenceDay=0;
+SET FirstMonthOfYear=1;
+
+
+SET vMaxDateMinus2Years = '01/06/2010';
+SET vMaxDateMinus1Year = '01/06/2011';
+SET vLastYear = '2011';
+SET vThisYear = '2012';
+///$tab Mapping
+[MapData]:
+LOAD
+    outcode,
+    latitude,
+    longitude,
+    GeoMakePoint(latitude,longitude) AS LocationPoint
+FROM 'lib://DataFiles/MapData.qvd'
+(qvd);
+
+
+///$tab Policy
+[Policies]:
+LOAD
+    %PolicyID,
+    PolicyCounter,
+    "Policy Number",
+    %ProductID,
+    %BudgetJoin,
+    %BudgetDetailJoin,
+    %CustomerID,
+    %BrokerID,
+    %ReasonCode,
+    Channel,
+    "Policy Status",
+    "Subscription Year Start Date",
+    "Policy Enrolment Date",
+    "Policy Cancellation Date",
+    "Policy Cancellation Month Year",
+    "Policy Cancellation Year",
+    "Policy Cancellation Month",
+    "Policy Cancellation Day",
+    "Policy Cancellation Quarter",
+    "Policy Renewal Date",
+    "Days Before Renewal",
+    "Weeks Before Renewal",
+    "Working Days Before Renewal",
+    "Renewal Date Year",
+    "Renewal Date Month",
+    "Renewal Date Day",
+    "Subscription Payment Method",
+    "Subscription Payment Interval",
+    "Premium (£)",
+    Currency,
+    "No. of Free Months",
+    "Policy Created Date",
+    "Policy Created Month Year",
+    "Policy Created Month",
+    "Policy Created Year",
+    "Policy Created Day",
+    "Length Of Membership",
+    "Policy Renewed?",
+    "Cancellation Status",
+    "Total Claims Paid (£)",
+    Product,
+    "Product Region",
+    "Product Currency",
+    "Line of Business",
+    Broker,
+    "YTD FLAG",
+    "Policy Created Week",
+    "Sales Rep Number",
+    "Is Not Taken Up?"
+FROM 'lib://DataFiles/Policies.qvd'
+(qvd);
+
+
+
+
+///$tab Customer
+[Customers]:
+LOAD
+    %CustomerID,
+    LocationCustomerID,
+    "Customer Post Town",
+    outcode,
+    PostCodeArea,
+    "Customer Country",
+    "Customer Gender",
+    "Customer Marital Status",
+    "Is PolicyHolder?",
+    OriginalJoinDate,
+    "Age",
+    AgeIntervals
+FROM 'lib://DataFiles/Customers.qvd'
+(qvd);
+
+
+///$tab Ledger
+[Ledger]:
+LOAD
+    %PolicyID,
+    Type,
+    Claims_Flag,
+    Premium_Flag,
+    Kind,
+    Amount,
+    %InvoiceID,
+    "Posting Date",
+    "Invoice Count",
+    "Posting Year",
+    CurrentYearFlag,
+    LastYearFlag,
+    "Posting Month",
+    "Posting Day",
+    "Posting Month Year",
+    ClaimsPolicyID
+FROM 'lib://DataFiles/Ledger.qvd'
+(qvd);
+
+
+///$tab Cancellation Reason
+[ReasonCode]:
+LOAD
+    %ReasonCode,
+    "Reason Code Description"
+FROM 'lib://DataFiles/ReasonCode.qvd'
+(qvd);
+
+
+///$tab SalesPerson
+[SalesRep]:
+LOAD
+    "Sales Rep Name1",
+    "Sales Rep Name2",
+    "Sales Rep Name3",
+    Manager,
+    Path,
+    "Sales Rep Number",
+    "Manager Number",
+    "Sales Rep Name"
+FROM 'lib://DataFiles/SalesRep.qvd'
+(qvd);
+
+[SalesRepAllSuperiors]:
+LOAD
+    "Sales Rep Number",
+    "Sales Rep",
+    "Superior Number",
+    Superior
+FROM 'lib://DataFiles/SalesRepAllSuperiors.qvd'
+(qvd);
+
+
+///$tab Exit
+Exit script;
+///$tab New Policies
+Concatenate(Policies)
+
+// LOAD
+//     %PolicyID, //AGTW19293077
+//     PolicyCounter, // 1
+//     "Policy Number", //AGTW19293077
+//     %ProductID,
+//     %BudgetJoin,
+//     %BudgetDetailJoin,
+//     %CustomerID,
+//     %BrokerID,
+//     %ReasonCode,
+//     Channel,
+//     "Policy Status",
+//     "Subscription Year Start Date",
+//     "Policy Enrolment Date",
+//     "Policy Cancellation Date",
+//     "Policy Cancellation Month Year",
+//     "Policy Cancellation Year",
+//     "Policy Cancellation Month",
+//     "Policy Cancellation Day",
+//     "Policy Cancellation Quarter",
+//     "Policy Renewal Date",
+//     "Days Before Renewal",
+//     "Weeks Before Renewal",
+//     "Working Days Before Renewal",
+//     num("Renewal Date Year"),
+//     "Renewal Date Month",
+//     "Renewal Date Day",
+//     "Subscription Payment Method",
+//     "Subscription Payment Interval",
+//     "Premium (£)",
+//     Currency,
+//     "No. of Free Months",
+//     "Policy Created Date",
+//     "Policy Created Month Year",
+//     "Policy Created Month",
+//     "Policy Created Year",
+//     "Policy Created Day",
+//     "Length Of Membership",
+//     "Policy Renewed?",
+//     "Cancellation Status",
+//     "Total Claims Paid (£)",
+//     Product,
+//     "Product Region",
+//     "Product Currency",
+//     "Line of Business",
+//     Broker,
+//     "YTD FLAG",
+//     "Policy Created Week",
+//     "Sales Rep Number",
+//     "Is Not Taken Up?"
+// FROM [lib://Assurance - Dev:OneDrive - VEG@qlik.com/Performance-Assureur-Ajout.csv]
+// (txt, utf8, embedded labels, delimiter is ';', msq);
+
+
+// load * inline [
+//     %PolicyID,Type,Claims_Flag,Premium_Flag,Kind,Amount,%InvoiceID,"Posting Date","Invoice Count","Posting Year",CurrentYearFlag,LastYearFlag,"Posting Month","Posting Day","Posting Month Year",ClaimsPolicyID
+//     AGTW19294460,Income,0,1,INV,76.087387,INV3345687898,17/04/2012,Apr-2012,2012,0,1,Avr,17,Apr-2012,-,
+// ];
+
+
+LOAD
+    %PolicyID,
+    PolicyCounter,
+    "Policy Number",
+    %ProductID,
+    %BudgetJoin,
+    %BudgetDetailJoin,
+    %CustomerID,
+    %BrokerID,
+    %ReasonCode,
+    Channel,
+    "Policy Status",
+    "Subscription Year Start Date",
+    "Policy Enrolment Date",
+    "Policy Cancellation Date",
+    "Policy Cancellation Month Year",
+    "Policy Cancellation Year",
+    "Policy Cancellation Month",
+    "Policy Cancellation Day",
+    "Policy Cancellation Quarter",
+    "Policy Renewal Date",
+    "Days Before Renewal",
+    "Weeks Before Renewal",
+    "Working Days Before Renewal",
+    "Renewal Date Year",
+    "Renewal Date Month",
+    "Renewal Date Day",
+    "Subscription Payment Method",
+    "Subscription Payment Interval",
+    "Premium (£)",
+    Currency,
+    "No. of Free Months",
+    "Policy Created Date",
+    "Policy Created Month Year",
+    "Policy Created Month",
+    "Policy Created Year",
+    "Policy Created Day",
+    "Length Of Membership",
+    "Policy Renewed?",
+    "Cancellation Status",
+    "Total Claims Paid (£)",
+    Product,
+    "Product Region",
+    "Product Currency",
+    "Line of Business",
+    Broker,
+    "YTD FLAG",
+    "Policy Created Week",
+    "Sales Rep Number",
+    "Is Not Taken Up?"
+FROM [lib://Assurance - Dev:OneDrive - VEG@qlik.com/Performance-Assureur-Ajout.xlsx]
+(ooxml, embedded labels, table is Policy);
+
+NoConcatenate
+
+Concatenate(Ledger)
+
+LOAD
+    %PolicyID,
+    "Type",
+    Claims_Flag,
+    Premium_Flag,
+    Kind,
+    Amount,
+    %InvoiceID,
+    "Posting Date",
+    "Invoice Count",
+    "Posting Year",
+    CurrentYearFlag,
+    LastYearFlag,
+    "Posting Month",
+    "Posting Day",
+    "Posting Month Year",
+    ClaimsPolicyID
+FROM [lib://Assurance - Dev:OneDrive - VEG@qlik.com/Performance-Assureur-Ajout.xlsx]
+(ooxml, embedded labels, table is Ledger);
+
+[Alert_prime]:
+Load * Inline [
+	%PrimeID, Nouvelle_Prime
+    1,oui
+];
