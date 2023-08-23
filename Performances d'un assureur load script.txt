@@ -165,8 +165,6 @@ FROM 'lib://DataFiles/SalesRepAllSuperiors.qvd'
 (qvd);
 
 
-///$tab Exit
-Exit script;
 ///$tab New Policies
 Concatenate(Policies)
 
@@ -252,3 +250,5 @@ Load * Inline [
 	%PrimeID, Nouvelle_Prime
     1,oui
 ];
+///$tab Exit
+Exit script;
