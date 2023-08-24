@@ -1,11 +1,11 @@
 
 SHEETS
+{"qInfo":{"qId":"vmyjAV","qType":"sheet"},"qMeta":{"title":"Rapport des primes en vigueur","description":"Cette feuille vous permet de consulter les donn\u00e9es historiques des primes impay\u00e9es","createdDate":"2023-08-17T12:47:05.976Z","modifiedDate":"2023-08-24T08:44:05.658Z","published":true,"publishTime":"2023-08-24T08:44:01.343Z","approved":false,"qSize":-1,"sourceObject":"","draftObject":"","_resourcetype":"app.object","_objecttype":"sheet","id":"vmyjAV","owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","privileges":["read","publish","change_owner"]},"qData":[]}
+{"qInfo":{"qId":"HNSNXA","qType":"sheet"},"qMeta":{"title":"Performance de ventes","description":"Ces feuilles vous permettent de voir les performances des ventes par directeur \/ repr\u00e9sentant des ventes et par p\u00e9riode. Vous pouvez \u00e9galement afficher les ventes de nouvelles politiques.","createdDate":"2023-08-17T12:47:05.804Z","modifiedDate":"2023-08-24T08:41:25.505Z","published":true,"publishTime":"2023-08-22T15:24:27.187Z","approved":false,"qSize":-1,"sourceObject":"","draftObject":"","_resourcetype":"app.object","_objecttype":"sheet","id":"HNSNXA","owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","privileges":["read","publish","change_owner"]},"qData":[]}
+{"qInfo":{"qId":"bf980426-c006-46b3-bb97-4e0e5525126d","qType":"sheet"},"qMeta":{"title":"Script de la d\u00e9monstration","description":"","_resourcetype":"app.object","_objecttype":"sheet","id":"bf980426-c006-46b3-bb97-4e0e5525126d","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2023-08-21T13:42:46.221Z","modifiedDate":"2023-08-24T08:41:08.623Z","privileges":["read","update","delete","publish","change_owner"]},"qData":[]}
 {"qInfo":{"qId":"UDKDP","qType":"sheet"},"qMeta":{"title":"Analyse des primes en vigueur","description":"Tous les graphiques sont color\u00e9s par groupe de% CAGR de prime en vigueur - Affiche uniquement les polices \"en vigueur\"","createdDate":"2023-08-17T12:47:05.845Z","modifiedDate":"2023-08-23T13:16:10.517Z","published":true,"publishTime":"2023-08-23T13:16:07.167Z","approved":false,"qSize":-1,"sourceObject":"","draftObject":"","_resourcetype":"app.object","_objecttype":"sheet","id":"UDKDP","owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","privileges":["read","publish","change_owner"]},"qData":[]}
-{"qInfo":{"qId":"vmyjAV","qType":"sheet"},"qMeta":{"title":"Rapport des primes en vigueur","description":"Cette feuille vous permet de consulter les donn\u00e9es historiques sur les primes, ainsi que les primes par produits.","createdDate":"2023-08-17T12:47:05.976Z","modifiedDate":"2023-08-23T12:43:54.838Z","published":true,"publishTime":"2023-08-23T12:43:49.651Z","approved":false,"qSize":-1,"sourceObject":"","draftObject":"","_resourcetype":"app.object","_objecttype":"sheet","id":"vmyjAV","owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","privileges":["read","publish","change_owner"]},"qData":[]}
 {"qInfo":{"qId":"emPFFN","qType":"sheet"},"qMeta":{"title":"Taux de perte","description":"Cette feuille vous permet d'afficher le taux de perte par groupe d'\u00e2ge, mois et lieu.","createdDate":"2023-08-17T12:47:05.917Z","modifiedDate":"2023-08-23T12:37:28.109Z","published":true,"publishTime":"2023-08-21T14:11:09.760Z","approved":false,"qSize":-1,"sourceObject":"","draftObject":"","_resourcetype":"app.object","_objecttype":"sheet","id":"emPFFN","owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","privileges":["read","publish","change_owner"]},"qData":[]}
 {"qInfo":{"qId":"VCgfffb","qType":"sheet"},"qMeta":{"title":"Analyse des courtiers","description":"Cette feuille vous permet de consulter le TCAC de la prime, le ratio de d\u00e9ch\u00e9ance et les r\u00e9clamations pay\u00e9es par le courtier.","createdDate":"2023-08-17T12:47:05.850Z","modifiedDate":"2023-08-23T12:37:23.979Z","published":true,"publishTime":"2023-08-21T13:15:21.086Z","approved":false,"qSize":-1,"sourceObject":"","draftObject":"","_resourcetype":"app.object","_objecttype":"sheet","id":"VCgfffb","owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","privileges":["read","publish","change_owner"]},"qData":[]}
-{"qInfo":{"qId":"bf980426-c006-46b3-bb97-4e0e5525126d","qType":"sheet"},"qMeta":{"title":"Script de la d\u00e9monstration","description":"","_resourcetype":"app.object","_objecttype":"sheet","id":"bf980426-c006-46b3-bb97-4e0e5525126d","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2023-08-21T13:42:46.221Z","modifiedDate":"2023-08-23T09:42:43.068Z","privileges":["read","update","delete","publish","change_owner"]},"qData":[]}
-{"qInfo":{"qId":"HNSNXA","qType":"sheet"},"qMeta":{"title":"Performance de ventes","description":"Ces feuilles vous permettent de voir les performances des ventes par directeur \/ repr\u00e9sentant des ventes et par p\u00e9riode. Vous pouvez \u00e9galement afficher les ventes de nouvelles politiques.","createdDate":"2023-08-17T12:47:05.804Z","modifiedDate":"2023-08-22T15:24:27.187Z","published":true,"publishTime":"2023-08-22T15:24:27.187Z","approved":false,"qSize":-1,"sourceObject":"","draftObject":"","_resourcetype":"app.object","_objecttype":"sheet","id":"HNSNXA","owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","privileges":["read","publish","change_owner"]},"qData":[]}
 {"qInfo":{"qId":"5e903327-8047-4d80-b18c-9b08fa491dec","qType":"sheet"},"qMeta":{"title":"Rapport des impay\u00e9s","description":"","_resourcetype":"app.object","_objecttype":"sheet","id":"5e903327-8047-4d80-b18c-9b08fa491dec","approved":false,"published":true,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2023-08-22T13:49:35.666Z","modifiedDate":"2023-08-22T15:07:41.438Z","publishTime":"2023-08-22T15:07:35.941Z","privileges":["read","publish","change_owner"]},"qData":[]}
 {"qInfo":{"qId":"Fqyxc","qType":"sheet"},"qMeta":{"title":"Indicateurs cl\u00e9s","description":"Cette feuille vous permet de voir les indicateurs cl\u00e9s de l'assurance dans un format de tableau traditionnel.","createdDate":"2023-08-17T12:47:05.799Z","modifiedDate":"2023-08-22T13:50:23.458Z","published":true,"publishTime":"2023-08-22T13:50:14.044Z","approved":false,"qSize":-1,"sourceObject":"","draftObject":"","_resourcetype":"app.object","_objecttype":"sheet","id":"Fqyxc","owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","privileges":["read","publish","change_owner"]},"qData":[]}
 {"qInfo":{"qId":"tmCTms","qType":"sheet"},"qMeta":{"title":"Ajustements du grand livre","description":"Cette feuille vous permet d'afficher les donn\u00e9es d'ajustement du grand livre en ce qui concerne les primes et les r\u00e9clamations.","createdDate":"2023-08-17T12:47:05.969Z","modifiedDate":"2023-08-22T13:50:22.676Z","published":true,"publishTime":"2021-04-24T13:26:53.374Z","approved":true,"qSize":-1,"sourceObject":"","draftObject":"","_resourcetype":"app.object","_objecttype":"sheet","id":"tmCTms","owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","privileges":["read","publish","change_owner"]},"qData":[]}
@@ -20,6 +20,19 @@ SHEETS
 {"qInfo":{"qId":"bc4d3f3c-4e42-4f12-ab68-6f5f5e060fce","qType":"sheet"},"qMeta":{"title":"Customers","description":"","_resourcetype":"app.object","_objecttype":"sheet","id":"bc4d3f3c-4e42-4f12-ab68-6f5f5e060fce","approved":false,"published":false,"owner":"qfp.eu.qlikcloud.com\\auth0|5c5c24bcce7dcf461fcc14fc","ownerId":"E5ipwBBF2QltHGJP5UmgoP8TBq-UxrU_","createdDate":"2023-08-17T17:00:30.685Z","modifiedDate":"2023-08-18T12:54:49.263Z","privileges":["read","update","delete","publish","change_owner"]},"qData":[]}
 
 OBJECTS ON SHEETS
+{"name":"kCNech","type":"table","col":0,"row":2,"colspan":24,"rowspan":10,"bounds":{"y":16.666666666666664,"x":0,"width":100,"height":83.33333333333334}}
+{"name":"fHAEVa","type":"kpi","col":13,"row":0,"colspan":5,"rowspan":2,"bounds":{"y":0,"x":54.166666666666664,"width":20.833333333333336,"height":16.666666666666664}}
+{"name":"BtW","type":"kpi","col":18,"row":0,"colspan":6,"rowspan":2,"bounds":{"y":0,"x":75,"width":25,"height":16.666666666666664}}
+{"name":"jcf","type":"kpi","col":0,"row":0,"colspan":5,"rowspan":1,"bounds":{"y":0,"x":0,"width":20.833333333333336,"height":8.333333333333332}}
+{"name":"DmhwGc","type":"kpi","col":5,"row":0,"colspan":4,"rowspan":1,"bounds":{"y":0,"x":20.833333333333336,"width":16.666666666666664,"height":8.333333333333332}}
+{"name":"aJQuY","type":"kpi","col":9,"row":0,"colspan":4,"rowspan":2,"bounds":{"y":0,"x":37.5,"width":16.666666666666664,"height":16.666666666666664}}
+{"name":"JCXBzu","type":"action-button","col":0,"row":1,"colspan":9,"rowspan":1,"bounds":{"y":8.333333333333332,"x":0,"width":37.5,"height":8.333333333333332}}
+{"name":"JZyjDzY","type":"barchart","col":12,"row":5,"colspan":12,"rowspan":7,"bounds":{"y":41.66666666666667,"x":50,"width":50,"height":58.333333333333336}}
+{"name":"pJJxDA","type":"linechart","col":12,"row":0,"colspan":12,"rowspan":5,"bounds":{"y":0,"x":50,"width":50,"height":41.66666666666667}}
+{"name":"WJuU","type":"map","col":0,"row":3,"colspan":12,"rowspan":9,"bounds":{"y":25,"x":0,"width":50,"height":75}}
+{"name":"VgjgqZw","type":"kpi","col":0,"row":0,"colspan":6,"rowspan":3,"bounds":{"y":0,"x":0,"width":25,"height":25}}
+{"name":"jeRLL","type":"kpi","col":6,"row":0,"colspan":6,"rowspan":3,"bounds":{"y":0,"x":25,"width":25,"height":25}}
+{"name":"jcJYsP","type":"text-image","col":0,"row":0,"colspan":24,"rowspan":12,"bounds":{"y":0,"x":0,"width":100,"height":100}}
 {"name":"JEmh","type":"barchart","col":14,"row":0,"colspan":8,"rowspan":5,"bounds":{"x":46.666666666666664,"y":0,"width":26.666666666666668,"height":33.33333333333333}}
 {"name":"psasepp","type":"barchart","col":7,"row":0,"colspan":7,"rowspan":5,"bounds":{"y":0,"x":23.333333333333332,"width":23.333333333333332,"height":33.33333333333333}}
 {"name":"sqRzENA","type":"barchart","col":22,"row":0,"colspan":8,"rowspan":4,"bounds":{"y":0,"x":73.33333333333333,"width":26.666666666666668,"height":26.666666666666668}}
@@ -28,13 +41,6 @@ OBJECTS ON SHEETS
 {"name":"PmyAX","type":"linechart","col":0,"row":10,"colspan":30,"rowspan":5,"bounds":{"y":66.66666666666666,"x":0,"width":100,"height":33.33333333333333}}
 {"name":"prxydm","type":"piechart","col":0,"row":0,"colspan":7,"rowspan":5,"bounds":{"y":0,"x":0,"width":23.333333333333332,"height":33.33333333333333}}
 {"name":"tzKqTw","type":"action-button","col":22,"row":4,"colspan":8,"rowspan":1,"bounds":{"y":26.666666666666668,"x":73.33333333333333,"width":26.666666666666668,"height":6.666666666666667}}
-{"name":"kCNech","type":"table","col":0,"row":2,"colspan":24,"rowspan":10,"bounds":{"y":16.666666666666664,"x":0,"width":100,"height":83.33333333333334}}
-{"name":"fHAEVa","type":"kpi","col":13,"row":0,"colspan":5,"rowspan":2,"bounds":{"y":0,"x":54.166666666666664,"width":20.833333333333336,"height":16.666666666666664}}
-{"name":"BtW","type":"kpi","col":18,"row":0,"colspan":6,"rowspan":2,"bounds":{"y":0,"x":75,"width":25,"height":16.666666666666664}}
-{"name":"jcf","type":"kpi","col":0,"row":0,"colspan":5,"rowspan":1,"bounds":{"y":0,"x":0,"width":20.833333333333336,"height":8.333333333333332}}
-{"name":"DmhwGc","type":"kpi","col":5,"row":0,"colspan":4,"rowspan":1,"bounds":{"y":0,"x":20.833333333333336,"width":16.666666666666664,"height":8.333333333333332}}
-{"name":"aJQuY","type":"kpi","col":9,"row":0,"colspan":4,"rowspan":2,"bounds":{"y":0,"x":37.5,"width":16.666666666666664,"height":16.666666666666664}}
-{"name":"JCXBzu","type":"action-button","col":0,"row":1,"colspan":9,"rowspan":1,"bounds":{"y":8.333333333333332,"x":0,"width":37.5,"height":8.333333333333332}}
 {"name":"MNqRw","type":"map","col":0,"row":2,"colspan":8,"rowspan":5,"bounds":{"y":16.666666666666664,"x":0,"width":33.33333333333333,"height":41.66666666666667}}
 {"name":"JJhYUS","type":"kpi","col":19,"row":0,"colspan":5,"rowspan":2,"bounds":{"y":0,"x":79.16666666666666,"width":20.833333333333336,"height":16.666666666666664}}
 {"name":"kXAegj","type":"linechart","col":8,"row":7,"colspan":16,"rowspan":5,"bounds":{"y":58.333333333333336,"x":33.33333333333333,"width":66.66666666666666,"height":41.66666666666667}}
@@ -54,12 +60,6 @@ OBJECTS ON SHEETS
 {"name":"gUxJL","type":"kpi","col":5,"row":0,"colspan":5,"rowspan":2,"bounds":{"y":0,"x":20.833333333333336,"width":20.833333333333336,"height":16.666666666666664}}
 {"name":"pzvYkCc","type":"kpi","col":14,"row":0,"colspan":3,"rowspan":2,"bounds":{"y":0,"x":58.333333333333336,"width":12.5,"height":16.666666666666664}}
 {"name":"yYqDj","type":"kpi","col":17,"row":0,"colspan":3,"rowspan":2,"bounds":{"y":0,"x":70.83333333333334,"width":12.5,"height":16.666666666666664}}
-{"name":"jcJYsP","type":"text-image","col":0,"row":0,"colspan":24,"rowspan":12,"bounds":{"y":0,"x":0,"width":100,"height":100}}
-{"name":"JZyjDzY","type":"barchart","col":12,"row":5,"colspan":12,"rowspan":7,"bounds":{"y":41.66666666666667,"x":50,"width":50,"height":58.333333333333336}}
-{"name":"pJJxDA","type":"linechart","col":12,"row":0,"colspan":12,"rowspan":5,"bounds":{"y":0,"x":50,"width":50,"height":41.66666666666667}}
-{"name":"WJuU","type":"map","col":0,"row":3,"colspan":12,"rowspan":9,"bounds":{"y":25,"x":0,"width":50,"height":75}}
-{"name":"VgjgqZw","type":"kpi","col":0,"row":0,"colspan":6,"rowspan":3,"bounds":{"y":0,"x":0,"width":25,"height":25}}
-{"name":"jeRLL","type":"kpi","col":6,"row":0,"colspan":6,"rowspan":3,"bounds":{"y":0,"x":25,"width":25,"height":25}}
 {"name":"nJCuM","type":"table","col":0,"row":3,"colspan":24,"rowspan":9,"bounds":{"y":25,"x":0,"width":100,"height":75}}
 {"name":"kNNnjH","type":"kpi","col":0,"row":0,"colspan":8,"rowspan":3,"bounds":{"y":0,"x":0,"width":33.33333333333333,"height":25}}
 {"name":"KdAygN","type":"kpi","col":16,"row":0,"colspan":8,"rowspan":3,"bounds":{"y":0,"x":66.66666666666666,"width":33.33333333333333,"height":25}}
@@ -220,9 +220,9 @@ VARIABLES
 {"qName":"vThisYear","qDefinition":"2012","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"c77a9282-8bb1-4632-87b1-42941f2b7c2d","qType":"variable"},"qData":[],"qIsScriptCreated":true}
 
 FIELDS
-{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":93,"qTags":["$key","$hidden","$system","$text"],"qSrcTables":[]}
-{"qIsHidden":true,"qIsSystem":true,"qName":"$Table","qCardinal":8,"qTags":["$key","$hidden","$system","$text","$ascii"],"qSrcTables":[]}
-{"qIsHidden":true,"qIsSystem":true,"qName":"$Rows","qCardinal":8,"qTags":["$hidden","$system","$numeric","$integer"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":89,"qTags":["$key","$hidden","$system","$text"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Table","qCardinal":7,"qTags":["$key","$hidden","$system","$text","$ascii"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Rows","qCardinal":7,"qTags":["$hidden","$system","$numeric","$integer"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Fields","qCardinal":6,"qTags":["$hidden","$system","$numeric","$integer"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$FieldNo","qCardinal":49,"qTags":["$hidden","$system","$numeric","$integer"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Info","qCardinal":1,"qTags":["$hidden","$system","$text","$ascii"],"qSrcTables":[]}
@@ -235,18 +235,18 @@ FIELDS
 {"qName":"Policy Number","qCardinal":64532,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
 {"qName":"%ProductID","qCardinal":31,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
 {"qName":"%BudgetJoin","qCardinal":129,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Policies"]}
-{"qName":"%BudgetDetailJoin","qCardinal":510,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
+{"qName":"%BudgetDetailJoin","qCardinal":509,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
 {"qName":"%CustomerID","qCardinal":104504,"qTags":["$key","$numeric","$integer"],"qSrcTables":["Policies","Customers"]}
 {"qName":"%BrokerID","qCardinal":9,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
 {"qName":"%ReasonCode","qCardinal":13,"qTags":["$key","$numeric","$integer"],"qSrcTables":["Policies","ReasonCode"]}
 {"qName":"Channel","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
 {"qName":"Policy Status","qCardinal":3,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
 {"qName":"Subscription Year Start Date","qCardinal":4349,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Policies"]}
-{"qName":"Policy Enrolment Date","qCardinal":10975,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
+{"qName":"Policy Enrolment Date","qCardinal":10974,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
 {"qName":"Policy Cancellation Date","qCardinal":4505,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Policies"]}
 {"qName":"Policy Cancellation Month Year","qCardinal":169,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Policies"]}
 {"qName":"Policy Cancellation Year","qCardinal":16,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
-{"qName":"Policy Cancellation Month","qCardinal":13,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
+{"qName":"Policy Cancellation Month","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
 {"qName":"Policy Cancellation Day","qCardinal":31,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
 {"qName":"Policy Cancellation Quarter","qCardinal":60,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
 {"qName":"Policy Renewal Date","qCardinal":4347,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Policies"]}
@@ -258,24 +258,24 @@ FIELDS
 {"qName":"Renewal Date Day","qCardinal":31,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
 {"qName":"Subscription Payment Method","qCardinal":3,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
 {"qName":"Subscription Payment Interval","qCardinal":4,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
-{"qName":"Premium (\u00a3)","qCardinal":27910,"qTags":["$numeric"],"qSrcTables":["Policies"]}
+{"qName":"Premium (\u00a3)","qCardinal":27909,"qTags":["$numeric"],"qSrcTables":["Policies"]}
 {"qName":"Currency","qCardinal":3,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
-{"qName":"No. of Free Months","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
-{"qName":"Policy Created Date","qCardinal":63027,"qTags":["$numeric","$timestamp"],"qSrcTables":["Policies"]}
-{"qName":"Policy Created Month Year","qCardinal":130,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Policies"]}
-{"qName":"Policy Created Month","qCardinal":13,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
+{"qName":"No. of Free Months","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
+{"qName":"Policy Created Date","qCardinal":63026,"qTags":["$numeric","$timestamp"],"qSrcTables":["Policies"]}
+{"qName":"Policy Created Month Year","qCardinal":129,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Policies"]}
+{"qName":"Policy Created Month","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
 {"qName":"Policy Created Year","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
 {"qName":"Policy Created Day","qCardinal":31,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
 {"qName":"Length Of Membership","qCardinal":84,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
 {"qName":"Policy Renewed?","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
 {"qName":"Cancellation Status","qCardinal":3,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
-{"qName":"Total Claims Paid (\u00a3)","qCardinal":27760,"qTags":["$numeric"],"qSrcTables":["Policies"]}
+{"qName":"Total Claims Paid (\u00a3)","qCardinal":27759,"qTags":["$numeric"],"qSrcTables":["Policies"]}
 {"qName":"Product","qCardinal":5,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
 {"qName":"Product Region","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
 {"qName":"Product Currency","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
 {"qName":"Line of Business","qCardinal":4,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
 {"qName":"Broker","qCardinal":8,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
-{"qName":"YTD FLAG","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
+{"qName":"YTD FLAG","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
 {"qName":"Policy Created Week","qCardinal":53,"qTags":["$numeric","$integer"],"qSrcTables":["Policies"]}
 {"qName":"Sales Rep Number","qCardinal":64,"qTags":["$key","$numeric","$integer"],"qSrcTables":["Policies","SalesRep","SalesRepAllSuperiors"]}
 {"qName":"Is Not Taken Up?","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Policies"]}
@@ -293,17 +293,17 @@ FIELDS
 {"qName":"Claims_Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Ledger"]}
 {"qName":"Premium_Flag","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Ledger"]}
 {"qName":"Kind","qCardinal":5,"qTags":[],"qSrcTables":["Ledger"]}
-{"qName":"Amount","qCardinal":87003,"qTags":["$numeric"],"qSrcTables":["Ledger"]}
-{"qName":"%InvoiceID","qCardinal":221608,"qTags":["$text","$ascii"],"qSrcTables":["Ledger"]}
+{"qName":"Amount","qCardinal":87002,"qTags":["$numeric"],"qSrcTables":["Ledger"]}
+{"qName":"%InvoiceID","qCardinal":221607,"qTags":["$text","$ascii"],"qSrcTables":["Ledger"]}
 {"qName":"Posting Date","qCardinal":1066,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Ledger"]}
-{"qName":"Invoice Count","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Ledger"]}
+{"qName":"Invoice Count","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Ledger"]}
 {"qName":"Posting Year","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Ledger"]}
 {"qName":"CurrentYearFlag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Ledger"]}
 {"qName":"LastYearFlag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Ledger"]}
 {"qName":"Posting Month","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Ledger"]}
 {"qName":"Posting Day","qCardinal":31,"qTags":["$numeric","$integer"],"qSrcTables":["Ledger"]}
 {"qName":"Posting Month Year","qCardinal":35,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Ledger"]}
-{"qName":"ClaimsPolicyID","qCardinal":19776,"qTags":["$text","$ascii"],"qSrcTables":["Ledger"]}
+{"qName":"ClaimsPolicyID","qCardinal":19775,"qTags":["$text","$ascii"],"qSrcTables":["Ledger"]}
 {"qName":"Reason Code Description","qCardinal":6,"qTags":["$text","$ascii"],"qSrcTables":["ReasonCode"]}
 {"qName":"Sales Rep Name1","qCardinal":5,"qTags":["$text","$ascii"],"qSrcTables":["SalesRep"]}
 {"qName":"Sales Rep Name2","qCardinal":20,"qTags":["$text","$ascii"],"qSrcTables":["SalesRep"]}
@@ -315,7 +315,3 @@ FIELDS
 {"qName":"Sales Rep","qCardinal":63,"qTags":["$text","$ascii"],"qSrcTables":["SalesRepAllSuperiors"]}
 {"qName":"Superior Number","qCardinal":64,"qTags":["$numeric","$integer"],"qSrcTables":["SalesRepAllSuperiors"]}
 {"qName":"Superior","qCardinal":63,"qTags":["$text","$ascii"],"qSrcTables":["SalesRepAllSuperiors"]}
-{"qName":"num(\"Posting Month\")","qCardinal":0,"qTags":[],"qSrcTables":["Ledger"]}
-{"qName":"num(\"Posting Month Year\")","qCardinal":0,"qTags":[],"qSrcTables":["Ledger"]}
-{"qName":"%PrimeID","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Alert_prime"]}
-{"qName":"Nouvelle_Prime","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Alert_prime"]}
