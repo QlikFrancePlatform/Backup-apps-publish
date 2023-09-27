@@ -1,0 +1,391 @@
+///$tab Main
+SET ThousandSep=' ';
+SET DecimalSep=',';
+SET MoneyThousandSep=' ';
+SET MoneyDecimalSep=',';
+SET MoneyFormat='# ##0,00 €;-# ##0,00 €';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET FirstWeekDay=0;
+SET BrokenWeeks=0;
+SET ReferenceDay=4;
+SET FirstMonthOfYear=1;
+SET CollationLocale='fr-FR';
+SET MonthNames='janv.;févr.;mars;avr.;mai;juin;juil.;août;sept.;oct.;nov.;déc.';
+SET LongMonthNames='janvier;février;mars;avril;mai;juin;juillet;août;septembre;octobre;novembre;décembre';
+SET DayNames='lun.;mar.;mer.;jeu.;ven.;sam.;dim.';
+SET LongDayNames='lundi;mardi;mercredi;jeudi;vendredi;samedi;dimanche';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+///$tab Fact
+LIB CONNECT TO 'Big Data:Snowflake';
+
+mutations:
+Load mutation,
+    date_mutation,
+    valeur_fonciere,
+    adresse_complete as adresse,
+    code_postal,
+    code_commune,
+    nom_commune as Commune,
+    //commune_area as Comm,
+    code_departement,
+//    id_parcelle,
+//    lot1_numero,
+//    lot1_surface_carrez,
+    nombre_lots,
+    type_local,
+    surface_reelle_bati as surface,
+    nombre_pieces_principales,
+    surface_terrain,
+    point_gps,
+    nom_region,
+    annee,
+    If([surface_reelle_bati] < 20, Dual('-20', 1),If([surface_reelle_bati] >= 20 and [surface_reelle_bati] < 50, Dual('20-50', 2),
+    If([surface_reelle_bati] >= 50 and [surface_reelle_bati] < 80, Dual('50-80', 3),
+    If([surface_reelle_bati] >= 80 and [surface_reelle_bati] < 120, Dual('80-120', 4),If([surface_reelle_bati] >= 120, Dual('120+', 5)))))) AS [Tranche_Surface]
+    ;
+//	[nombre_pieces_principales] & ' pièces' AS [Type];
+    
+load *;
+
+select 
+//	"commune_area",
+	"mutation",
+   	"date_mutation",
+   	"valeur_fonciere",
+   	"adresse_complete",
+   	"code_postal",
+   	"code_commune",
+   	"nom_commune",
+   	"code_departement",
+    "nombre_lots",
+    "type_local",
+    "surface_reelle_bati",
+    "nombre_pieces_principales",
+    "surface_terrain",
+    "point_gps",
+    "nom_region",
+    "annee"
+
+FROM "MUTATIONS"."public"."mutations"
+
+//INNER JOIN "MUTATIONS"."public"."Communes" ON "MUTATIONS"."public"."mutations"."code_commune" = "MUTATIONS"."public"."Communes"."code_commune"
+
+;
+
+
+
+
+///$tab Communes
+Communes:
+// LOAD
+//      Commune_CodeInsee as code_commune,
+//      Commune as commune,
+//      Commune_Area_30% as [Commune_Area]
+// FROM [lib://Dropbox - xlepitre@gmail.com/DVF/Commune.qvd] (qvd)
+// where exists(code_commune,Commune_CodeInsee)
+//  ;
+
+LOAD
+    code_commune,
+    commune,
+    Commune_Area
+FROM [lib://Big Data:DataFiles/Communes.QVD]
+(qvd);
+
+
+///$tab Calendrier
+[autoCalendar]: 
+  DECLARE FIELD DEFINITION Tagged ('$date')
+FIELDS
+  Dual(Year($1), YearStart($1)) AS [Year] Tagged ('$axis', '$year'),
+  Dual('Q'&Num(Ceil(Num(Month($1))/3)),Num(Ceil(NUM(Month($1))/3),00)) AS [Quarter] Tagged ('$quarter', '$cyclic'),
+  Dual(Year($1)&'-Q'&Num(Ceil(Num(Month($1))/3)),QuarterStart($1)) AS [YearQuarter] Tagged ('$yearquarter', '$qualified'),
+  Dual('Q'&Num(Ceil(Num(Month($1))/3)),QuarterStart($1)) AS [_YearQuarter] Tagged ('$yearquarter', '$hidden', '$simplified'),
+  Month($1) AS [Month] Tagged ('$month', '$cyclic'),
+  Dual(Year($1)&'-'&Month($1), monthstart($1)) AS [YearMonth] Tagged ('$axis', '$yearmonth', '$qualified'),
+  Dual(Month($1), monthstart($1)) AS [_YearMonth] Tagged ('$axis', '$yearmonth', '$simplified', '$hidden'),
+  Dual('W'&Num(Week($1),00), Num(Week($1),00)) AS [Week] Tagged ('$weeknumber', '$cyclic'),
+  Date(Floor($1)) AS [Date] Tagged ('$axis', '$date', '$qualified'),
+  Date(Floor($1), 'D') AS [_Date] Tagged ('$axis', '$date', '$hidden', '$simplified'),
+  If (DayNumberOfYear($1) <= DayNumberOfYear(Today()), 1, 0) AS [InYTD] ,
+  Year(Today())-Year($1) AS [YearsAgo] ,
+  If (DayNumberOfQuarter($1) <= DayNumberOfQuarter(Today()),1,0) AS [InQTD] ,
+  4*Year(Today())+Ceil(Month(Today())/3)-4*Year($1)-Ceil(Month($1)/3) AS [QuartersAgo] ,
+  Ceil(Month(Today())/3)-Ceil(Month($1)/3) AS [QuarterRelNo] ,
+  If(Day($1)<=Day(Today()),1,0) AS [InMTD] ,
+  12*Year(Today())+Month(Today())-12*Year($1)-Month($1) AS [MonthsAgo] ,
+  Month(Today())-Month($1) AS [MonthRelNo] ,
+  If(WeekDay($1)<=WeekDay(Today()),1,0) AS [InWTD] ,
+  (WeekStart(Today())-WeekStart($1))/7 AS [WeeksAgo] ,
+  Week(Today())-Week($1) AS [WeekRelNo] ;
+
+DERIVE FIELDS FROM FIELDS [date_mutation] USING [autoCalendar] ;
+///$tab Suppression variable
+set BUILD_ODAG=;
+set VAL=;
+set WHERE_PART=;
+///$tab 7-Fin
+exit script;
+///$tab ODAG
+SET WHERE_PART = 'WHERE';
+SET BUILD_ODAG = IF(count(VAL) > 1, '"$1" IN (' & concat(chr(39) & Replace(VAL, chr(39), chr(39) & chr(39)) & chr(39), ', ') & ')', '"$1" = ' & concat(chr(39) & Replace(VAL, chr(39), chr(39) & chr(39)) & chr(39), ', ')) AS VAL;
+
+OdagBinding:
+LOAD
+	$(BUILD_ODAG(nom_region))
+INLINE [
+VAL
+$(ods_region){"quote": "", "delimiter": ""}
+];
+
+
+LET VAL = peek('VAL', 0, 'OdagBinding');
+IF LEN(TRIM(VAL)) > 0 THEN
+	LET WHERE_PART = WHERE_PART & IF(WHERE_PART = 'WHERE', ' ', ' AND ') & VAL;
+END IF
+DROP TABLE OdagBinding;
+
+OdagBinding:
+LOAD
+	$(BUILD_ODAG(annee))
+INLINE [
+VAL
+$(ods_annee){"quote": "", "delimiter": ""}
+];
+
+LET VAL = peek('VAL', 0, 'OdagBinding');
+IF LEN(TRIM(VAL)) > 0 THEN
+	LET WHERE_PART = WHERE_PART & IF(WHERE_PART = 'WHERE', ' ', ' AND ') & VAL;
+END IF
+DROP TABLE OdagBinding;
+
+OdagBinding:
+LOAD
+	$(BUILD_ODAG(type_local))
+INLINE [
+VAL
+$(ods_type_local){"quote": "", "delimiter": ""}
+];
+
+LET VAL = peek('VAL', 0, 'OdagBinding');
+IF LEN(TRIM(VAL)) > 0 THEN
+	LET WHERE_PART = WHERE_PART & IF(WHERE_PART = 'WHERE', ' ', ' AND ') & VAL;
+END IF
+DROP TABLE OdagBinding;
+
+IF WHERE_PART = 'WHERE' THEN
+	LET WHERE_PART = '';
+END IF
+
+TRACE Generated WHERE clause: ;
+TRACE $(WHERE_PART);
+
+///$tab Fact Inner
+LIB CONNECT TO 'Snowflake_mutations';
+mutations:
+Load mutation,
+    date_mutation,
+    valeur_fonciere,
+    adresse_complete as adresse,
+    code_postal,
+    code_commune,
+    nom_commune as Commune,
+    commune_area as Commune_Area,
+    code_departement,
+//    id_parcelle,
+//    lot1_numero,
+//    lot1_surface_carrez,
+//    nombre_lots,
+    type_local,
+    surface_reelle_bati as surface,
+//    nombre_pieces_principales,
+//    surface_terrain,
+    point_gps,
+    nom_region,
+    annee,
+    If([surface_reelle_bati] < 20, Dual('-20', 1),If([surface_reelle_bati] >= 20 and [surface_reelle_bati] < 50, Dual('20-50', 2),
+    If([surface_reelle_bati] >= 50 and [surface_reelle_bati] < 80, Dual('50-80', 3),
+    If([surface_reelle_bati] >= 80 and [surface_reelle_bati] < 120, Dual('80-120', 4),If([surface_reelle_bati] >= 120, Dual('120+', 5)))))) AS [Tranche_Surface]
+    ;
+//	[nombre_pieces_principales] & ' pièces' AS [Type];
+    
+load *;
+
+select 
+	"commune_area",
+	"mutation",
+   	"date_mutation",
+   	"valeur_fonciere",
+   	"adresse_complete",
+   	"code_postal",
+   	"MUTATIONS"."public"."Communes"."code_commune",
+   	"nom_commune",
+   	"code_departement",
+   "type_local",
+   "surface_reelle_bati",
+   "point_gps",
+   "nom_region",
+   "annee"
+
+FROM "MUTATIONS"."MUTATIONS"."mutations" 
+
+INNER JOIN "MUTATIONS"."MUTATIONS"."Communes" ON "MUTATIONS"."MUTATIONS"."mutations"."code_commune" = "MUTATIONS"."MUTATIONS"."Communes"."code_commune"
+
+$(WHERE_PART)
+;
+
+
+
+
+///$tab Section générée automatiquement
+Unqualify *;
+
+[arrondissement_temp_b02bc714-1335-3643-ea22-8e92f968]:
+LOAD
+	[id_mutation],
+	[code_commune],
+	[date_mutation],
+	[numero_disposition],
+	[nature_mutation],
+	[valeur_fonciere],
+	[adresse_numero],
+	[adresse_nom_voie],
+	[adresse_complete],
+	[code_postal],
+	[nom_commune],
+	[code_departement],
+	[id_parcelle],
+	[lot1_numero],
+	[nombre_lots],
+	[type_local],
+	[nombre_pieces_principales],
+	[surface_terrain],
+	[longitude],
+	[latitude],
+	[adresse],
+	[Surface],
+	GeoMakePoint([latitude], [longitude]) AS [longitude_latitude],
+	If([Surface] < 20, Dual('-20', 1),If([Surface] >= 20 and [Surface] < 50, Dual('20-50', 2),If([Surface] >= 50 and [Surface] < 80, Dual('50-80', 3),If([Surface] >= 80 and [Surface] < 120, Dual('80-120', 4),If([Surface] >= 120, Dual('120+', 5)))))) AS [Tranche_Surface],
+	[nombre_pieces_principales] & ' pièces' AS [Type]
+RESIDENT [arrondissement];
+DROP TABLE [arrondissement];
+
+[Immeuble_temp_6f9d2b74-6239-0758-ee4b-1aff1e43]:
+LOAD
+	[id_mutation],
+	[Surface_Globale],
+	[Valeur_Globale],
+	[Prix_M2],
+	[valeur_moyenne],
+	If([valeur_moyenne] < 100000, Dual('-100K', 1),If([valeur_moyenne] >= 100000 and [valeur_moyenne] < 200000, Dual('100-200K', 2),If([valeur_moyenne] >= 200000 and [valeur_moyenne] < 300000, Dual('200-300K', 3),If([valeur_moyenne] >= 300000 and [valeur_moyenne] < 400000, Dual('300-400K', 4),If([valeur_moyenne] >= 400000 and [valeur_moyenne] < 600000, Dual('400-600K', 5),If([valeur_moyenne] >= 600000 and [valeur_moyenne] < 800000, Dual('600-800K', 6),If([valeur_moyenne] >= 800000, Dual('+800K', 7)))))))) AS [Tranche_Prix]
+RESIDENT [Immeuble];
+DROP TABLE [Immeuble];
+
+
+TAG FIELD [nature_mutation] WITH '$hidden';
+TAG FIELD [adresse_numero] WITH '$hidden';
+TAG FIELD [adresse_nom_voie] WITH '$hidden';
+TAG FIELD [nombre_pieces_principales] WITH '$hidden';
+TAG FIELD [latitude] WITH '$hidden';
+TAG FIELD [longitude_latitude] WITH '$hidden';
+
+RENAME TABLE [arrondissement_temp_b02bc714-1335-3643-ea22-8e92f968] to [arrondissement];
+
+RENAME TABLE [Immeuble_temp_6f9d2b74-6239-0758-ee4b-1aff1e43] to [Immeuble];
+
+
+[autoCalendar]: 
+  DECLARE FIELD DEFINITION Tagged ('$date')
+FIELDS
+  Dual(Year($1), YearStart($1)) AS [Year] Tagged ('$axis', '$year'),
+  Dual('Q'&Num(Ceil(Num(Month($1))/3)),Num(Ceil(NUM(Month($1))/3),00)) AS [Quarter] Tagged ('$quarter', '$cyclic'),
+  Dual(Year($1)&'-Q'&Num(Ceil(Num(Month($1))/3)),QuarterStart($1)) AS [YearQuarter] Tagged ('$yearquarter', '$qualified'),
+  Dual('Q'&Num(Ceil(Num(Month($1))/3)),QuarterStart($1)) AS [_YearQuarter] Tagged ('$yearquarter', '$hidden', '$simplified'),
+  Month($1) AS [Month] Tagged ('$month', '$cyclic'),
+  Dual(Year($1)&'-'&Month($1), monthstart($1)) AS [YearMonth] Tagged ('$axis', '$yearmonth', '$qualified'),
+  Dual(Month($1), monthstart($1)) AS [_YearMonth] Tagged ('$axis', '$yearmonth', '$simplified', '$hidden'),
+  Dual('W'&Num(Week($1),00), Num(Week($1),00)) AS [Week] Tagged ('$weeknumber', '$cyclic'),
+  Date(Floor($1)) AS [Date] Tagged ('$axis', '$date', '$qualified'),
+  Date(Floor($1), 'D') AS [_Date] Tagged ('$axis', '$date', '$hidden', '$simplified'),
+  If (DayNumberOfYear($1) <= DayNumberOfYear(Today()), 1, 0) AS [InYTD] ,
+  Year(Today())-Year($1) AS [YearsAgo] ,
+  If (DayNumberOfQuarter($1) <= DayNumberOfQuarter(Today()),1,0) AS [InQTD] ,
+  4*Year(Today())+Ceil(Month(Today())/3)-4*Year($1)-Ceil(Month($1)/3) AS [QuartersAgo] ,
+  Ceil(Month(Today())/3)-Ceil(Month($1)/3) AS [QuarterRelNo] ,
+  If(Day($1)<=Day(Today()),1,0) AS [InMTD] ,
+  12*Year(Today())+Month(Today())-12*Year($1)-Month($1) AS [MonthsAgo] ,
+  Month(Today())-Month($1) AS [MonthRelNo] ,
+  If(WeekDay($1)<=WeekDay(Today()),1,0) AS [InWTD] ,
+  (WeekStart(Today())-WeekStart($1))/7 AS [WeeksAgo] ,
+  Week(Today())-Week($1) AS [WeekRelNo] ;
+
+DERIVE FIELDS FROM FIELDS [date_mutation] USING [autoCalendar] ;
+///$tab Dimensional Data
+Communes:
+LOAD
+    Commune_CodeInsee as code_commune,
+    Commune_Area_30% as [commune_area]
+FROM [lib://DataFiles/Commune.qvd] (qvd)
+where exists(code_commune,Commune_CodeInsee);
+
+
+
+
+///$tab ODAG Grand Est
+SET WHERE_PART = 'WHERE';
+SET BUILD_ODAG = IF(count(VAL) > 1, '"$1" IN (' & concat(chr(39) & Replace(VAL, chr(39), chr(39) & chr(39)) & chr(39), ', ') & ')', '"$1" = ' & concat(chr(39) & Replace(VAL, chr(39), chr(39) & chr(39)) & chr(39), ', ')) AS VAL;
+
+OdagBinding:
+LOAD
+	$(BUILD_ODAG(nom_region))
+INLINE [
+VAL
+Grand Est
+];
+
+
+LET VAL = peek('VAL', 0, 'OdagBinding');
+IF LEN(TRIM(VAL)) > 0 THEN
+	LET WHERE_PART = WHERE_PART & IF(WHERE_PART = 'WHERE', ' ', ' AND ') & VAL;
+END IF
+DROP TABLE OdagBinding;
+
+OdagBinding:
+LOAD
+	$(BUILD_ODAG(annee))
+INLINE [
+VAL
+
+
+];
+
+LET VAL = peek('VAL', 0, 'OdagBinding');
+IF LEN(TRIM(VAL)) > 0 THEN
+	LET WHERE_PART = WHERE_PART & IF(WHERE_PART = 'WHERE', ' ', ' AND ') & VAL;
+END IF
+DROP TABLE OdagBinding;
+
+OdagBinding:
+LOAD
+	$(BUILD_ODAG(type_local))
+INLINE [
+VAL
+
+
+];
+
+LET VAL = peek('VAL', 0, 'OdagBinding');
+IF LEN(TRIM(VAL)) > 0 THEN
+	LET WHERE_PART = WHERE_PART & IF(WHERE_PART = 'WHERE', ' ', ' AND ') & VAL;
+END IF
+DROP TABLE OdagBinding;
+
+IF WHERE_PART = 'WHERE' THEN
+	LET WHERE_PART = '';
+END IF
+
+TRACE Generated WHERE clause: ;
+TRACE $(WHERE_PART);
