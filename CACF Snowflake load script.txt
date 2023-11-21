@@ -221,7 +221,6 @@ LOAD
 (qvd);
 
 
-TAG FIELD [PARTENAIRE_SECURE] WITH '$hidden';
 
 RENAME TABLE [Appels_Telephoniques_Sofinco] to [Appels_Telephoniques];
 
@@ -252,3 +251,5 @@ FIELDS
   Week(Today())-Week($1) AS [WeekRelNo] ;
 
 DERIVE FIELDS FROM FIELDS [Date MAJ Dossier], [Date de création Dossier], [Date contact téléphonique] USING [autoCalendar] ;
+///$tab Exclusions
+Search Exclude PARTENAIRE_SECURE;
